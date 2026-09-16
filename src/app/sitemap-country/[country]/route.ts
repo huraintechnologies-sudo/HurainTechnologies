@@ -5,6 +5,8 @@ import { countries, getCountryBySlug } from "@/data/countries";
 import { cities } from "@/data/cities";
 import { localeForCountrySlug } from "@/lib/locale";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(
   _: Request,
   { params }: { params: Promise<{ country: string }> }

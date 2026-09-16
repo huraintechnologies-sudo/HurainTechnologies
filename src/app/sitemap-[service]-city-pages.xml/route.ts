@@ -2,6 +2,8 @@ import { siteConfig } from "@/lib/site-config";
 import { services } from "@/data/services";
 import { cities } from "@/data/cities";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(
   _: Request,
   { params }: { params: Promise<{ service: string }> }

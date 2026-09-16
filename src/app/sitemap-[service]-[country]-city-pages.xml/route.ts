@@ -3,6 +3,8 @@ import { services } from "@/data/services";
 import { countries, getCountryBySlug } from "@/data/countries";
 import { cities } from "@/data/cities";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(
   _: Request,
   { params }: { params: Promise<{ service: string; country: string }> }

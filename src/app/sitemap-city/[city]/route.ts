@@ -4,6 +4,8 @@ import { cities, getCityBySlug } from "@/data/cities";
 import { industries } from "@/data/industries";
 import { localeForCountrySlug } from "@/lib/locale";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(
   _: Request,
   { params }: { params: Promise<{ city: string }> }
