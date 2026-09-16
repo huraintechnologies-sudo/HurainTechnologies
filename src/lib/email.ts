@@ -10,12 +10,12 @@ interface ContactSubmission {
   message: string;
 }
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export async function sendContactEmails(submission: ContactSubmission) {
   if (!process.env.RESEND_API_KEY) {
     throw new Error("Email is not configured. Set RESEND_API_KEY in .env.local.");
   }
+
+  const resend = new Resend(process.env.RESEND_API_KEY);
 
   let fromAddress = process.env.RESEND_FROM || "onboarding@resend.dev";
   // Extract email if format is "Name <email@domain.com>"
