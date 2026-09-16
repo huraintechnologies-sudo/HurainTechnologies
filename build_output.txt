@@ -1,0 +1,92 @@
+﻿
+> hurain-technologies@0.1.0 build
+> next build
+
+▲ Next.js 16.3.5 (Turbopack)
+- Environments: .env.local
+✓ Running next.config.ts took 406ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 8.0s
+  Running TypeScript ...
+  Finished TypeScript in 9.0s ...
+  Collecting page data using 7 workers ...
+  Generating static pages using 7 workers (0/4078) ...
+  Generating static pages using 7 workers (1019/4078) 
+  Generating static pages using 7 workers (2038/4078) 
+  Generating static pages using 7 workers (3058/4078) 
+✓ Generating static pages using 7 workers (4078/4078) in 3.1min
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├   /[locale]
+│ ├ ● /en-ad
+│ ├ ● /en-ag
+│ ├ ● /en-ai
+│ └ ● [+201 more paths]
+├   /[locale]/[city]
+│ ├ ● /en-in/mumbai
+│ ├ ● /en-de/berlin
+│ ├ ● /en-de/frankfurt
+│ └ ● [+10 more paths]
+├ ○ /about
+├ ƒ /api/contact
+├ ○ /apple-icon
+├ ○ /blog
+├   /blog/[slug]
+│ ├ ● /blog/how-to-choose-a-blockchain-development-company
+│ ├ ● /blog/smart-contract-audit-checklist
+│ ├ ● /blog/api-security-checklist-fintech-platforms
+│ └ ● [+2 more paths]
+├ ○ /careers
+├ ○ /case-studies
+├   /case-studies/[slug]
+│ ├ ● /case-studies/multi-chain-exchange-custody-infrastructure
+│ ├ ● /case-studies/open-banking-api-rollout-regional-bank
+│ └ ● /case-studies/fintech-ai-fraud-detection-deployment
+├ ○ /contact
+├ ○ /icon
+├ ○ /industries
+├   /industries/[slug]
+│ ├ ● /industries/banking-fintech
+│ ├ ● /industries/crypto-web3
+│ ├ ● /industries/payments-psps
+│ └ ● [+6 more paths]
+├   /industries/[slug]/[country]
+│ ├ ● /industries/banking-fintech/land-islands
+│ ├ ● /industries/banking-fintech/albania
+│ ├ ● /industries/banking-fintech/algeria
+│ └ ● [+1941 more paths]
+├ ƒ /llms.txt
+├ ○ /locations
+├ ○ /opengraph-image
+├ ○ /privacy-policy
+├ ○ /robots.txt
+├ ○ /services
+├   /services/[slug]
+│ ├ ● /services/blockchain-cryptocurrency-development
+│ ├ ● /services/smart-contract-development
+│ ├ ● /services/crypto-exchange-wallet-development
+│ └ ● [+5 more paths]
+├   /services/[slug]/[country]
+│ ├ ● /services/blockchain-cryptocurrency-development/land-islands
+│ ├ ● /services/blockchain-cryptocurrency-development/albania
+│ ├ ● /services/blockchain-cryptocurrency-development/algeria
+│ └ ● [+1725 more paths]
+├   /services/[slug]/[country]/[city]
+│ ├ ● /services/blockchain-cryptocurrency-development/united-kingdom/london
+│ ├ ● /services/blockchain-cryptocurrency-development/uae/dubai
+│ ├ ● /services/blockchain-cryptocurrency-development/united-states/new-york
+│ └ ● [+141 more paths]
+├ ○ /sitemap.xml
+└ ○ /terms-of-service
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+

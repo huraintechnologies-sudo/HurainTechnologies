@@ -1,0 +1,133 @@
+import { Metadata } from "next";
+import Link from "next/link";
+import Image from "next/image";
+import { Container } from "@/components/Container";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { CtaSection } from "@/components/CtaSection";
+import { Icon } from "@/components/Icon";
+import { SectionHeading } from "@/components/SectionHeading";
+import { LiveDemos } from "@/components/LiveDemos";
+import { JsonLd } from "@/components/JsonLd";
+import { itemListJsonLd } from "@/lib/jsonld";
+import { buildMetadata } from "@/lib/seo";
+import { siteConfig } from "@/lib/site-config";
+import { industries } from "@/data/industries";
+
+// Map each industry slug to a unique relevant image
+const industryImages: Record<string, { src: string; alt: string }> = {
+  "banking-fintech": { src: "/images/team-engineering.jpg", alt: "Engineering team building banking and fintech software platform" },
+  "crypto-web3": { src: "/images/blockchain-hardware.jpg", alt: "Crypto hardware wallet and blockchain interface for Web3 industry" },
+  "payments-psps": { src: "/images/payment-terminal.jpg", alt: "Contactless payment terminal for PSP and payment gateway industry" },
+  "enterprise-saas": { src: "/images/api-developer.jpg", alt: "Developer building enterprise SaaS API and platform integration" },
+  "healthtech-insurtech": { src: "/images/why-choose-us.jpg", alt: "Secure server infrastructure for healthtech and insurtech compliance" },
+  "real-estate-proptech": { src: "/images/global-map.jpg", alt: "Global property network visualization for real estate and PropTech" },
+  "remittance-money-transfer": { src: "/images/payment-terminal.jpg", alt: "Cross-border payment terminal for remittance and money transfer services" },
+  "digital-banking-neobank": { src: "/images/hero-dashboard.jpg", alt: "Digital banking neobank platform dashboard with analytics" },
+  "web3-gaming": { src: "/images/blockchain-network.jpg", alt: "Blockchain network visualization for Web3 gaming and NFT platforms" },
+};
+const defaultIndustryImg = { src: "/images/blog-cover.jpg", alt: "Technology platform for regulated digital industry" };
+
+export const metadata: Metadata = buildMetadata({
+  title: "Industry Solutions | Fintech, Crypto, Banking, Payments, SaaS, Healthtech & More",
+  description:
+    "Hurain Technologies builds enterprise software for regulated industries: banking and fintech, cryptocurrency and Web3, payments and PSPs, SaaS platforms, healthtech and insurtech, real estate, remittance, digital banking, and gaming. 16+ years experience, 2000+ projects across industries.",
+  path: "/industries",
+});
+
+export default function IndustriesPage() {
+  return (
+    <>
+      <JsonLd
+        data={itemListJsonLd(
+          "Industries Hurain Technologies Serves",
+          industries.map((i) => ({ name: i.name, url: `${siteConfig.url}/industries/${i.slug}` }))
+        )}
+      />
+      <section className="border-b border-border py-14">
+        <Container>
+          <Breadcrumbs items={[{ name: "Industries", href: "/industries" }]} />
+          <h1 className="mt-4 max-w-3xl text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+            Industries We Serve
+          </h1>
+          <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
+            We work exclusively with regulated, high-stakes digital businesses — sectors where downtime, a security
+            gap, or a compliance miss has real financial and reputational cost.
+          </p>
+        </Container>
+      </section>
+
+      <section className="py-16">
+        <Container>
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {industries.map((industry) => {
+              const img = industryImages[industry.slug] ?? defaultIndustryImg;
+              return (
+                <Link
+                  key={industry.slug}
+                  href={`/industries/${industry.slug}`}
+                  className="group rounded-2xl border border-border bg-surface overflow-hidden hover:border-primary/50 transition-colors"
+                >
+                  <div className="relative h-36 overflow-hidden">
+                    <Image
+                      src={img.src}
+                      alt={img.alt}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-surface/90 to-transparent" />
+                    <div className="absolute bottom-3 left-3 flex h-9 w-9 items-center justify-center rounded-lg bg-primary/20 backdrop-blur-sm text-primary border border-primary/30">
+                      <Icon name={industry.icon as never} className="w-4 h-4" />
+                    </div>
+                  </div>
+                  <div className="p-6">
+                    <h2 className="text-xl font-semibold text-foreground">{industry.name}</h2>
+                    <p className="mt-2 text-sm leading-relaxed text-muted">{industry.summary}</p>
+                    <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary opacity-90 group-hover:gap-2.5 transition-all">
+                      Explore industry
+                      <Icon name="arrow" className="w-4 h-4" />
+                    </span>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </Container>
+      </section>
+
+      <section className="py-16 border-t border-border bg-surface">
+        <Container className="max-w-3xl">
+          <SectionHeading eyebrow="Why Industry Depth Matters" title="Domain-specific engineering, not generic software" />
+          <div className="mt-6 space-y-4 text-sm leading-relaxed text-muted sm:text-base">
+            <p>
+              Generic software teams build features. Hurain Technologies builds for the specific regulatory,
+              operational, and transaction-volume realities of {industries.length} regulated industries — banking
+              and fintech software development, crypto and Web3 engineering, payments and PSP infrastructure,
+              enterprise SaaS platform architecture, healthtech and insurtech compliance systems, real estate and
+              PropTech tokenization, cross-border remittance and money transfer platforms, digital banking and
+              neobank core systems, and Web3 gaming studio and NFT platform infrastructure.
+            </p>
+            <p>
+              Each industry page below breaks down the operational pain points that vertical actually faces, the
+              specific engineering approach we take to solve them, the services most commonly paired with that
+              industry, and country-specific regulatory context for the markets you're building in — not a
+              generic "we build software for any industry" pitch.
+            </p>
+          </div>
+        </Container>
+      </section>
+
+      <section className="py-16">
+        <Container>
+          <LiveDemos />
+        </Container>
+      </section>
+
+      <section className="pb-20">
+        <Container>
+          <CtaSection />
+        </Container>
+      </section>
+    </>
+  );
+}
+

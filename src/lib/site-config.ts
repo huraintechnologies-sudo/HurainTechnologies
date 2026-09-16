@@ -1,0 +1,72 @@
+export const siteConfig = {
+  name: "Hurain Technologies",
+  legalName: "Hurain Technologies, a division of Hurain Engitech & Trade",
+  shortName: "Hurain Technologies",
+  parentGroup: "Hurain Engitech & Trade",
+  url: "https://www.huraintechnologies.com",
+  description:
+    "Hurain Technologies builds secure, scalable blockchain, payments, API, cloud, and AI platforms for regulated digital businesses worldwide.",
+  tagline:
+    "Blockchain, Payments, API & Cloud Engineering Partner for Global Digital Businesses",
+  founded: "2010",
+  founderName: "Shahnavaz Syed",
+  email: "huraintechnologies@gmail.com",
+  salesEmail: "huraintechnologies+sales@gmail.com",
+  supportEmail: "huraintechnologies+support@gmail.com",
+  phone: "+91 7600907288",
+  phoneDisplay: "+91 76009 07288",
+  whatsapp: "https://wa.me/917600907288",
+  whatsappNumber: "7600907288",
+  address: {
+    street: "Mahmadipura Vorvas, Kamalpura Road",
+    locality: "Bilipatra",
+    city: "Palanpur",
+    district: "Banaskantha",
+    state: "Gujarat",
+    country: "India",
+    postalCode: "385001",
+  },
+  social: {
+    linkedin: "https://www.linkedin.com/company/hurain-technologies",
+    twitter: "https://x.com/huraintech",
+  },
+  calendly: "https://calendly.com/hurain-technologies/discovery-call",
+} as const;
+
+export const TRUST_STATS = [
+  { value: "16+", label: "Years of Engineering Experience" },
+  { value: "2000+", label: "Global Clients Served" },
+  { value: "50+", label: "In-House Specialists" },
+  { value: "2000+", label: "Projects Delivered" },
+  { value: "300+", label: "Startup Builds Supported" },
+  { value: "98%", label: "Client Retention Rate" },
+] as const;
+
+export const WHY_CHOOSE_US = {
+  eyebrow: "Why Choose Hurain Technologies",
+  title: "A technology partnership that feels structured, fast, and dependable",
+  description:
+    "We help regulated digital businesses move from scattered tools and manual processes to stable, secure platforms that are easier to manage, scale, and improve over time. Our approach blends domain understanding, disciplined execution, and long-term support.",
+  points: [
+    "Custom engineering aligned to your workflows, approval cycles, and regulatory reporting needs.",
+    "A clear delivery process with strong communication from discovery through launch.",
+    "Architecture designed for future growth, integrations, automation, and security.",
+  ],
+} as const;
+
+export const NAV_LINKS = [
+  { label: "Home", href: "/" },
+  { label: "Services", href: "/services" },
+  { label: "Industries", href: "/industries" },
+  { label: "Blockchain & Crypto", href: "/services/blockchain-cryptocurrency-development" },
+  { label: "Case Studies", href: "/case-studies" },
+  { label: "About", href: "/about" },
+  { label: "Blog", href: "/blog" },
+  { label: "Careers", href: "/careers" },
+  { label: "Contact", href: "/contact" },
+] as const;
+
+export const FOOTER_LEGAL_LINKS = [
+  { label: "Privacy Policy", href: "/privacy-policy" },
+  { label: "Terms of Service", href: "/terms-of-service" },
+] as const;
