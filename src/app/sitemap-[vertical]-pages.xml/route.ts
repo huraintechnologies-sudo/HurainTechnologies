@@ -7,9 +7,10 @@ import { localeForCountrySlug } from "@/lib/locale";
 
 export async function GET(
   _: Request,
-  { params }: { params: { vertical: string } }
+  { params }: { params: Promise<{ vertical: string }> }
 ) {
-  const vertical = serviceVerticals.find((v) => v.slug === params.vertical);
+  const { vertical: verticalSlug } = await params;
+  const vertical = serviceVerticals.find((v) => v.slug === verticalSlug);
   if (!vertical) {
     return new Response("Not Found", { status: 404 });
   }

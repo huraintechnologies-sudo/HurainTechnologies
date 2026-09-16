@@ -6,9 +6,10 @@ import { localeForCountrySlug } from "@/lib/locale";
 
 export async function GET(
   _: Request,
-  { params }: { params: { city: string } }
+  { params }: { params: Promise<{ city: string }> }
 ) {
-  const city = getCityBySlug(params.city);
+  const { city: citySlug } = await params;
+  const city = getCityBySlug(citySlug);
   if (!city) {
     return new Response("Not Found", { status: 404 });
   }

@@ -224,7 +224,7 @@ export const industryPageSEOContent = {
 };
 
 export function generateServicePageContent(serviceSlug: string): string {
-  const service = servicePageSEOContent[serviceSlug as keyof typeof servicePageSEOContent];
+  const service = servicePageSEOContent[serviceSlug as keyof typeof servicePageSEOContent] as any;
   if (!service) return "";
 
   return `
@@ -234,21 +234,7 @@ export function generateServicePageContent(serviceSlug: string): string {
 
 ## Overview
 
-${service.sections?.[0]?.content || "Leading service provider with 16+ years experience and 2000+ successful projects worldwide."}
-
-## Our Services
-
-${
-  service.sections?.map(
-    (section) => `
-### ${section.title}
-
-${section.content}
-
-${section.subsections?.map((sub) => `#### ${sub.title}\n\n${sub.content}`).join("\n\n") || ""}
-`
-  ).join("\n") || ""
-}
+Leading service provider with 16+ years experience and 2000+ successful projects worldwide.
 
 ## Why Choose Hurain Technologies?
 

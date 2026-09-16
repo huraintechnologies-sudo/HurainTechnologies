@@ -7,9 +7,10 @@ import { localeForCountrySlug } from "@/lib/locale";
 
 export async function GET(
   _: Request,
-  { params }: { params: { country: string } }
+  { params }: { params: Promise<{ country: string }> }
 ) {
-  const country = getCountryBySlug(params.country);
+  const { country: countrySlug } = await params;
+  const country = getCountryBySlug(countrySlug);
   if (!country) {
     return new Response("Not Found", { status: 404 });
   }

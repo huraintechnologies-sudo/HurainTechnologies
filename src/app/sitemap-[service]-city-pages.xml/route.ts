@@ -4,9 +4,10 @@ import { cities } from "@/data/cities";
 
 export async function GET(
   _: Request,
-  { params }: { params: { service: string } }
+  { params }: { params: Promise<{ service: string }> }
 ) {
-  const service = services.find((s) => s.slug === params.service);
+  const { service: serviceSlug } = await params;
+  const service = services.find((s) => s.slug === serviceSlug);
   if (!service) {
     return new Response("Not Found", { status: 404 });
   }
