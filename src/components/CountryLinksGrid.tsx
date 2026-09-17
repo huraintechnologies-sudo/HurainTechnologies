@@ -11,9 +11,9 @@ export function CountryLinksGrid({ basePath }: { basePath: string }) {
 
   return (
     <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-4">
-      {filteredCountries.map((country) => (
+      {filteredCountries.map((country, idx) => (
         <Link
-          key={country.slug}
+          key={`country-${country.slug}-${idx}`}
           href={`${basePath}/${country.slug}`}
           className="group flex items-center justify-between rounded-lg border border-border bg-surface px-4 py-3 text-sm hover:border-primary/50 transition-colors"
         >

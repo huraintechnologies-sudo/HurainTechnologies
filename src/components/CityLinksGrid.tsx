@@ -37,9 +37,9 @@ export function CityLinksGrid({
 
         {/* Cities Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {countryCities.map((city) => (
+          {countryCities.map((city, idx) => (
             <Link
-              key={city.slug}
+              key={`city-${countrySlug}-${city.slug}-${idx}`}
               href={`/solutions/${solutionSlug}/${countrySlug}/${city.slug}`}
               className="group relative overflow-hidden bg-surface-2 border border-border rounded-lg p-6 hover:bg-surface hover:border-primary/50 transition-all duration-300"
             >

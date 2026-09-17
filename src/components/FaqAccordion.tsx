@@ -12,7 +12,7 @@ export function FaqAccordion({ faqs }: { faqs: FaqItem[] }) {
       {faqs.map((faq, index) => {
         const isOpen = openIndex === index;
         return (
-          <div key={faq.question}>
+          <div key={`faq-${index}-${faq.question}`}>
             <button
               className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
               onClick={() => setOpenIndex(isOpen ? null : index)}
