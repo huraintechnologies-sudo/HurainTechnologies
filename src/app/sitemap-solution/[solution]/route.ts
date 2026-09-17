@@ -1,20 +1,21 @@
 import { siteConfig } from "@/lib/site-config";
-import { services } from "@/data/services";
+import { serviceVerticals } from "@/data/service-verticals";
 import { countries } from "@/data/countries";
 import { cities } from "@/data/cities";
 
-// One sitemap per service: the service hub page + every service x country
-// page + every service x country x city page. Matches the real routes at
-// /services/[slug], /services/[slug]/[country], /services/[slug]/[country]/[city].
+// One sitemap per solution/vertical: the solution hub page + every
+// solution x country page + every solution x country x city page.
+// Matches the real routes at /solutions/[solution], /solutions/[solution]/[country],
+// /solutions/[solution]/[country]/[city].
 export const dynamic = "force-dynamic";
 
 export async function GET(
   _: Request,
-  { params }: { params: Promise<{ service: string }> }
+  { params }: { params: Promise<{ solution: string }> }
 ) {
-  const { service: serviceSlug } = await params;
-  const service = services.find((s) => s.slug === serviceSlug);
-  if (!service) {
+  const { solution: solutionSlug } = await params;
+  const solution = serviceVerticals.find((v) => v.slug === solutionSlug);
+  if (!solution) {
     return new Response("Not Found", { status: 404 });
   }
 
@@ -24,7 +25,7 @@ export async function GET(
   let xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>${baseUrl}/services/${service.slug}</loc>
+    <loc>${baseUrl}/solutions/${solution.slug}</loc>
     <lastmod>${now}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -33,7 +34,7 @@ export async function GET(
   for (const country of countries) {
     xml += `
   <url>
-    <loc>${baseUrl}/services/${service.slug}/${country.slug}</loc>
+    <loc>${baseUrl}/solutions/${solution.slug}/${country.slug}</loc>
     <lastmod>${now}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -43,7 +44,7 @@ export async function GET(
   for (const city of cities) {
     xml += `
   <url>
-    <loc>${baseUrl}/services/${service.slug}/${city.countrySlug}/${city.slug}</loc>
+    <loc>${baseUrl}/solutions/${solution.slug}/${city.countrySlug}/${city.slug}</loc>
     <lastmod>${now}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -60,5 +61,5 @@ export async function GET(
 }
 
 export function generateStaticParams() {
-  return services.map((service) => ({ service: service.slug }));
+  return serviceVerticals.map((solution) => ({ solution: solution.slug }));
 }
