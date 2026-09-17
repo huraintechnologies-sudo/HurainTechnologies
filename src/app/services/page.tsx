@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import Link from "next/link";
 import { Container } from "@/components/Container";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SectionHeading } from "@/components/SectionHeading";
@@ -9,7 +10,9 @@ import { JsonLd } from "@/components/JsonLd";
 import { itemListJsonLd } from "@/lib/jsonld";
 import { buildMetadata } from "@/lib/seo";
 import { siteConfig } from "@/lib/site-config";
+import { localeForCountrySlug } from "@/lib/locale";
 import { services } from "@/data/services";
+import { countries } from "@/data/countries";
 
 export const metadata: Metadata = buildMetadata({
   title: "Professional Software Development Services | Blockchain, Crypto, Payments, Cloud, AI & More",
@@ -20,6 +23,12 @@ export const metadata: Metadata = buildMetadata({
 });
 
 const categories = Array.from(new Set(services.map((s) => s.category)));
+
+// Exclude Pakistan, Israel, China, Japan
+const excludedCountries = ["pakistan", "israel", "china", "japan"];
+const filteredCountries = countries.filter(
+  (c) => !excludedCountries.includes(c.slug.toLowerCase())
+);
 
 export default function ServicesPage() {
   return (
@@ -58,6 +67,40 @@ export default function ServicesPage() {
           </Container>
         </section>
       ))}
+
+      {/* Geographic Availability Section */}
+      <section className="py-16 border-t border-border bg-gray-50">
+        <Container>
+          <SectionHeading
+            eyebrow="Global Reach"
+            title="Markets We Serve"
+          />
+          <p className="mt-4 max-w-2xl text-base text-muted mb-8">
+            Our software development services are available across {filteredCountries.length}+ countries worldwide. Select a country below to explore local expertise, regulatory insights, and city-specific availability.
+          </p>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+            {filteredCountries.map((country) => (
+              <Link
+                key={country.slug}
+                href={`/${localeForCountrySlug(country.slug)}`}
+                className="p-3 bg-white rounded-lg border border-border hover:border-primary hover:shadow-md transition-all text-center text-sm font-medium text-foreground hover:text-primary"
+              >
+                {country.countryName}
+              </Link>
+            ))}
+          </div>
+
+          <div className="mt-8 text-center">
+            <Link
+              href="/markets-we-cover"
+              className="inline-block px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium"
+            >
+              View All Markets →
+            </Link>
+          </div>
+        </Container>
+      </section>
 
       <section className="py-16 border-t border-border">
         <Container>
