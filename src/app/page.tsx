@@ -289,7 +289,13 @@ export default async function HomePage() {
           <div className="mt-10 grid grid-cols-1 gap-5 lg:grid-cols-3">
             {caseStudies.map((cs, i) => {
               const csImage = caseStudyImages[i];
-              const imgSrc = csImage?.url || "/images/case-study-fintech.jpg";
+              // Rotate through different fallback images
+              const fallbackImages = [
+                "/images/blockchain-hardware.jpg",
+                "/images/case-study-fintech.jpg",
+                "/images/payment-terminal.jpg",
+              ];
+              const imgSrc = csImage?.url || fallbackImages[i % fallbackImages.length];
               const imgAlt = csImage?.alt || `${cs.industry} case study - ${cs.title}`;
               return (
                 <Link
@@ -331,7 +337,15 @@ export default async function HomePage() {
           <div className="mt-10 grid grid-cols-1 gap-5 lg:grid-cols-3">
             {blogPosts.map((post, i) => {
               const blogImage = blogPostImages[i];
-              const imgSrc = blogImage?.url || "/images/blog-cover.jpg";
+              // Rotate through different fallback images
+              const fallbackImages = [
+                "/images/blog-cover.jpg",
+                "/images/blockchain-network.jpg",
+                "/images/api-developer.jpg",
+                "/images/why-choose-us.jpg",
+                "/images/hero-dashboard.jpg",
+              ];
+              const imgSrc = blogImage?.url || fallbackImages[i % fallbackImages.length];
               const imgAlt = blogImage?.alt || `${post.title} - ${post.category}`;
               return (
                 <Link
