@@ -39,9 +39,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+export const revalidate = 86400; // ISR: revalidate every 24 hours
+export const dynamicParams = true; // Enable on-demand ISR for other cities
+
 export async function generateStaticParams() {
-  return serviceVerticals.flatMap((vertical) =>
-    cities.flatMap((city) => ({
+  // Only build top 3 solutions × top 10 cities (~30 pages)
+  // Rest use on-demand ISR (Vercel will cache on first visit)
+  const topVerticals = serviceVerticals.slice(0, 3);
+  const topCities = cities.slice(0, 10);
+  return topVerticals.flatMap((vertical) =>
+    topCities.map((city) => ({
       solution: vertical.slug,
       country: city.countrySlug,
       city: city.slug,

@@ -21,11 +21,15 @@ import { localeForCountrySlug } from "@/lib/locale";
 
 // Enable Incremental Static Regeneration for unbuilt cities
 export const dynamicParams = true;
+export const revalidate = 86400; // ISR: revalidate every 24 hours
 
 export function generateStaticParams() {
-  // Only build combinations for the curated hub cities to keep build times fast
-  return services.flatMap((service) =>
-    curatedCities.map((city) => ({
+  // Only build top 3 services × top 10 curated cities (~30 pages)
+  // Rest use on-demand ISR (Vercel will cache on first visit)
+  const topServices = services.slice(0, 3);
+  const topCities = curatedCities.slice(0, 10);
+  return topServices.flatMap((service) =>
+    topCities.map((city) => ({
       slug: service.slug,
       country: city.countrySlug,
       city: city.slug,
