@@ -1,6 +1,15 @@
 import { Metadata } from "next";
+import Link from "next/link";
 import { ServiceVerticalGrid } from "@/components/ServiceVerticalGrid";
 import { siteConfig } from "@/lib/site-config";
+import { localeForCountrySlug } from "@/lib/locale";
+import { countries } from "@/data/countries";
+
+// Exclude Pakistan, Israel, China, Japan
+const excludedCountries = ["pakistan", "israel", "china", "japan"];
+const filteredCountries = countries.filter(
+  (c) => !excludedCountries.includes(c.slug.toLowerCase())
+);
 
 export const metadata: Metadata = {
   title: "Mobile App, E-Commerce & Fintech Development Solutions | Hurain Technologies",
@@ -158,6 +167,37 @@ export default function SolutionsPage() {
                 <p className="text-sm text-gray-600">{item.description}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Geographic Availability Section */}
+      <section className="py-16 px-4 md:px-8 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">Markets We Serve</h2>
+          <p className="text-lg text-gray-600 mb-8 max-w-2xl">
+            Our solution verticals are available across {filteredCountries.length}+ countries. Click on any country to explore local expertise and city-specific availability.
+          </p>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 mb-8">
+            {filteredCountries.map((country) => (
+              <Link
+                key={country.slug}
+                href={`/${localeForCountrySlug(country.slug)}`}
+                className="p-3 bg-white rounded-lg border border-gray-200 hover:border-blue-600 hover:shadow-md transition-all text-center text-sm font-medium text-gray-900 hover:text-blue-600"
+              >
+                {country.countryName}
+              </Link>
+            ))}
+          </div>
+
+          <div className="text-center">
+            <Link
+              href="/markets-we-cover"
+              className="inline-block px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+            >
+              View All Markets →
+            </Link>
           </div>
         </div>
       </section>

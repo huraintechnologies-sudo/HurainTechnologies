@@ -11,7 +11,15 @@ import { JsonLd } from "@/components/JsonLd";
 import { itemListJsonLd } from "@/lib/jsonld";
 import { buildMetadata } from "@/lib/seo";
 import { siteConfig } from "@/lib/site-config";
+import { localeForCountrySlug } from "@/lib/locale";
 import { industries } from "@/data/industries";
+import { countries } from "@/data/countries";
+
+// Exclude Pakistan, Israel, China, Japan
+const excludedCountries = ["pakistan", "israel", "china", "japan"];
+const filteredCountries = countries.filter(
+  (c) => !excludedCountries.includes(c.slug.toLowerCase())
+);
 
 // Map each industry slug to a unique relevant image
 const industryImages: Record<string, { src: string; alt: string }> = {
@@ -119,6 +127,40 @@ export default function IndustriesPage() {
       <section className="py-16">
         <Container>
           <LiveDemos />
+        </Container>
+      </section>
+
+      {/* Geographic Availability Section */}
+      <section className="py-16 border-t border-border bg-surface">
+        <Container>
+          <SectionHeading
+            eyebrow="Global Reach"
+            title="Industries in {filteredCountries.length}+ Markets"
+          />
+          <p className="mt-4 max-w-2xl text-base text-muted mb-8">
+            Industry-specific engineering solutions available across our served markets. Select a country to explore local compliance context and city-specific expertise.
+          </p>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 mb-8">
+            {filteredCountries.map((country) => (
+              <Link
+                key={country.slug}
+                href={`/${localeForCountrySlug(country.slug)}`}
+                className="p-3 bg-background rounded-lg border border-border hover:border-primary hover:shadow-md transition-all text-center text-sm font-medium text-foreground hover:text-primary"
+              >
+                {country.countryName}
+              </Link>
+            ))}
+          </div>
+
+          <div className="text-center">
+            <Link
+              href="/markets-we-cover"
+              className="inline-block px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium"
+            >
+              View All Markets →
+            </Link>
+          </div>
         </Container>
       </section>
 
