@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import { Container } from "@/components/Container";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SectionHeading } from "@/components/SectionHeading";
@@ -13,6 +14,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { faqJsonLd } from "@/lib/jsonld";
 import { buildMetadata } from "@/lib/seo";
 import { industries, getIndustryBySlug } from "@/data/industries";
+import { getIndustryImage } from "@/lib/unsplash-service";
 
 export function generateStaticParams() {
   return industries.map((industry) => ({ slug: industry.slug }));
@@ -35,9 +37,27 @@ export default async function IndustryPage({ params }: { params: Promise<{ slug:
   const industry = getIndustryBySlug(slug);
   if (!industry) notFound();
 
+  // Fetch unique image for this industry
+  const industryImage = await getIndustryImage(industry.name);
+
   return (
     <>
       {industry.faqs && <JsonLd data={faqJsonLd(industry.faqs)} />}
+
+      {industryImage && (
+        <section className="border-b border-border">
+          <div className="relative h-64 sm:h-80 overflow-hidden">
+            <Image
+              src={industryImage.url}
+              alt={industryImage.alt}
+              fill
+              className="object-cover"
+              priority
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-transparent to-background" />
+          </div>
+        </section>
+      )}
 
       <section className="border-b border-border py-14">
         <Container>

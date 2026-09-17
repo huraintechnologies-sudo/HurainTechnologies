@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import { Container } from "@/components/Container";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SectionHeading } from "@/components/SectionHeading";
@@ -11,6 +12,7 @@ import { LiveDemos } from "@/components/LiveDemos";
 import { buildMetadata } from "@/lib/seo";
 import { caseStudyJsonLd } from "@/lib/jsonld";
 import { caseStudies, getCaseStudyBySlug } from "@/data/case-studies";
+import { getCaseStudyImage } from "@/lib/unsplash-service";
 
 export function generateStaticParams() {
   return caseStudies.map((cs) => ({ slug: cs.slug }));
@@ -34,6 +36,9 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
   const caseStudy = getCaseStudyBySlug(slug);
   if (!caseStudy) notFound();
 
+  // Fetch unique image for this case study
+  const caseStudyImage = await getCaseStudyImage(caseStudy.industry);
+
   return (
     <>
       <JsonLd data={caseStudyJsonLd(caseStudy)} />
@@ -54,7 +59,19 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
       <section className="pt-10">
         <Container className="max-w-4xl">
           <div className="overflow-hidden rounded-2xl border border-border">
-            <CoverBanner category={caseStudy.industry} size="lg" />
+            {caseStudyImage ? (
+              <div className="relative w-full h-96">
+                <Image
+                  src={caseStudyImage.url}
+                  alt={caseStudyImage.alt}
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              </div>
+            ) : (
+              <CoverBanner category={caseStudy.industry} size="lg" />
+            )}
           </div>
         </Container>
       </section>
