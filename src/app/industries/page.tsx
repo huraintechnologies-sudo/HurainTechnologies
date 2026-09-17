@@ -23,13 +23,25 @@ const filteredCountries = countries.filter(
 );
 
 // Generate unique Unsplash images for each industry based on keywords
-async function getIndustryImageUrl(name: string): Promise<{ src: string; alt: string }> {
-  const image = await getIndustryImage(name);
+async function getIndustryImageUrl(name: string, index: number): Promise<{ src: string; alt: string }> {
+  const image = await getIndustryImage(name, index);
   if (image) {
     return { src: image.url, alt: image.alt };
   }
-  // Fallback to static image if API fails
-  return { src: "/images/blog-cover.jpg", alt: `${name} software development platform` };
+  // Fallback to rotating static images if API fails
+  const fallbackImages = [
+    "/images/blockchain-hardware.jpg",
+    "/images/case-study-fintech.jpg",
+    "/images/payment-terminal.jpg",
+    "/images/api-developer.jpg",
+    "/images/why-choose-us.jpg",
+    "/images/global-map.jpg",
+    "/images/blog-cover.jpg",
+    "/images/blockchain-network.jpg",
+    "/images/hero-dashboard.jpg",
+  ];
+  const imageSrc = fallbackImages[index % fallbackImages.length];
+  return { src: imageSrc, alt: `${name} software development platform` };
 }
 
 export const metadata: Metadata = buildMetadata({
@@ -42,9 +54,9 @@ export const metadata: Metadata = buildMetadata({
 export default async function IndustriesPage() {
   // Fetch unique images for each industry
   const industryImagesMap = await Promise.all(
-    industries.map(async (industry) => ({
+    industries.map(async (industry, i) => ({
       slug: industry.slug,
-      image: await getIndustryImageUrl(industry.name),
+      image: await getIndustryImageUrl(industry.name, i),
     }))
   );
 
