@@ -74,7 +74,7 @@ export const services: ServiceContent[] = [
       { group: "Security", items: ["Slither", "MythX", "Manual audit coordination", "Multi-sig custody (Gnosis Safe)"] },
     ],
     complianceNote:
-      "We build technical controls that support your regulatory posture — audit trails, sanctions/AML screening hooks, travel-rule-ready data structures, and jurisdiction-aware token restrictions. We do not provide legal or licensing advice; we recommend pairing our engineering with qualified crypto-legal counsel in your target markets.",
+      "We build technical controls that support your regulatory posture — audit trails, sanctions/AML screening hooks, travel-rule-ready data structures, and jurisdiction-aware token restrictions. We do not provide legal or licensing advice; we recommend pairing our engineering with qualified crypto-legal counsel in your target markets. We engage only with legally registered, compliant businesses; if your platform requires a specific license (money transmitter, VASP, payment institution, etc.) in your jurisdiction, that registration is your responsibility and should be confirmed with qualified local counsel before launch.",
     proof:
       "A licensed exchange client needed a multi-chain wallet infrastructure supporting 40+ assets with automated cold/hot wallet rebalancing. Hurain Technologies delivered the custody engine and settlement layer in 14 weeks, processing over $120M in monthly transaction volume post-launch with zero security incidents.",
     techDeepDive: [
@@ -213,7 +213,7 @@ export const services: ServiceContent[] = [
       { group: "Infra", items: ["IPFS", "The Graph", "Chainlink", "Tenderly monitoring"] },
     ],
     complianceNote:
-      "Contracts are built with configurable access control and pausability so your compliance team can respond to regulatory requirements or incident response needs without a full redeploy.",
+      "Contracts are built with configurable access control and pausability so your compliance team can respond to regulatory requirements or incident response needs without a full redeploy. This is engineering support, not legal advice — token classification, securities treatment, and licensing questions should go through qualified legal counsel in each jurisdiction you operate in. We engage only with legally registered, compliant businesses; if your platform requires a specific license (money transmitter, VASP, payment institution, etc.) in your jurisdiction, that registration is your responsibility and should be confirmed with qualified local counsel before launch.",
     proof:
       "A DeFi lending protocol approached us after a competitor suffered a reentrancy exploit. We rebuilt their core lending contracts with formal test coverage above 95%, reduced average gas cost per transaction by 34%, and the protocol has processed over $60M in TVL without a security incident.",
     techDeepDive: [
@@ -317,7 +317,7 @@ export const services: ServiceContent[] = [
       { group: "Infra", items: ["Kubernetes", "PostgreSQL", "TimescaleDB", "AWS/GCP multi-region"] },
     ],
     complianceNote:
-      "We implement the technical controls exchanges are expected to demonstrate to regulators and banking partners — KYC/AML workflows, transaction monitoring, audit-ready logging, and travel-rule data structures — while you work with licensed counsel on jurisdiction-specific registration.",
+      "We implement the technical controls exchanges are expected to demonstrate to regulators and banking partners — KYC/AML workflows, transaction monitoring, audit-ready logging, and travel-rule data structures — while you work with licensed counsel on jurisdiction-specific registration. We engage only with legally registered, compliant businesses; if your platform requires a specific license (money transmitter, VASP, payment institution, etc.) in your jurisdiction, that registration is your responsibility and should be confirmed with qualified local counsel before launch.",
     proof:
       "A regional exchange operator needed to migrate off a legacy matching engine that was dropping orders during volatility spikes. Hurain Technologies re-platformed the core engine, cutting p99 order latency from 480ms to 38ms and enabling the exchange to list 25 new trading pairs within its first quarter post-migration.",
     techDeepDive: [
@@ -421,7 +421,7 @@ export const services: ServiceContent[] = [
       { group: "Security", items: ["PCI DSS-aligned architecture", "Tokenization", "3-D Secure 2"] },
     ],
     complianceNote:
-      "We architect for PCI DSS alignment, tokenize sensitive card data, and build audit-ready transaction logs. Licensing and merchant-of-record structuring should be validated with your payments counsel and acquiring bank.",
+      "We architect for PCI DSS alignment, tokenize sensitive card data, and build audit-ready transaction logs. Licensing and merchant-of-record structuring should be validated with your payments counsel and acquiring bank. We engage only with legally registered, compliant businesses; if your platform requires a specific license (money transmitter, VASP, payment institution, etc.) in your jurisdiction, that registration is your responsibility and should be confirmed with qualified local counsel before launch.",
     proof:
       "A cross-border marketplace needed to cut checkout failure rates across 12 markets. Hurain Technologies built a payment orchestration layer with smart PSP routing and automatic retries, reducing transaction failure rate from 9.2% to 2.1% and increasing reconciled settlement accuracy to 99.98%.",
     techDeepDive: [
@@ -525,7 +525,7 @@ export const services: ServiceContent[] = [
       { group: "Security", items: ["Mutual TLS", "API threat protection", "Rate limiting & quota management"] },
     ],
     complianceNote:
-      "We build consent, auth, and audit-logging patterns aligned to open banking and data-sharing regulatory expectations, and coordinate with your compliance and legal teams on jurisdiction-specific certification requirements.",
+      "We build consent, auth, and audit-logging patterns aligned to open banking and data-sharing regulatory expectations, and coordinate with your compliance and legal teams on jurisdiction-specific certification requirements. We engage only with legally registered, compliant businesses; if your platform requires a specific license (money transmitter, VASP, payment institution, etc.) in your jurisdiction, that registration is your responsibility and should be confirmed with qualified local counsel before launch.",
     proof:
       "A regional bank needed to launch an open banking API program to meet a regulatory deadline. Hurain Technologies delivered account information and payment initiation APIs on an Apigee gateway with a self-service developer portal, cutting fintech partner onboarding time from 6 weeks to 4 days.",
     techDeepDive: [
@@ -627,7 +627,7 @@ export const services: ServiceContent[] = [
       { group: "Observability", items: ["Prometheus", "Grafana", "OpenTelemetry", "ELK/Datadog"] },
     ],
     complianceNote:
-      "We build modernization roadmaps with zero-downtime migration patterns and rollback plans, and align infrastructure-as-code with your internal change-management and audit requirements.",
+      "We build modernization roadmaps with zero-downtime migration patterns and rollback plans, and align infrastructure-as-code with your internal change-management and audit requirements. We engage only with legally registered, compliant businesses; if your platform requires a specific license (money transmitter, VASP, payment institution, etc.) in your jurisdiction, that registration is your responsibility and should be confirmed with qualified local counsel before launch.",
     proof:
       "An enterprise fintech client was deploying once every three weeks due to monolith risk. Hurain Technologies decomposed the core platform into 14 microservices with a full CI/CD pipeline, taking them to multiple deployments per day while cutting cloud infrastructure cost by 28%.",
     techDeepDive: [
@@ -729,7 +729,7 @@ export const services: ServiceContent[] = [
       { group: "Automation", items: ["Workflow orchestration engines", "RPA tooling", "Case management systems"] },
     ],
     complianceNote:
-      "Models and rules are built with explainability and audit logging so investigation teams and regulators can trace every flagged decision back to its contributing factors.",
+      "Models and rules are built with explainability and audit logging so investigation teams and regulators can trace every flagged decision back to its contributing factors. We engage only with legally registered, compliant businesses; if your platform requires a specific license (money transmitter, VASP, payment institution, etc.) in your jurisdiction, that registration is your responsibility and should be confirmed with qualified local counsel before launch.",
     proof:
       "A payments platform was losing 1.8% of transaction volume to fraud with a legacy rules engine generating an 11% false-positive rate. Hurain Technologies deployed a hybrid ML/rules risk engine, cutting fraud losses by 62% while reducing false positives to 3.4%, freeing the review team to focus on genuine risk.",
     techDeepDive: [
@@ -832,7 +832,7 @@ export const services: ServiceContent[] = [
       { group: "Monitoring", items: ["SIEM integration", "Audit logging", "Real-time alerting"] },
     ],
     complianceNote:
-      "We build the technical controls — logging, screening, access management, and reporting — that regulators, banking partners, and auditors expect, while you work with licensed compliance counsel on jurisdiction-specific requirements. This is engineering support, not legal advice.",
+      "We build the technical controls — logging, screening, access management, and reporting — that regulators, banking partners, and auditors expect, while you work with licensed compliance counsel on jurisdiction-specific requirements. This is engineering support, not legal advice. We engage only with legally registered, compliant businesses; if your platform requires a specific license (money transmitter, VASP, payment institution, etc.) in your jurisdiction, that registration is your responsibility and should be confirmed with qualified local counsel before launch.",
     proof:
       "A fintech preparing for a banking partnership audit needed to close security gaps within eight weeks. Hurain Technologies ran a full architecture and API security review, remediated 34 findings, and implemented audit-ready logging — the client passed their banking partner's security review on the first submission.",
     techDeepDive: [
@@ -935,7 +935,7 @@ export const services: ServiceContent[] = [
       { group: "Backend", items: ["Node.js", "Go", "PostgreSQL", "Kafka"] },
       { group: "Security", items: ["AML screening", "Sanctions lists", "On-chain monitoring"] },
     ],
-    complianceNote: "We implement AML screening and build settlement logic you control — custodial, non-custodial, or hybrid based on your licensing model.",
+    complianceNote: "We implement AML screening and build settlement logic you control — custodial, non-custodial, or hybrid based on your licensing model. Accepting or facilitating crypto/stablecoin payments carries jurisdiction-specific licensing requirements (for example, money transmitter or VASP registration) that vary significantly by country and change frequently. This is engineering support, not legal or licensing advice — confirm your specific obligations with qualified counsel in every market you operate in before going live. We engage only with legally registered, compliant businesses; if your platform requires a specific license (money transmitter, VASP, payment institution, etc.) in your jurisdiction, that registration is your responsibility and should be confirmed with qualified local counsel before launch.",
     proof: "A remittance platform needed to launch in 5 markets with crypto rails. Hurain Technologies delivered a multi-chain payment gateway in 10 weeks, now processing $8M+ monthly with 99.98% uptime.",
     techDeepDive: [
       "Chain and node connectivity is the foundation layer: we run and monitor node infrastructure across each supported chain, with fallback providers so a single node outage doesn't take down payment acceptance. On top of that sits a unified settlement layer that normalizes transactions from every chain into a single internal ledger format, which is what actually makes multi-chain reconciliation manageable instead of a per-chain spreadsheet exercise.",
@@ -1036,7 +1036,7 @@ export const services: ServiceContent[] = [
       { group: "Compliance", items: ["SOC 2 controls", "ISO 27001 alignment", "Audit logging"] },
       { group: "Monitoring", items: ["Real-time alerting", "Anomaly detection", "Incident response"] },
     ],
-    complianceNote: "We design toward SOC 2 and ISO 27001-aligned controls that institutional partners and insurers expect.",
+    complianceNote: "We design toward SOC 2 and ISO 27001-aligned controls that institutional partners and insurers expect. Custody of digital assets is a regulated activity in most jurisdictions (licensing, capital, and reporting requirements vary by country and change frequently). This is engineering support, not legal advice — confirm your specific custody-licensing obligations with qualified counsel before handling client funds. We engage only with legally registered, compliant businesses; if your platform requires a specific license (money transmitter, VASP, payment institution, etc.) in your jurisdiction, that registration is your responsibility and should be confirmed with qualified local counsel before launch.",
     proof: "A licensed exchange client needed institutional-grade custody for $500M+ AUM. Hurain Technologies delivered a 3-of-5 MPC setup across geographically distributed HSMs with SOC 2 audit readiness in 16 weeks.",
     techDeepDive: [
       "A typical deployment splits signing authority across a threshold scheme — for example, 3-of-5 — where key shares are held by geographically and organizationally distributed parties, so no single data center outage, insider, or regional compromise can either block legitimate signing or enable unauthorized signing. HSMs (hardware security modules) provide an additional hardware-backed layer protecting each individual share, so even a compromised server doesn't directly expose the share it holds.",
@@ -1137,7 +1137,7 @@ export const services: ServiceContent[] = [
       { group: "Chains", items: ["Bitcoin", "Ethereum", "EVM chains", "Solana", "Tron"] },
       { group: "Features", items: ["WalletConnect", "dApp browser", "Swap aggregation", "Staking"] },
     ],
-    complianceNote: "We design for the compliance model you've chosen — custodial, non-custodial, or hybrid — with proper key management and audit logging built in from day one.",
+    complianceNote: "We design for the compliance model you've chosen — custodial, non-custodial, or hybrid — with proper key management and audit logging built in from day one. Custodial wallet operators typically fall under money-transmitter or virtual-asset-service-provider licensing in most jurisdictions. This is engineering support, not legal advice — confirm your specific licensing obligations with qualified counsel before launch. We engage only with legally registered, compliant businesses; if your platform requires a specific license (money transmitter, VASP, payment institution, etc.) in your jurisdiction, that registration is your responsibility and should be confirmed with qualified local counsel before launch.",
     proof: "An exchange needed a branded mobile wallet for their users. Hurain Technologies delivered a multi-chain, non-custodial iOS/Android wallet with biometric security and dApp browser in 14 weeks.",
     techDeepDive: [
       "For non-custodial wallets, key material is generated and stored using the device's secure enclave or Trusted Execution Environment (TEE) — hardware-isolated storage that even the operating system can't directly read — with biometric authentication gating access to signing operations. This means a compromised app process alone can't extract the key; an attacker would need to compromise the secure hardware itself, a meaningfully higher bar.",
@@ -1240,7 +1240,7 @@ export const services: ServiceContent[] = [
       { group: "Testing", items: ["Fuzz testing", "Formal verification", "Testnet simulation"] },
       { group: "Chains", items: ["Ethereum", "BNB Chain", "Polygon", "Solana", "Arbitrum", "Base"] },
     ],
-    complianceNote: "DeFi regulatory treatment varies by jurisdiction. We build the technical infrastructure while you work with legal counsel on governance and token structure.",
+    complianceNote: "DeFi regulatory treatment varies by jurisdiction. We build the technical infrastructure while you work with legal counsel on governance and token structure. We engage only with legally registered, compliant businesses; if your platform requires a specific license (money transmitter, VASP, payment institution, etc.) in your jurisdiction, that registration is your responsibility and should be confirmed with qualified local counsel before launch.",
     proof: "A DeFi lending protocol needed to defend against flash-loan attacks. Hurain Technologies rebuilt the core logic with reentrancy guards and rate limiting, processing $200M+ TVL without a single exploit.",
     techDeepDive: [
       "Flash-loan attacks work by borrowing a large, uncollateralized sum within a single transaction, using it to temporarily distort a price feed or pool ratio, exploiting that distortion, and repaying the loan before the transaction ends — all in one atomic operation invisible to anyone until after it's already happened. Defending against this means never trusting a single-block price snapshot for anything consequential: we use time-weighted average pricing and multi-source oracle aggregation specifically so a single-transaction manipulation can't move the price the protocol actually relies on.",
@@ -1343,7 +1343,7 @@ export const services: ServiceContent[] = [
       { group: "Rules Engine", items: ["Jurisdiction-aware logic", "Transaction limits", "Reporting workflows"] },
       { group: "Monitoring", items: ["Real-time alerts", "Case management", "Dashboard reporting"] },
     ],
-    complianceNote: "We build the technology layer; licensing and legal strategy should sit with qualified counsel in your target jurisdiction. This is engineering support, not legal advice.",
+    complianceNote: "We build the technology layer; licensing and legal strategy should sit with qualified counsel in your target jurisdiction. This is engineering support, not legal advice. We engage only with legally registered, compliant businesses; if your platform requires a specific license (money transmitter, VASP, payment institution, etc.) in your jurisdiction, that registration is your responsibility and should be confirmed with qualified local counsel before launch.",
     proof: "A startup needed to launch an exchange across 4 regulatory jurisdictions. Hurain Technologies built a jurisdiction-aware compliance layer with Travel Rule messaging in 12 weeks, enabling their licensing application.",
     process: [
       { title: "Regulatory mapping", description: "Identify requirements for each target market." },

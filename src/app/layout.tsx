@@ -92,10 +92,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`} suppressHydrationWarning>
       <body className="min-h-full flex flex-col bg-grid" suppressHydrationWarning>
-        {/* Google tag (gtag.js) — loaded via next/script so it doesn't block
-            first paint; fires on every route since it lives in the root layout. */}
-        <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} strategy="afterInteractive" />
-        <Script id="google-analytics" strategy="afterInteractive">
+        {/* Google tag (gtag.js) — strategy="beforeInteractive" is what makes
+            Next.js hoist this into the actual <head> of the document (the
+            default "afterInteractive" just renders wherever the JSX sits,
+            which was inside <body> here — Google's Search Console GA-based
+            ownership check specifically requires the snippet inside <head>,
+            and failed against the old placement). Fires on every route since
+            it lives in the root layout. */}
+        <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} strategy="beforeInteractive" />
+        <Script id="google-analytics" strategy="beforeInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}

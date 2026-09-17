@@ -11,7 +11,7 @@ export const metadata: Metadata = buildMetadata({
   path: "/terms-of-service",
 });
 
-const lastUpdated = "September 1, 2026";
+const lastUpdated = "September 18, 2026";
 
 export default function TermsOfServicePage() {
   return (
@@ -44,6 +44,14 @@ export default function TermsOfServicePage() {
               Descriptions of services on this Site are informational and do not constitute a binding offer. Scope,
               timelines, deliverables, and fees for any engagement are defined in a separate written agreement
               between {siteConfig.name} and the client.
+            </p>
+            <p className="mt-3">
+              {siteConfig.name} engages only with legally registered business entities operating in compliance with
+              applicable law in their jurisdiction. We do not provide engineering services to unregistered
+              businesses, or to any platform intended to facilitate activity that is unlicensed or unlawful in its
+              operating jurisdiction. Clients are responsible for obtaining and maintaining any licenses,
+              registrations, or regulatory approvals required for their business before engaging our services, and
+              for providing accurate registration details on request.
             </p>
           </div>
 
@@ -104,8 +112,8 @@ export default function TermsOfServicePage() {
           <div>
             <h2 className="text-lg font-semibold text-foreground">9. Governing Law</h2>
             <p className="mt-3">
-              These Terms are governed by the laws of the United Arab Emirates, without regard to conflict-of-law
-              principles, unless otherwise specified in a signed services agreement.
+              These Terms are governed by the laws of India, without regard to conflict-of-law principles, unless
+              otherwise specified in a signed services agreement.
             </p>
           </div>
 
