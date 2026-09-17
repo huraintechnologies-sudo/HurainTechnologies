@@ -14,9 +14,9 @@ import { CtaSection } from "@/components/CtaSection";
 import { JsonLd } from "@/components/JsonLd";
 import { Icon } from "@/components/Icon";
 import {
-  strongestSolutionCountryJsonLd,
   breadcrumbJsonLd
 } from "@/lib/jsonld-enhanced";
+import { ultraStrongOrganizationJsonLd, ultraStrongSolutionJsonLd } from "@/lib/jsonld-ultra-strong";
 import { getSolutionPageSchemas } from "@/lib/jsonld-universal";
 import { buildSolutionPageKeywords } from "@/lib/keywords-builder";
 
@@ -79,13 +79,12 @@ export default async function SolutionCountryPage({ params }: Props) {
   return (
     <>
       <JsonLd
-        data={getSolutionPageSchemas(
-          strongestSolutionCountryJsonLd(
-            { name: vertical.name, slug: vertical.slug, keywords: buildSolutionPageKeywords(vertical.name, countryData.countryName).split(", ") },
-            countryData
-          ),
-          breadcrumbJsonLd(breadcrumbItems)
-        )}
+        data={[
+          ultraStrongOrganizationJsonLd(),
+          { "@type": "WebSite", "@id": `${siteConfig.url}/#website`, name: siteConfig.name, url: siteConfig.url },
+          ultraStrongSolutionJsonLd(vertical.name, countryData.countryName),
+          breadcrumbJsonLd(breadcrumbItems),
+        ]}
       />
 
       {/* Hero Section with Image */}

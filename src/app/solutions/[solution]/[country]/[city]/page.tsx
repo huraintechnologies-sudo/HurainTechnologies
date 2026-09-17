@@ -7,8 +7,8 @@ import { siteConfig } from "@/lib/site-config";
 import { localeForCountrySlug } from "@/lib/locale";
 import { getCityMarketContent } from "@/lib/solution-city-content";
 import { JsonLd } from "@/components/JsonLd";
-import { strongestSolutionCityJsonLd, breadcrumbJsonLd } from "@/lib/jsonld-enhanced";
-import { getCityPageSchemas } from "@/lib/jsonld-universal";
+import { breadcrumbJsonLd } from "@/lib/jsonld-enhanced";
+import { ultraStrongOrganizationJsonLd, ultraStrongSolutionJsonLd } from "@/lib/jsonld-ultra-strong";
 import { buildSolutionCityPageKeywords } from "@/lib/keywords-builder";
 import Link from "next/link";
 
@@ -84,19 +84,12 @@ export default async function SolutionCityPage({ params }: Props) {
     <div className="min-h-screen bg-white">
       {/* JSON-LD Structured Data - STRONGEST schemas for Google ranking */}
       <JsonLd
-        data={getCityPageSchemas(
-          strongestSolutionCityJsonLd(
-            {
-              name: vertical.name,
-              slug: vertical.slug,
-              keywords: buildSolutionCityPageKeywords(vertical.name, cityData.cityName, countryData.countryName).split(", ")
-            },
-            cityData.cityName,
-            countryData.countryName,
-            { lat: cityData.coordinates?.lat || 0, lng: cityData.coordinates?.lng || 0 }
-          ),
-          breadcrumbJsonLd(breadcrumbItems)
-        )}
+        data={[
+          ultraStrongOrganizationJsonLd(),
+          { "@type": "WebSite", "@id": `${siteConfig.url}/#website`, name: siteConfig.name, url: siteConfig.url },
+          ultraStrongSolutionJsonLd(vertical.name, countryData.countryName, cityData.cityName),
+          breadcrumbJsonLd(breadcrumbItems),
+        ]}
       />
 
       {/* Hero Section */}
