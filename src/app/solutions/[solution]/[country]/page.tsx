@@ -11,6 +11,8 @@ import { CityLinksGrid } from "@/components/CityLinksGrid";
 import { Container } from "@/components/Container";
 import { SectionHeading } from "@/components/SectionHeading";
 import { CtaSection } from "@/components/CtaSection";
+import { JsonLd } from "@/components/JsonLd";
+import { strongestSolutionCountryJsonLd, breadcrumbJsonLd } from "@/lib/jsonld-enhanced";
 import Link from "next/link";
 
 interface Props {
@@ -209,8 +211,30 @@ export default async function SolutionCountryPageRedesign({ params }: Props) {
 
   if (!vertical || !countryData) return notFound();
 
+  // Breadcrumb items for schema
+  const breadcrumbItems = [
+    { name: "Solutions", url: `${siteConfig.url}/solutions` },
+    { name: vertical.name, url: `${siteConfig.url}/solutions/${vertical.slug}` },
+    { name: countryData.countryName, url: `${siteConfig.url}/solutions/${vertical.slug}/${country}` },
+  ];
+
   return (
     <div className="min-h-screen bg-white">
+      {/* JSON-LD Structured Data - STRONGEST schemas for Google ranking */}
+      <JsonLd
+        data={[
+          strongestSolutionCountryJsonLd(
+            {
+              name: vertical.name,
+              slug: vertical.slug,
+              keywords: vertical.keywords || []
+            },
+            countryData
+          ),
+          breadcrumbJsonLd(breadcrumbItems),
+        ]}
+      />
+
       {/* Hero */}
       <HeroSection vertical={vertical} country={countryData} />
 

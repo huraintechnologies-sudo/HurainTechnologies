@@ -6,6 +6,8 @@ import { cities } from "@/data/cities";
 import { siteConfig } from "@/lib/site-config";
 import { localeForCountrySlug } from "@/lib/locale";
 import { getCityMarketContent } from "@/lib/solution-city-content";
+import { JsonLd } from "@/components/JsonLd";
+import { strongestSolutionCityJsonLd, breadcrumbJsonLd } from "@/lib/jsonld-enhanced";
 import Link from "next/link";
 
 interface Props {
@@ -68,8 +70,33 @@ export default async function SolutionCityPage({ params }: Props) {
 
   const content = getCityMarketContent(cityData.cityName, countryData.countryName, vertical.name);
 
+  // Breadcrumb items for schema
+  const breadcrumbItems = [
+    { name: "Solutions", url: `${siteConfig.url}/solutions` },
+    { name: vertical.name, url: `${siteConfig.url}/solutions/${vertical.slug}` },
+    { name: countryData.countryName, url: `${siteConfig.url}/solutions/${vertical.slug}/${country}` },
+    { name: cityData.cityName, url: `${siteConfig.url}/solutions/${vertical.slug}/${country}/${city}` },
+  ];
+
   return (
     <div className="min-h-screen bg-white">
+      {/* JSON-LD Structured Data - STRONGEST schemas for Google ranking */}
+      <JsonLd
+        data={[
+          strongestSolutionCityJsonLd(
+            {
+              name: vertical.name,
+              slug: vertical.slug,
+              keywords: vertical.keywords || []
+            },
+            cityData.cityName,
+            countryData.countryName,
+            { lat: cityData.coordinates?.lat || 0, lng: cityData.coordinates?.lng || 0 }
+          ),
+          breadcrumbJsonLd(breadcrumbItems),
+        ]}
+      />
+
       {/* Hero Section */}
       <section className="py-16 px-4 md:px-8 bg-gradient-to-br from-blue-50 to-indigo-50">
         <div className="max-w-4xl mx-auto">
