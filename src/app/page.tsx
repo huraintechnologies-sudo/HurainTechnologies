@@ -67,13 +67,27 @@ const homeFaqs = [
 
 export default async function HomePage() {
   // Fetch unique images for case studies and blog posts with index variation
-  const caseStudyImages = await Promise.all(
-    caseStudies.map((cs, i) => getCaseStudyImage(cs.industry, i))
-  );
+  // Wrap in try-catch to prevent page crashes if API fails
+  let caseStudyImages: any[] = [];
+  let blogPostImages: any[] = [];
 
-  const blogPostImages = await Promise.all(
-    blogPosts.map((post, i) => getBlogPostImage(post.title, i))
-  );
+  try {
+    caseStudyImages = await Promise.all(
+      caseStudies.map((cs, i) => getCaseStudyImage(cs.industry, i).catch(() => null))
+    );
+  } catch (error) {
+    console.warn('Failed to fetch case study images:', error);
+    caseStudyImages = Array(caseStudies.length).fill(null);
+  }
+
+  try {
+    blogPostImages = await Promise.all(
+      blogPosts.map((post, i) => getBlogPostImage(post.title, i).catch(() => null))
+    );
+  } catch (error) {
+    console.warn('Failed to fetch blog post images:', error);
+    blogPostImages = Array(blogPosts.length).fill(null);
+  }
 
   return (
     <>

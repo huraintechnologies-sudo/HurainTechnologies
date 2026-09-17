@@ -52,13 +52,40 @@ export const metadata: Metadata = buildMetadata({
 });
 
 export default async function IndustriesPage() {
-  // Fetch unique images for each industry
-  const industryImagesMap = await Promise.all(
-    industries.map(async (industry, i) => ({
-      slug: industry.slug,
-      image: await getIndustryImageUrl(industry.name, i),
-    }))
-  );
+  // Fetch unique images for each industry with error handling
+  let industryImagesMap: any[] = [];
+
+  try {
+    industryImagesMap = await Promise.all(
+      industries.map(async (industry, i) => ({
+        slug: industry.slug,
+        image: await getIndustryImageUrl(industry.name, i).catch(() => ({
+          src: "/images/blog-cover.jpg",
+          alt: `${industry.name} software development`
+        })),
+      }))
+    );
+  } catch (error) {
+    console.warn('Failed to fetch industry images:', error);
+    // Fallback: create map with fallback images
+    industryImagesMap = industries.map((industry, i) => {
+      const fallbackImages = [
+        "/images/blockchain-hardware.jpg",
+        "/images/case-study-fintech.jpg",
+        "/images/payment-terminal.jpg",
+        "/images/api-developer.jpg",
+        "/images/why-choose-us.jpg",
+        "/images/global-map.jpg",
+        "/images/blog-cover.jpg",
+        "/images/blockchain-network.jpg",
+        "/images/hero-dashboard.jpg",
+      ];
+      return {
+        slug: industry.slug,
+        image: { src: fallbackImages[i % fallbackImages.length], alt: `${industry.name}` }
+      };
+    });
+  }
 
   const imagesBySlug = Object.fromEntries(
     industryImagesMap.map((item) => [item.slug, item.image])
