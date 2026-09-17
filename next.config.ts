@@ -8,6 +8,9 @@ const nextConfig: NextConfig = {
   // Performance: Compression and minification
   compress: true,
   productionBrowserSourceMaps: false,
+  swcMinify: true,
+  poweredByHeader: false,
+  generateEtags: true,
 
   // Image optimization for <3s load
   images: {

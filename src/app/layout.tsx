@@ -69,6 +69,11 @@ export const metadata: Metadata = {
       "max-video-preview": -1,
     },
   },
+  // Performance optimization hints
+  other: {
+    "dns-prefetch": "//cdn.jsdelivr.net,//cdnjs.cloudflare.com,//fonts.googleapis.com",
+    "preconnect": "//cdn.jsdelivr.net,//fonts.googleapis.com,//fonts.gstatic.com",
+  },
 };
 
 export const viewport: Viewport = {
