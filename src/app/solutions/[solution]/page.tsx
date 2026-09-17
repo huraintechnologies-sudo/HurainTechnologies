@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import { serviceVerticals } from "@/data/service-verticals";
 import { siteConfig } from "@/lib/site-config";
+import { CountryLinksGrid } from "@/components/CountryLinksGrid";
 import Link from "next/link";
 import { getServiceImage } from "@/lib/unsplash-service";
 
@@ -362,27 +363,7 @@ export default async function SolutionVerticalPage({ params }: Props) {
             We provide {vertical.name.toLowerCase()} development services to businesses worldwide. Explore our services by location:
           </p>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {[
-              { name: "United Kingdom", slug: "united-kingdom" },
-              { name: "United States", slug: "united-states" },
-              { name: "United Arab Emirates", slug: "united-arab-emirates" },
-              { name: "India", slug: "india" },
-              { name: "Germany", slug: "germany" },
-              { name: "Canada", slug: "canada" },
-              { name: "Australia", slug: "australia" },
-              { name: "Singapore", slug: "singapore" },
-              { name: "Mexico", slug: "mexico" },
-            ].map((country) => (
-              <Link
-                key={country.slug}
-                href={`/solutions/${vertical.slug}/${country.slug}`}
-                className="p-4 bg-white rounded-lg border border-blue-200 hover:border-blue-600 hover:shadow-lg transition-all text-center font-medium text-blue-600 hover:text-blue-800"
-              >
-                {country.name}
-              </Link>
-            ))}
-          </div>
+          <CountryLinksGrid basePath={`/solutions/${vertical.slug}`} />
         </div>
       </section>
 

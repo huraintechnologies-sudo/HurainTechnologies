@@ -36,12 +36,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export const revalidate = 3600; // ISR: revalidate every hour
+export const dynamicParams = true; // Enable on-demand ISR for ALL country combinations
 
 export async function generateStaticParams() {
-  // Limit pre-rendering to top 2 solutions × 10 top countries (~20 pages)
-  // Rest use on-demand ISR (Vercel will cache on first visit)
-  const topVerticals = serviceVerticals.slice(0, 2);
-  const topCountries = countries.slice(0, 10);
+  // Pre-render popular combinations only (Vercel handles the rest via ISR)
+  // Top 5 solutions × Top 20 countries = 100 pre-rendered pages
+  // ALL other combinations (5000+ pages) generated on-demand via ISR
+  const topVerticals = serviceVerticals.slice(0, 5);
+  const topCountries = countries.slice(0, 20);
   return topVerticals.flatMap((vertical) =>
     topCountries.map((country) => ({
       solution: vertical.slug,

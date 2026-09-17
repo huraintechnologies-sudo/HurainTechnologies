@@ -40,13 +40,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export const revalidate = 3600; // ISR: revalidate every hour
-export const dynamicParams = true; // Enable on-demand ISR for other cities
+export const dynamicParams = true; // Enable on-demand ISR for ALL city combinations
 
 export async function generateStaticParams() {
-  // Only build top solution × top 3 cities (~3 pages for fast local builds)
-  // Rest use on-demand ISR (Vercel will cache on first visit)
-  const topVerticals = serviceVerticals.slice(0, 1);
-  const topCities = cities.slice(0, 3);
+  // Pre-render popular combinations only (Vercel handles the rest via ISR)
+  // Top 3 solutions × Top 10 cities = 30 pre-rendered pages
+  // ALL other combinations (1000+ pages) generated on-demand via ISR
+  const topVerticals = serviceVerticals.slice(0, 3);
+  const topCities = cities.slice(0, 10);
   return topVerticals.flatMap((vertical) =>
     topCities.map((city) => ({
       solution: vertical.slug,

@@ -3,9 +3,15 @@ import { Icon } from "@/components/Icon";
 import { countries } from "@/data/countries";
 
 export function CountryLinksGrid({ basePath }: { basePath: string }) {
+  // Exclude certain countries per business requirements
+  const excludedCountries = ["pakistan", "israel", "china", "japan"];
+  const filteredCountries = countries.filter(
+    (c) => !excludedCountries.includes(c.slug.toLowerCase())
+  );
+
   return (
     <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-4">
-      {countries.map((country) => (
+      {filteredCountries.map((country) => (
         <Link
           key={country.slug}
           href={`${basePath}/${country.slug}`}
