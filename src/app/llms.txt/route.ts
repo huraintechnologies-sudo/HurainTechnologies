@@ -13,6 +13,15 @@ function section(title: string, body: string) {
 }
 
 export function GET() {
+  // Exclude Pakistan, Israel, China, Japan
+  const excludedCountries = ["pakistan", "israel", "china", "japan"];
+  const filteredCountries = countries.filter(
+    (c) => !excludedCountries.includes(c.slug.toLowerCase())
+  );
+  const filteredCities = cities.filter(
+    (c) => !excludedCountries.includes(c.countrySlug.toLowerCase())
+  );
+
   const allKeywords = Array.from(new Set(services.flatMap((s) => s.keywords))).join("; ");
   const allTechStack = Array.from(
     new Set(services.flatMap((s) => s.techStack.flatMap((g) => g.items)))
@@ -28,11 +37,11 @@ export function GET() {
     (i) => `- [${i.name}](${siteConfig.url}/industries/${i.slug}): ${i.summary}`
   );
 
-  const countryLines = countries.map(
+  const countryLines = filteredCountries.map(
     (c) => `- [${c.countryName}](${siteConfig.url}/${localeForCountrySlug(c.slug)}): ${c.metaDescription}`
   );
 
-  const cityLines = cities.map(
+  const cityLines = filteredCities.map(
     (c) => `- [${c.cityName}](${siteConfig.url}/${localeForCountrySlug(c.countrySlug)}/${c.slug}): ${c.metaDescription}`
   );
 

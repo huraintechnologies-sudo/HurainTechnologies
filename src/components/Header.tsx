@@ -171,6 +171,12 @@ export function Header() {
                   >
                     Careers
                   </Link>
+                  <Link
+                    href="/markets-we-cover"
+                    className="rounded-lg px-3 py-2.5 text-sm text-foreground/85 hover:bg-surface-2 hover:text-primary transition-colors"
+                  >
+                    Markets We Cover
+                  </Link>
                   <div className="border-t border-border/50 my-1" />
                   <Link
                     href="/contact"

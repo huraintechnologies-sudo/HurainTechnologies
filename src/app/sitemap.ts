@@ -12,6 +12,15 @@ import { localeForCountrySlug } from "@/lib/locale";
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 
+  // Exclude Pakistan, Israel, China, Japan
+  const excludedCountries = ["pakistan", "israel", "china", "japan"];
+  const filteredCountries = countries.filter(
+    (c) => !excludedCountries.includes(c.slug.toLowerCase())
+  );
+  const filteredCities = cities.filter(
+    (c) => !excludedCountries.includes(c.countrySlug.toLowerCase())
+  );
+
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: `${siteConfig.url}/`, lastModified: now, changeFrequency: "weekly", priority: 1 },
     { url: `${siteConfig.url}/about`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
@@ -23,6 +32,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${siteConfig.url}/careers`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
     { url: `${siteConfig.url}/contact`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${siteConfig.url}/locations`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${siteConfig.url}/markets-we-cover`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${siteConfig.url}/privacy-policy`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
     { url: `${siteConfig.url}/terms-of-service`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
   ];
@@ -55,14 +65,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  const countryRoutes: MetadataRoute.Sitemap = countries.map((country) => ({
+  const countryRoutes: MetadataRoute.Sitemap = filteredCountries.map((country) => ({
     url: `${siteConfig.url}/${localeForCountrySlug(country.slug)}`,
     lastModified: now,
     changeFrequency: "monthly",
     priority: 0.7,
   }));
 
-  const cityRoutes: MetadataRoute.Sitemap = cities.map((city) => ({
+  const cityRoutes: MetadataRoute.Sitemap = filteredCities.map((city) => ({
     url: `${siteConfig.url}/${localeForCountrySlug(city.countrySlug)}/${city.slug}`,
     lastModified: now,
     changeFrequency: "monthly",
@@ -70,7 +80,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   const serviceCountryRoutes: MetadataRoute.Sitemap = services.flatMap((service) =>
-    countries.map((country) => ({
+    filteredCountries.map((country) => ({
       url: `${siteConfig.url}/services/${service.slug}/${country.slug}`,
       lastModified: now,
       changeFrequency: "monthly" as const,
@@ -79,7 +89,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   );
 
   const serviceCountryCityRoutes: MetadataRoute.Sitemap = services.flatMap((service) =>
-    cities.map((city) => ({
+    filteredCities.map((city) => ({
       url: `${siteConfig.url}/services/${service.slug}/${city.countrySlug}/${city.slug}`,
       lastModified: now,
       changeFrequency: "monthly" as const,
@@ -88,7 +98,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   );
 
   const industryCountryRoutes: MetadataRoute.Sitemap = industries.flatMap((industry) =>
-    countries.map((country) => ({
+    filteredCountries.map((country) => ({
       url: `${siteConfig.url}/industries/${industry.slug}/${country.slug}`,
       lastModified: now,
       changeFrequency: "monthly" as const,
@@ -106,7 +116,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Solution + Country Routes (NEW)
   const solutionCountryRoutes: MetadataRoute.Sitemap = serviceVerticals.flatMap((vertical) =>
-    countries.map((country) => ({
+    filteredCountries.map((country) => ({
       url: `${siteConfig.url}/solutions/${vertical.slug}/${country.slug}`,
       lastModified: now,
       changeFrequency: "monthly" as const,
@@ -116,7 +126,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Solution + Country + City Routes (NEW)
   const solutionCountryCityRoutes: MetadataRoute.Sitemap = serviceVerticals.flatMap((vertical) =>
-    cities.map((city) => ({
+    filteredCities.map((city) => ({
       url: `${siteConfig.url}/solutions/${vertical.slug}/${city.countrySlug}/${city.slug}`,
       lastModified: now,
       changeFrequency: "monthly" as const,
