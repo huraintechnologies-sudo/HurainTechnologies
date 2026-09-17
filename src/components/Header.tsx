@@ -17,6 +17,13 @@ export function Header() {
   const [industriesOpen, setIndustriesOpen] = useState(false);
   const [companyOpen, setCompanyOpen] = useState(false);
 
+  // Mobile menu uses its own accordion state — separate from the desktop
+  // hover-driven dropdowns above, which don't apply on touch devices.
+  const [mobileSection, setMobileSection] = useState<"services" | "solutions" | "industries" | "company" | null>(null);
+  const toggleMobileSection = (section: "services" | "solutions" | "industries" | "company") => {
+    setMobileSection((current) => (current === section ? null : section));
+  };
+
   return (
     <header className="sticky top-0 z-50 border-b border-border/80 bg-background/85 backdrop-blur">
       {/* Top Badge */}
@@ -212,7 +219,10 @@ export function Header() {
 
         <button
           className="lg:hidden p-2 text-foreground"
-          onClick={() => setMobileOpen((v) => !v)}
+          onClick={() => {
+            setMobileOpen((v) => !v);
+            setMobileSection(null);
+          }}
           aria-label="Toggle menu"
         >
           <Icon name={mobileOpen ? "close" : "menu"} className="w-6 h-6" />
@@ -220,112 +230,172 @@ export function Header() {
       </Container>
 
       {mobileOpen && (
-        <div className="lg:hidden border-t border-border bg-background">
-          <Container className="py-4 flex flex-col gap-2">
-            {/* Mobile Services */}
-            <div>
-              <Link
-                href="/services"
-                onClick={() => setMobileOpen(false)}
-                className="px-2 py-2.5 text-sm font-medium text-foreground/85 hover:text-primary"
+        <div className="lg:hidden border-t border-border bg-background max-h-[calc(100dvh-8rem)] overflow-y-auto">
+          <Container className="py-4 flex flex-col gap-1">
+            {/* Mobile Services (accordion) */}
+            <div className="border-b border-border/30 pb-1">
+              <button
+                type="button"
+                onClick={() => toggleMobileSection("services")}
+                aria-expanded={mobileSection === "services"}
+                className="w-full flex items-center justify-between px-2 py-2.5 text-sm font-medium text-foreground/85 hover:text-primary"
               >
                 Services
-              </Link>
-              <div className="ml-4 flex flex-col gap-1 mt-1">
-                {services.slice(0, 6).map((service) => (
+                <Icon
+                  name="chevron"
+                  className={`w-4 h-4 transition-transform ${mobileSection === "services" ? "rotate-180" : ""}`}
+                />
+              </button>
+              {mobileSection === "services" && (
+                <div className="ml-4 flex flex-col gap-1 mt-1 pb-2">
+                  {services.map((service) => (
+                    <Link
+                      key={service.slug}
+                      href={`/services/${service.slug}`}
+                      onClick={() => setMobileOpen(false)}
+                      className="px-2 py-2 text-sm text-foreground/70 hover:text-primary"
+                    >
+                      {service.navLabel}
+                    </Link>
+                  ))}
                   <Link
-                    key={service.slug}
-                    href={`/services/${service.slug}`}
+                    href="/services"
                     onClick={() => setMobileOpen(false)}
-                    className="px-2 py-1.5 text-xs text-foreground/70 hover:text-primary"
+                    className="px-2 py-2 text-sm font-medium text-primary"
                   >
-                    {service.navLabel}
+                    View all services →
                   </Link>
-                ))}
-              </div>
+                </div>
+              )}
             </div>
 
-            {/* Mobile Solutions */}
-            <div>
-              <Link
-                href="/solutions"
-                onClick={() => setMobileOpen(false)}
-                className="px-2 py-2.5 text-sm font-medium text-foreground/85 hover:text-primary"
+            {/* Mobile Solutions (accordion) */}
+            <div className="border-b border-border/30 pb-1">
+              <button
+                type="button"
+                onClick={() => toggleMobileSection("solutions")}
+                aria-expanded={mobileSection === "solutions"}
+                className="w-full flex items-center justify-between px-2 py-2.5 text-sm font-medium text-foreground/85 hover:text-primary"
               >
                 Solutions
-              </Link>
-              <div className="ml-4 flex flex-col gap-1 mt-1">
-                {serviceVerticals.slice(0, 6).map((vertical) => (
+                <Icon
+                  name="chevron"
+                  className={`w-4 h-4 transition-transform ${mobileSection === "solutions" ? "rotate-180" : ""}`}
+                />
+              </button>
+              {mobileSection === "solutions" && (
+                <div className="ml-4 flex flex-col gap-1 mt-1 pb-2">
+                  {serviceVerticals.map((vertical) => (
+                    <Link
+                      key={vertical.id}
+                      href={`/solutions/${vertical.slug}`}
+                      onClick={() => setMobileOpen(false)}
+                      className="px-2 py-2 text-sm text-foreground/70 hover:text-primary"
+                    >
+                      {vertical.name}
+                    </Link>
+                  ))}
                   <Link
-                    key={vertical.id}
-                    href={`/solutions/${vertical.slug}`}
+                    href="/solutions"
                     onClick={() => setMobileOpen(false)}
-                    className="px-2 py-1.5 text-xs text-foreground/70 hover:text-primary"
+                    className="px-2 py-2 text-sm font-medium text-primary"
                   >
-                    {vertical.name}
+                    View all solutions →
                   </Link>
-                ))}
-              </div>
+                </div>
+              )}
             </div>
 
-            {/* Mobile Industries */}
-            <div>
-              <Link
-                href="/industries"
-                onClick={() => setMobileOpen(false)}
-                className="px-2 py-2.5 text-sm font-medium text-foreground/85 hover:text-primary"
+            {/* Mobile Industries (accordion) */}
+            <div className="border-b border-border/30 pb-1">
+              <button
+                type="button"
+                onClick={() => toggleMobileSection("industries")}
+                aria-expanded={mobileSection === "industries"}
+                className="w-full flex items-center justify-between px-2 py-2.5 text-sm font-medium text-foreground/85 hover:text-primary"
               >
                 Industries
-              </Link>
-              <div className="ml-4 flex flex-col gap-1 mt-1">
-                {industries.slice(0, 6).map((industry) => (
+                <Icon
+                  name="chevron"
+                  className={`w-4 h-4 transition-transform ${mobileSection === "industries" ? "rotate-180" : ""}`}
+                />
+              </button>
+              {mobileSection === "industries" && (
+                <div className="ml-4 flex flex-col gap-1 mt-1 pb-2">
+                  {industries.map((industry) => (
+                    <Link
+                      key={industry.slug}
+                      href={`/industries/${industry.slug}`}
+                      onClick={() => setMobileOpen(false)}
+                      className="px-2 py-2 text-sm text-foreground/70 hover:text-primary"
+                    >
+                      {industry.name}
+                    </Link>
+                  ))}
                   <Link
-                    key={industry.slug}
-                    href={`/industries/${industry.slug}`}
+                    href="/industries"
                     onClick={() => setMobileOpen(false)}
-                    className="px-2 py-1.5 text-xs text-foreground/70 hover:text-primary"
+                    className="px-2 py-2 text-sm font-medium text-primary"
                   >
-                    {industry.name}
+                    View all industries →
                   </Link>
-                ))}
-              </div>
+                </div>
+              )}
             </div>
 
-            {/* Mobile Company */}
-            <div className="border-t border-border/30 pt-2">
-              <div className="px-2 py-2.5 text-sm font-medium text-foreground/85">
+            {/* Mobile Company (accordion) */}
+            <div className="pb-1">
+              <button
+                type="button"
+                onClick={() => toggleMobileSection("company")}
+                aria-expanded={mobileSection === "company"}
+                className="w-full flex items-center justify-between px-2 py-2.5 text-sm font-medium text-foreground/85 hover:text-primary"
+              >
                 Company
-              </div>
-              <div className="ml-4 flex flex-col gap-1 mt-1">
-                <Link
-                  href="/case-studies"
-                  onClick={() => setMobileOpen(false)}
-                  className="px-2 py-1.5 text-xs text-foreground/70 hover:text-primary"
-                >
-                  Case Studies
-                </Link>
-                <Link
-                  href="/about"
-                  onClick={() => setMobileOpen(false)}
-                  className="px-2 py-1.5 text-xs text-foreground/70 hover:text-primary"
-                >
-                  About
-                </Link>
-                <Link
-                  href="/blog"
-                  onClick={() => setMobileOpen(false)}
-                  className="px-2 py-1.5 text-xs text-foreground/70 hover:text-primary"
-                >
-                  Blog
-                </Link>
-                <Link
-                  href="/careers"
-                  onClick={() => setMobileOpen(false)}
-                  className="px-2 py-1.5 text-xs text-foreground/70 hover:text-primary"
-                >
-                  Careers
-                </Link>
-              </div>
+                <Icon
+                  name="chevron"
+                  className={`w-4 h-4 transition-transform ${mobileSection === "company" ? "rotate-180" : ""}`}
+                />
+              </button>
+              {mobileSection === "company" && (
+                <div className="ml-4 flex flex-col gap-1 mt-1 pb-2">
+                  <Link
+                    href="/case-studies"
+                    onClick={() => setMobileOpen(false)}
+                    className="px-2 py-2 text-sm text-foreground/70 hover:text-primary"
+                  >
+                    Case Studies
+                  </Link>
+                  <Link
+                    href="/about"
+                    onClick={() => setMobileOpen(false)}
+                    className="px-2 py-2 text-sm text-foreground/70 hover:text-primary"
+                  >
+                    About
+                  </Link>
+                  <Link
+                    href="/blog"
+                    onClick={() => setMobileOpen(false)}
+                    className="px-2 py-2 text-sm text-foreground/70 hover:text-primary"
+                  >
+                    Blog
+                  </Link>
+                  <Link
+                    href="/careers"
+                    onClick={() => setMobileOpen(false)}
+                    className="px-2 py-2 text-sm text-foreground/70 hover:text-primary"
+                  >
+                    Careers
+                  </Link>
+                  <Link
+                    href="/markets-we-cover"
+                    onClick={() => setMobileOpen(false)}
+                    className="px-2 py-2 text-sm text-foreground/70 hover:text-primary"
+                  >
+                    Markets We Cover
+                  </Link>
+                </div>
+              )}
             </div>
 
             {NAV_LINKS.filter((l) => l.label !== "Services" && l.label !== "Home" && l.label !== "Industries" && l.label !== "Case Studies" && l.label !== "About" && l.label !== "Blog" && l.label !== "Careers" && l.label !== "Contact").map((link) => (

@@ -181,7 +181,7 @@ export const countriesMeaApac: CountryPage[] = [
 
   // ---------- Asia-Pacific ----------
   {
-    slug: "south-korea",
+    slug: "republic-of-korea",
     countryName: "South Korea",
     region: "Asia-Pacific",
     metaTitle: "Blockchain, Crypto Exchange & AI Fraud Detection Software Development Company in South Korea",

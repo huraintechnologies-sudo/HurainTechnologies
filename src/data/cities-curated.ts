@@ -361,7 +361,7 @@ export const cities: CityContent[] = [
   {
     slug: "seoul",
     cityName: "Seoul",
-    countrySlug: "south-korea",
+    countrySlug: "republic-of-korea",
     metaTitle: "Blockchain & Exchange Software Development Company in Seoul",
     metaDescription:
       "Blockchain, crypto exchange, and cybersecurity software development for Seoul-based businesses under South Korea's Virtual Asset User Protection Act.",
