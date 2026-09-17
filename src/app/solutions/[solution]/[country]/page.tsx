@@ -7,6 +7,7 @@ import { serviceVerticals } from "@/data/service-verticals";
 import { countries } from "@/data/countries";
 import { siteConfig } from "@/lib/site-config";
 import { CountryLinksGrid } from "@/components/CountryLinksGrid";
+import { CityLinksGrid } from "@/components/CityLinksGrid";
 import { Container } from "@/components/Container";
 import { SectionHeading } from "@/components/SectionHeading";
 import { CtaSection } from "@/components/CtaSection";
@@ -352,7 +353,15 @@ export default async function SolutionCountryPageRedesign({ params }: Props) {
         </Container>
       </section>
 
-      {/* Geographic Links */}
+      {/* City Links - Make city pages easily discoverable */}
+      <CityLinksGrid
+        countrySlug={country}
+        countryName={countryData.countryName}
+        solutionSlug={vertical.slug}
+        solutionName={vertical.name}
+      />
+
+      {/* Geographic Links - Other Countries */}
       <section className="py-16 px-4 md:px-8 border-t border-gray-200">
         <Container>
           <h2 className="text-3xl font-bold text-gray-900 mb-8">Available in Other Countries</h2>
