@@ -14,6 +14,7 @@ import { siteConfig } from "@/lib/site-config";
 import { localeForCountrySlug } from "@/lib/locale";
 import { industries } from "@/data/industries";
 import { countries } from "@/data/countries";
+import { getIndustryImage } from "@/lib/unsplash-service";
 
 // Exclude Pakistan, Israel, China, Japan
 const excludedCountries = ["pakistan", "israel", "china", "japan"];
@@ -21,19 +22,15 @@ const filteredCountries = countries.filter(
   (c) => !excludedCountries.includes(c.slug.toLowerCase())
 );
 
-// Map each industry slug to a unique relevant image
-const industryImages: Record<string, { src: string; alt: string }> = {
-  "banking-fintech": { src: "/images/team-engineering.jpg", alt: "Engineering team building banking and fintech software platform" },
-  "crypto-web3": { src: "/images/blockchain-hardware.jpg", alt: "Crypto hardware wallet and blockchain interface for Web3 industry" },
-  "payments-psps": { src: "/images/payment-terminal.jpg", alt: "Contactless payment terminal for PSP and payment gateway industry" },
-  "enterprise-saas": { src: "/images/api-developer.jpg", alt: "Developer building enterprise SaaS API and platform integration" },
-  "healthtech-insurtech": { src: "/images/why-choose-us.jpg", alt: "Secure server infrastructure for healthtech and insurtech compliance" },
-  "real-estate-proptech": { src: "/images/global-map.jpg", alt: "Global property network visualization for real estate and PropTech" },
-  "remittance-money-transfer": { src: "/images/payment-terminal.jpg", alt: "Cross-border payment terminal for remittance and money transfer services" },
-  "digital-banking-neobank": { src: "/images/hero-dashboard.jpg", alt: "Digital banking neobank platform dashboard with analytics" },
-  "web3-gaming": { src: "/images/blockchain-network.jpg", alt: "Blockchain network visualization for Web3 gaming and NFT platforms" },
-};
-const defaultIndustryImg = { src: "/images/blog-cover.jpg", alt: "Technology platform for regulated digital industry" };
+// Generate unique Unsplash images for each industry based on keywords
+async function getIndustryImageUrl(name: string): Promise<{ src: string; alt: string }> {
+  const image = await getIndustryImage(name);
+  if (image) {
+    return { src: image.url, alt: image.alt };
+  }
+  // Fallback to static image if API fails
+  return { src: "/images/blog-cover.jpg", alt: `${name} software development platform` };
+}
 
 export const metadata: Metadata = buildMetadata({
   title: "Industry Solutions | Fintech, Crypto, Banking, Payments, SaaS, Healthtech & More",
@@ -42,7 +39,19 @@ export const metadata: Metadata = buildMetadata({
   path: "/industries",
 });
 
-export default function IndustriesPage() {
+export default async function IndustriesPage() {
+  // Fetch unique images for each industry
+  const industryImagesMap = await Promise.all(
+    industries.map(async (industry) => ({
+      slug: industry.slug,
+      image: await getIndustryImageUrl(industry.name),
+    }))
+  );
+
+  const imagesBySlug = Object.fromEntries(
+    industryImagesMap.map((item) => [item.slug, item.image])
+  );
+
   return (
     <>
       <JsonLd
@@ -68,7 +77,7 @@ export default function IndustriesPage() {
         <Container>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {industries.map((industry) => {
-              const img = industryImages[industry.slug] ?? defaultIndustryImg;
+              const img = imagesBySlug[industry.slug] || { src: "/images/blog-cover.jpg", alt: industry.name };
               return (
                 <Link
                   key={industry.slug}

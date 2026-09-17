@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/Container";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
@@ -10,6 +11,7 @@ import { LiveDemos } from "@/components/LiveDemos";
 import { buildMetadata } from "@/lib/seo";
 import { blogPostingJsonLd } from "@/lib/jsonld";
 import { blogPosts, getBlogPostBySlug } from "@/data/blog-posts";
+import { getBlogPostImage } from "@/lib/unsplash-service";
 
 export function generateStaticParams() {
   return blogPosts.map((post) => ({ slug: post.slug }));
@@ -36,6 +38,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const post = getBlogPostBySlug(slug);
   if (!post) notFound();
 
+  const blogImage = await getBlogPostImage(post.title);
+
   return (
     <>
       <JsonLd data={blogPostingJsonLd(post)} />
@@ -57,6 +61,16 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             </div>
           </Container>
         </section>
+
+        {blogImage && (
+          <section className="border-b border-border">
+            <Container className="max-w-3xl">
+              <div className="relative w-full h-96 rounded-lg overflow-hidden">
+                <Image src={blogImage.url} alt={blogImage.alt} fill className="object-cover" priority />
+              </div>
+            </Container>
+          </section>
+        )}
 
         <section className="py-14">
           <Container className="max-w-3xl space-y-10">
