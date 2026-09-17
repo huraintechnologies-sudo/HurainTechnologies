@@ -19,7 +19,7 @@ import { services } from "@/data/services";
 import { industries } from "@/data/industries";
 import { caseStudies } from "@/data/case-studies";
 import { blogPosts } from "@/data/blog-posts";
-import { getCaseStudyImage, getBlogPostImage } from "@/lib/unsplash-service";
+import { getCaseStudyImages, getBlogImages } from "@/lib/image-allocations";
 
 export const metadata: Metadata = buildMetadata({
   title: "Blockchain, Crypto, Fintech & Software Development Company | Hurain Technologies",
@@ -66,28 +66,9 @@ const homeFaqs = [
 ];
 
 export default async function HomePage() {
-  // Fetch unique images for case studies and blog posts with index variation
-  // Wrap in try-catch to prevent page crashes if API fails
-  let caseStudyImages: any[] = [];
-  let blogPostImages: any[] = [];
-
-  try {
-    caseStudyImages = await Promise.all(
-      caseStudies.map((cs, i) => getCaseStudyImage(cs.industry, i).catch(() => null))
-    );
-  } catch (error) {
-    console.warn('Failed to fetch case study images:', error);
-    caseStudyImages = Array(caseStudies.length).fill(null);
-  }
-
-  try {
-    blogPostImages = await Promise.all(
-      blogPosts.map((post, i) => getBlogPostImage(post.title, i).catch(() => null))
-    );
-  } catch (error) {
-    console.warn('Failed to fetch blog post images:', error);
-    blogPostImages = Array(blogPosts.length).fill(null);
-  }
+  // Get unique images for case studies and blog posts (no API calls needed)
+  const caseStudyImages = getCaseStudyImages();
+  const blogImages = getBlogImages();
 
   return (
     <>
@@ -302,15 +283,9 @@ export default async function HomePage() {
           <SectionHeading eyebrow="Proof" title="Results our engineering has delivered" />
           <div className="mt-10 grid grid-cols-1 gap-5 lg:grid-cols-3">
             {caseStudies.map((cs, i) => {
-              const csImage = caseStudyImages[i];
-              // Rotate through different fallback images
-              const fallbackImages = [
-                "/images/blockchain-hardware.jpg",
-                "/images/case-study-fintech.jpg",
-                "/images/payment-terminal.jpg",
-              ];
-              const imgSrc = csImage?.url || fallbackImages[i % fallbackImages.length];
-              const imgAlt = csImage?.alt || `${cs.industry} case study - ${cs.title}`;
+              const csImage = caseStudyImages[i % caseStudyImages.length];
+              const imgSrc = csImage.src;
+              const imgAlt = csImage.alt;
               return (
                 <Link
                   key={cs.slug}
@@ -350,17 +325,9 @@ export default async function HomePage() {
           <SectionHeading eyebrow="Insights" title="Latest from the engineering team" />
           <div className="mt-10 grid grid-cols-1 gap-5 lg:grid-cols-3">
             {blogPosts.map((post, i) => {
-              const blogImage = blogPostImages[i];
-              // Rotate through different fallback images
-              const fallbackImages = [
-                "/images/blog-cover.jpg",
-                "/images/blockchain-network.jpg",
-                "/images/api-developer.jpg",
-                "/images/why-choose-us.jpg",
-                "/images/hero-dashboard.jpg",
-              ];
-              const imgSrc = blogImage?.url || fallbackImages[i % fallbackImages.length];
-              const imgAlt = blogImage?.alt || `${post.title} - ${post.category}`;
+              const blogImage = blogImages[i % blogImages.length];
+              const imgSrc = blogImage.src;
+              const imgAlt = blogImage.alt;
               return (
                 <Link
                   key={post.slug}
