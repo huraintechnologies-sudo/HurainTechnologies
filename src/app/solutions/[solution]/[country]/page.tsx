@@ -83,13 +83,17 @@ export default async function SolutionCountryPage({ params }: Props) {
         </div>
       </section>
 
-      {/* Main Content - Rich, Comprehensive */}
-      <section className="py-16 px-4 md:px-8">
-        <div className="max-w-4xl mx-auto space-y-12">
+      {/* Main Content - Rich, Comprehensive with Beautiful Design */}
+      <section className="py-20 px-4 md:px-8">
+        <div className="max-w-5xl mx-auto space-y-16">
 
-          {/* Market Overview */}
-          <div className="prose prose-sm max-w-none">
-            <div dangerouslySetInnerHTML={{ __html: content.marketOverview.replace(/\n/g, '<br/>') }} className="text-gray-700 leading-relaxed space-y-4" />
+          {/* Market Overview - Styled Section */}
+          <div className="bg-gradient-to-r from-blue-600/5 to-indigo-600/5 border-l-4 border-blue-600 p-8 rounded-lg">
+            <div dangerouslySetInnerHTML={{ __html: content.marketOverview
+              .replace(/\n/g, '<br/>')
+              .replace(/##/g, '<h3 class="text-2xl font-bold text-gray-900 mb-4 mt-6 first:mt-0">')
+              .replace(/<br\/>/g, '</h3><p class="text-gray-700 leading-relaxed mb-4">') + '</p>'
+            }} className="text-gray-700 leading-relaxed" />
           </div>
 
           {/* Why Country Matters */}
