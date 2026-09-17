@@ -8,7 +8,6 @@ const nextConfig: NextConfig = {
   // Performance: Compression and minification
   compress: true,
   productionBrowserSourceMaps: false,
-  optimizeFonts: true,
 
   // Image optimization for <3s load
   images: {
@@ -75,10 +74,7 @@ const nextConfig: NextConfig = {
     ];
   },
 
-  // Enable SWR (stale-while-revalidate)
-  experimental: {
-    isrMemoryCacheSize: 52 * 1024 * 1024, // 52MB cache for ISR
-  },
+  // No experimental features needed for this version
 };
 
 export default nextConfig;
