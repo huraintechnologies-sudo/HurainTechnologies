@@ -11,12 +11,20 @@ import { JsonLd } from "@/components/JsonLd";
 import { Icon } from "@/components/Icon";
 import { HeroMotion } from "@/components/HeroMotion";
 import { LiveDemos } from "@/components/LiveDemos";
+import { PainPointGrid, SolutionGrid } from "@/components/ContentGrids";
 import { buildMetadata } from "@/lib/seo";
 import { faqJsonLd } from "@/lib/jsonld";
 import { countries, getCountryBySlug } from "@/data/countries";
 import { getServiceBySlug } from "@/data/services";
 import { cities } from "@/data/cities";
 import { allLocales, countrySlugForLocale } from "@/lib/locale";
+import {
+  buildCountryOverview,
+  buildCountryServiceHighlights,
+  buildCountryIndustries,
+  buildCountryEngineeringChecklist,
+  buildCountryExtendedFaqs,
+} from "@/lib/country-content-builder";
 
 export function generateStaticParams() {
   return allLocales().map((locale) => ({ locale }));
@@ -41,9 +49,16 @@ export default async function LocaleCountryPage({ params }: { params: Promise<{ 
   const country = countrySlug ? getCountryBySlug(countrySlug) : undefined;
   if (!country) notFound();
 
+  const overviewParagraphs = buildCountryOverview(country);
+  const serviceHighlights = buildCountryServiceHighlights(country);
+  const industryHighlights = buildCountryIndustries(country);
+  const engineeringChecklist = buildCountryEngineeringChecklist(country);
+  const extendedFaqs = buildCountryExtendedFaqs(country);
+  const allFaqs = [...country.faqs, ...extendedFaqs];
+
   return (
     <>
-      <JsonLd data={faqJsonLd(country.faqs)} />
+      <JsonLd data={faqJsonLd(allFaqs)} />
 
       <section className="relative overflow-hidden border-b border-border py-14">
         <HeroMotion />
@@ -73,6 +88,19 @@ export default async function LocaleCountryPage({ params }: { params: Promise<{ 
             <a href="/?nogeo=1" className="text-xs text-muted hover:text-primary transition-colors">
               Not in {country.countryName}? View our global site
             </a>
+          </div>
+        </Container>
+      </section>
+
+      <section className="py-16 border-b border-border">
+        <Container className="max-w-3xl">
+          <SectionHeading eyebrow="Overview" title={`Building technology for the ${country.countryName} market`} />
+          <div className="mt-8 space-y-5">
+            {overviewParagraphs.map((paragraph, i) => (
+              <p key={i} className="text-sm leading-relaxed text-muted sm:text-base">
+                {paragraph}
+              </p>
+            ))}
           </div>
         </Container>
       </section>
@@ -185,6 +213,37 @@ export default async function LocaleCountryPage({ params }: { params: Promise<{ 
         </Container>
       </section>
 
+      {serviceHighlights.length > 0 && (
+        <section className="py-16 border-t border-border">
+          <Container>
+            <SectionHeading eyebrow="What We Build" title={`Engineering focus for ${country.countryName} businesses`} />
+            <div className="mt-8">
+              <SolutionGrid items={serviceHighlights} />
+            </div>
+          </Container>
+        </section>
+      )}
+
+      {industryHighlights.length > 0 && (
+        <section className="py-16 border-t border-border bg-surface">
+          <Container>
+            <SectionHeading eyebrow="Industries" title={`Sectors we support in ${country.countryName}`} />
+            <div className="mt-8">
+              <PainPointGrid items={industryHighlights} />
+            </div>
+          </Container>
+        </section>
+      )}
+
+      <section className="py-16 border-t border-border">
+        <Container>
+          <SectionHeading eyebrow="Our Standard" title={`What every ${country.countryName} engagement includes`} />
+          <div className="mt-8">
+            <SolutionGrid items={engineeringChecklist} />
+          </div>
+        </Container>
+      </section>
+
       {cities.filter((c) => c.countrySlug === country.slug).length > 0 && (
         <section className="py-16">
           <Container>
@@ -211,7 +270,7 @@ export default async function LocaleCountryPage({ params }: { params: Promise<{ 
         <Container className="max-w-3xl">
           <SectionHeading eyebrow="FAQ" title={`${country.countryName} — frequently asked questions`} />
           <div className="mt-8">
-            <FaqAccordion faqs={country.faqs} />
+            <FaqAccordion faqs={allFaqs} />
           </div>
         </Container>
       </section>

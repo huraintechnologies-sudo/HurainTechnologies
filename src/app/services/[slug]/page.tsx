@@ -136,7 +136,22 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
         </Container>
       </section>
 
-      <section className="py-16">
+      {service.extendedOverview && service.extendedOverview.length > 0 && (
+        <section className="py-16">
+          <Container className="max-w-3xl">
+            <SectionHeading eyebrow="Overview" title={`What ${service.name.toLowerCase()} actually involves`} />
+            <div className="mt-8 space-y-5">
+              {service.extendedOverview.map((paragraph, i) => (
+                <p key={i} className="text-sm leading-relaxed text-muted sm:text-base">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+          </Container>
+        </section>
+      )}
+
+      <section className="py-16 border-t border-border">
         <Container>
           <SectionHeading eyebrow="The Challenge" title="Problems we see teams struggling with" />
           <div className="mt-8">
@@ -160,8 +175,72 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
           <div className="mt-8">
             <TechStackGrid groups={service.techStack} />
           </div>
+          {service.techDeepDive && service.techDeepDive.length > 0 && (
+            <div className="mt-8 max-w-3xl space-y-5">
+              {service.techDeepDive.map((paragraph, i) => (
+                <p key={i} className="text-sm leading-relaxed text-muted sm:text-base">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+          )}
         </Container>
       </section>
+
+      {service.useCases && service.useCases.length > 0 && (
+        <section className="py-16 border-t border-border bg-surface">
+          <Container>
+            <SectionHeading eyebrow="Use Cases" title={`Where ${service.name.toLowerCase()} gets used`} />
+            <div className="mt-8">
+              <SolutionGrid items={service.useCases} />
+            </div>
+          </Container>
+        </section>
+      )}
+
+      {service.securityChecklist && service.securityChecklist.length > 0 && (
+        <section className="py-16">
+          <Container>
+            <SectionHeading eyebrow="Security" title="Our engineering security checklist" />
+            <div className="mt-8">
+              <SolutionGrid items={service.securityChecklist} />
+            </div>
+          </Container>
+        </section>
+      )}
+
+      {service.comparisonPoints && service.comparisonPoints.length > 0 && (
+        <section className="py-16 border-t border-border bg-surface">
+          <Container>
+            <SectionHeading eyebrow="Comparison" title="How this compares to other ways to build" />
+            <div className="mt-8">
+              <PainPointGrid items={service.comparisonPoints} />
+            </div>
+          </Container>
+        </section>
+      )}
+
+      {service.deliverables && service.deliverables.length > 0 && (
+        <section className="py-16">
+          <Container>
+            <SectionHeading eyebrow="Deliverables" title="What you actually receive" />
+            <div className="mt-8">
+              <SolutionGrid items={service.deliverables} />
+            </div>
+          </Container>
+        </section>
+      )}
+
+      {service.timelinePhases && service.timelinePhases.length > 0 && (
+        <section className="py-16 border-t border-border bg-surface">
+          <Container>
+            <SectionHeading eyebrow="Timeline" title="A typical project week by week" />
+            <div className="mt-8">
+              <ProcessSteps steps={service.timelinePhases} />
+            </div>
+          </Container>
+        </section>
+      )}
 
       <section className="py-16 border-t border-border bg-surface">
         <Container>
@@ -180,6 +259,44 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
           </div>
         </Container>
       </section>
+
+      {service.engagementModels && service.engagementModels.length > 0 && (
+        <section className="py-16 border-t border-border bg-surface">
+          <Container>
+            <SectionHeading eyebrow="Engagement Models" title="How we structure the work" />
+            <div className="mt-8">
+              <PainPointGrid items={service.engagementModels} />
+            </div>
+          </Container>
+        </section>
+      )}
+
+      {service.commonMistakes && service.commonMistakes.length > 0 && (
+        <section className="py-16">
+          <Container>
+            <SectionHeading eyebrow="Pitfalls" title="Mistakes we see teams make" />
+            <div className="mt-8">
+              <PainPointGrid items={service.commonMistakes} />
+            </div>
+          </Container>
+        </section>
+      )}
+
+      {service.glossary && service.glossary.length > 0 && (
+        <section className="py-16 border-t border-border bg-surface">
+          <Container className="max-w-3xl">
+            <SectionHeading eyebrow="Glossary" title="Key terms explained" />
+            <dl className="mt-8 space-y-5">
+              {service.glossary.map((entry) => (
+                <div key={entry.term} className="rounded-xl border border-border bg-background p-5">
+                  <dt className="text-sm font-semibold text-foreground">{entry.term}</dt>
+                  <dd className="mt-1.5 text-sm leading-relaxed text-muted">{entry.definition}</dd>
+                </div>
+              ))}
+            </dl>
+          </Container>
+        </section>
+      )}
 
       <section className="py-16 border-t border-border bg-surface">
         <Container className="max-w-3xl">

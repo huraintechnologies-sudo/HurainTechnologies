@@ -32,6 +32,18 @@ export interface ServiceContent {
   faqs: FaqItem[];
   relatedSlugs: string[];
   icon: string;
+  // Optional deep-content sections. Rendered only when present, so existing
+  // service entries without them keep working unchanged.
+  extendedOverview?: string[];
+  useCases?: ContentBlock[];
+  engagementModels?: ContentBlock[];
+  commonMistakes?: ContentBlock[];
+  glossary?: { term: string; definition: string }[];
+  techDeepDive?: string[];
+  securityChecklist?: ContentBlock[];
+  comparisonPoints?: ContentBlock[];
+  deliverables?: ContentBlock[];
+  timelinePhases?: ContentBlock[];
 }
 
 export interface CaseStudy {
