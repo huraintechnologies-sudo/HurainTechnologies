@@ -4,9 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "echo 'Skipping image cache generation for now (can be enabled for production)'",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "cache:images": "node -r esbuild-register scripts/generate-image-cache.ts"
   },
   "dependencies": {
     "next": "16.3.5",

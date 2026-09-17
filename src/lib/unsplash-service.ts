@@ -4,7 +4,8 @@
 
 const UNSPLASH_API_KEY = "wNKgK2yW_5PgIGWm96pxkv1vIEGX5FfHxNqKj5QSqJY";
 const UNSPLASH_API_URL = "https://api.unsplash.com";
-const API_TIMEOUT = 5000; // 5 second timeout
+const API_TIMEOUT = 2000; // 2 second timeout - fail fast if slow
+const MAX_RETRIES = 1; // Quick fail for performance
 
 interface UnsplashImage {
   id: string;
