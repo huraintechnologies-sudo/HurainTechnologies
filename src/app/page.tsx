@@ -19,6 +19,7 @@ import { services } from "@/data/services";
 import { industries } from "@/data/industries";
 import { caseStudies } from "@/data/case-studies";
 import { blogPosts } from "@/data/blog-posts";
+import { getCaseStudyImage, getBlogPostImage } from "@/lib/unsplash-service";
 
 export const metadata: Metadata = buildMetadata({
   title: "Blockchain, Crypto, Fintech & Software Development Company | Hurain Technologies",
@@ -64,7 +65,16 @@ const homeFaqs = [
   },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  // Fetch unique images for case studies and blog posts
+  const caseStudyImages = await Promise.all(
+    caseStudies.map(cs => getCaseStudyImage(cs.industry))
+  );
+
+  const blogPostImages = await Promise.all(
+    blogPosts.map(post => getBlogPostImage(post.title))
+  );
+
   return (
     <>
       <JsonLd data={faqJsonLd(homeFaqs)} />
@@ -278,12 +288,9 @@ export default function HomePage() {
           <SectionHeading eyebrow="Proof" title="Results our engineering has delivered" />
           <div className="mt-10 grid grid-cols-1 gap-5 lg:grid-cols-3">
             {caseStudies.map((cs, i) => {
-              const caseImages = [
-                { src: "/images/blockchain-hardware.jpg", alt: "Ledger hardware wallet and Ethereum interface representing multi-chain crypto exchange custody infrastructure" },
-                { src: "/images/api-developer.jpg", alt: "Developer building open banking API integration with Postman and VS Code" },
-                { src: "/images/case-study-fintech.jpg", alt: "Fintech payment fraud detection analytics dashboard showing transaction volume and fraud alert metrics" },
-              ];
-              const img = caseImages[i % caseImages.length];
+              const csImage = caseStudyImages[i];
+              const imgSrc = csImage?.url || "/images/case-study-fintech.jpg";
+              const imgAlt = csImage?.alt || `${cs.industry} case study - ${cs.title}`;
               return (
                 <Link
                   key={cs.slug}
@@ -291,7 +298,7 @@ export default function HomePage() {
                   className="group flex flex-col rounded-xl border border-border bg-surface overflow-hidden hover:border-primary/50 transition-colors"
                 >
                   <div className="relative h-44 overflow-hidden">
-                    <Image src={img.src} alt={img.alt} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <Image src={imgSrc} alt={imgAlt} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="object-cover group-hover:scale-105 transition-transform duration-500" />
                     <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/40 to-transparent" />
                     <span className="absolute top-3 left-3 rounded-full bg-background/80 backdrop-blur px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-primary">{cs.industry}</span>
                   </div>
@@ -323,12 +330,9 @@ export default function HomePage() {
           <SectionHeading eyebrow="Insights" title="Latest from the engineering team" />
           <div className="mt-10 grid grid-cols-1 gap-5 lg:grid-cols-3">
             {blogPosts.map((post, i) => {
-              const blogImages = [
-                { src: "/images/blockchain-network.jpg", alt: "Decentralized blockchain network nodes visualization for engineering insights article" },
-                { src: "/images/api-developer.jpg", alt: "Software developer working on API integration code for engineering blog" },
-                { src: "/images/blog-cover.jpg", alt: "Abstract cryptographic code and security symbols representing tech engineering insights" },
-              ];
-              const img = blogImages[i % blogImages.length];
+              const blogImage = blogPostImages[i];
+              const imgSrc = blogImage?.url || "/images/blog-cover.jpg";
+              const imgAlt = blogImage?.alt || `${post.title} - ${post.category}`;
               return (
                 <Link
                   key={post.slug}
@@ -336,7 +340,7 @@ export default function HomePage() {
                   className="group flex flex-col rounded-xl border border-border bg-background overflow-hidden hover:border-primary/50 transition-colors"
                 >
                   <div className="relative h-40 overflow-hidden">
-                    <Image src={img.src} alt={img.alt} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <Image src={imgSrc} alt={imgAlt} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="object-cover group-hover:scale-105 transition-transform duration-500" />
                     <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
                     <span className="absolute top-3 left-3 rounded-full bg-background/80 backdrop-blur px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-primary">{post.category}</span>
                   </div>
