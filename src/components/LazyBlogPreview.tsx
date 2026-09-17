@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Icon } from '@/components/Icon';
 import { blogPosts } from '@/data/blog-posts';
+import { getBlogImages } from '@/lib/image-allocations';
 
 const BlogCard = ({ post, imgSrc, imgAlt }: any) => (
   <Link
@@ -33,21 +34,15 @@ const BlogCard = ({ post, imgSrc, imgAlt }: any) => (
   </Link>
 );
 
-export function LazyBlogPreview({ blogPostImages }: { blogPostImages: any[] }) {
-  const fallbackImages = [
-    "/images/blog-cover.jpg",
-    "/images/blockchain-network.jpg",
-    "/images/api-developer.jpg",
-    "/images/why-choose-us.jpg",
-    "/images/hero-dashboard.jpg",
-  ];
+export function LazyBlogPreview() {
+  const blogImages = getBlogImages();
 
   return (
     <div className="mt-10 grid grid-cols-1 gap-5 lg:grid-cols-3">
       {blogPosts.map((post, i) => {
-        const blogImage = blogPostImages[i];
-        const imgSrc = blogImage?.url || fallbackImages[i % fallbackImages.length];
-        const imgAlt = blogImage?.alt || `${post.title} - ${post.category}`;
+        const blogImage = blogImages[i % blogImages.length];
+        const imgSrc = blogImage.src;
+        const imgAlt = blogImage.alt;
         return (
           <Suspense
             key={post.slug}

@@ -17,13 +17,13 @@ import { countries, getCountryBySlug } from "@/data/countries";
 import { FaqItem } from "@/lib/types";
 import { localeForCountrySlug } from "@/lib/locale";
 
-export const revalidate = 86400; // ISR: revalidate every 24 hours
+export const revalidate = 3600; // ISR: revalidate every hour
 
 export function generateStaticParams() {
-  // Limit pre-rendering to top 5 industries × 20 top countries (~100 pages)
+  // Limit pre-rendering to top 2 industries × 10 top countries (~20 pages)
   // Rest use on-demand ISR (Vercel will cache on first visit)
-  const topIndustries = industries.slice(0, 5);
-  const topCountries = countries.slice(0, 20);
+  const topIndustries = industries.slice(0, 2);
+  const topCountries = countries.slice(0, 10);
   return topIndustries.flatMap((industry) =>
     topCountries.map((country) => ({ slug: industry.slug, country: country.slug }))
   );

@@ -35,13 +35,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export const revalidate = 86400; // ISR: revalidate every 24 hours
+export const revalidate = 3600; // ISR: revalidate every hour
 
 export async function generateStaticParams() {
-  // Limit pre-rendering to top 5 solutions × 20 top countries (~100 pages)
+  // Limit pre-rendering to top 2 solutions × 10 top countries (~20 pages)
   // Rest use on-demand ISR (Vercel will cache on first visit)
-  const topVerticals = serviceVerticals.slice(0, 5);
-  const topCountries = countries.slice(0, 20);
+  const topVerticals = serviceVerticals.slice(0, 2);
+  const topCountries = countries.slice(0, 10);
   return topVerticals.flatMap((vertical) =>
     topCountries.map((country) => ({
       solution: vertical.slug,

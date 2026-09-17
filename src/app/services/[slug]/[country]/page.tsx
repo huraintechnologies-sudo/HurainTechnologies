@@ -18,16 +18,17 @@ import { FaqItem } from "@/lib/types";
 import { localeForCountrySlug } from "@/lib/locale";
 
 export function generateStaticParams() {
-  // Limit pre-rendering to top 5 services x 20 top countries (~100 pages)
+  // Limit pre-rendering to top 2 services x 10 top countries (~20 pages)
   // Rest use on-demand ISR (Vercel will cache on first visit)
-  const topServices = services.slice(0, 5);
-  const topCountries = countries.slice(0, 20);
+  // This keeps local builds fast while Vercel generates others on-demand
+  const topServices = services.slice(0, 2);
+  const topCountries = countries.slice(0, 10);
   return topServices.flatMap((service) =>
     topCountries.map((country) => ({ slug: service.slug, country: country.slug }))
   );
 }
 
-export const revalidate = 86400; // ISR: revalidate every 24 hours
+export const revalidate = 3600; // ISR: revalidate every hour
 
 export async function generateMetadata({
   params,
