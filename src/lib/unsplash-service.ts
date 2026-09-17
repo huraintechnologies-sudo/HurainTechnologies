@@ -4,6 +4,7 @@
 
 const UNSPLASH_API_KEY = "wNKgK2yW_5PgIGWm96pxkv1vIEGX5FfHxNqKj5QSqJY";
 const UNSPLASH_API_URL = "https://api.unsplash.com";
+const API_TIMEOUT = 5000; // 5 second timeout
 
 interface UnsplashImage {
   id: string;
@@ -25,16 +26,20 @@ interface ImageOptions {
   orientation?: "landscape" | "portrait" | "squarish";
 }
 
-// Cache to avoid duplicate API calls
-const imageCache = new Map<string, UnsplashImage>();
+// Simple cache - use query as key
+const imageCache = new Map<string, { url: string; alt: string } | null>();
 
 export async function getUnsplashImage(options: ImageOptions): Promise<UnsplashImage | null> {
   try {
-    const cacheKey = `${options.query}-${options.width}-${options.height}`;
+    const cacheKey = `${options.query}`;
 
     // Check cache first
     if (imageCache.has(cacheKey)) {
-      return imageCache.get(cacheKey) || null;
+      const cached = imageCache.get(cacheKey);
+      if (cached) {
+        return { id: cacheKey, urls: { regular: cached.url, small: cached.url, thumb: cached.url }, alt_description: cached.alt, user: { name: "Unsplash" } };
+      }
+      return null;
     }
 
     const params = new URLSearchParams({
@@ -43,22 +48,33 @@ export async function getUnsplashImage(options: ImageOptions): Promise<UnsplashI
       client_id: UNSPLASH_API_KEY,
     });
 
-    if (options.width) params.append("w", options.width.toString());
-    if (options.height) params.append("h", options.height.toString());
     if (options.orientation) params.append("orientation", options.orientation);
 
-    const response = await fetch(`${UNSPLASH_API_URL}/search/photos?${params}`);
-    const data = await response.json() as { results: UnsplashImage[] };
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT);
+
+    const response = await fetch(`${UNSPLASH_API_URL}/search/photos?${params}`, {
+      signal: controller.signal,
+    });
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      imageCache.set(cacheKey, null);
+      return null;
+    }
+
+    const data = await response.json() as { results?: UnsplashImage[] };
 
     if (data.results && data.results.length > 0) {
       const image = data.results[0];
-      imageCache.set(cacheKey, image);
+      imageCache.set(cacheKey, { url: image.urls.regular, alt: image.alt_description });
       return image;
     }
 
+    imageCache.set(cacheKey, null);
     return null;
   } catch (error) {
-    console.error("Error fetching from Unsplash:", error);
+    // Silently fail and return null for timeout or network errors
     return null;
   }
 }
