@@ -13,6 +13,7 @@ import { LiveDemos } from "@/components/LiveDemos";
 import { JsonLd } from "@/components/JsonLd";
 import { faqJsonLd } from "@/lib/jsonld";
 import { getPageSchemas } from "@/lib/jsonld-universal";
+import { buildIndustryPageKeywords } from "@/lib/keywords-builder";
 import { buildMetadata } from "@/lib/seo";
 import { industries, getIndustryBySlug } from "@/data/industries";
 import { getIndustryImage } from "@/lib/unsplash-service";

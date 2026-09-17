@@ -11,6 +11,7 @@ import { LiveDemos } from "@/components/LiveDemos";
 import { buildMetadata } from "@/lib/seo";
 import { blogPostingJsonLd } from "@/lib/jsonld";
 import { getBlogPostSchemas } from "@/lib/jsonld-universal";
+import { buildBlogPostKeywords } from "@/lib/keywords-builder";
 import { blogPosts, getBlogPostBySlug } from "@/data/blog-posts";
 import { getBlogPostImage } from "@/lib/unsplash-service";
 

@@ -12,6 +12,7 @@ import { LiveDemos } from "@/components/LiveDemos";
 import { buildMetadata } from "@/lib/seo";
 import { caseStudyJsonLd } from "@/lib/jsonld";
 import { getCaseStudySchemas } from "@/lib/jsonld-universal";
+import { buildCaseStudyKeywords } from "@/lib/keywords-builder";
 import { caseStudies, getCaseStudyBySlug } from "@/data/case-studies";
 import { getCaseStudyImage } from "@/lib/unsplash-service";
 

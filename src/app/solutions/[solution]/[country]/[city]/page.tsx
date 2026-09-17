@@ -9,6 +9,7 @@ import { getCityMarketContent } from "@/lib/solution-city-content";
 import { JsonLd } from "@/components/JsonLd";
 import { strongestSolutionCityJsonLd, breadcrumbJsonLd } from "@/lib/jsonld-enhanced";
 import { getCityPageSchemas } from "@/lib/jsonld-universal";
+import { buildSolutionCityPageKeywords } from "@/lib/keywords-builder";
 import Link from "next/link";
 
 interface Props {
@@ -88,7 +89,7 @@ export default async function SolutionCityPage({ params }: Props) {
             {
               name: vertical.name,
               slug: vertical.slug,
-              keywords: vertical.keywords || []
+              keywords: buildSolutionCityPageKeywords(vertical.name, cityData.cityName, countryData.countryName).split(", ")
             },
             cityData.cityName,
             countryData.countryName,

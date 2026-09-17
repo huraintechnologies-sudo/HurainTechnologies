@@ -21,6 +21,7 @@ import { LiveDemos } from "@/components/LiveDemos";
 import { buildMetadata } from "@/lib/seo";
 import { faqJsonLd, serviceJsonLd } from "@/lib/jsonld";
 import { getServicePageSchemas } from "@/lib/jsonld-universal";
+import { buildServicePageKeywords } from "@/lib/keywords-builder";
 import { services, getServiceBySlug } from "@/data/services";
 import { getServiceImage } from "@/lib/unsplash-service";
 

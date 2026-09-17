@@ -18,6 +18,7 @@ import {
   breadcrumbJsonLd
 } from "@/lib/jsonld-enhanced";
 import { getSolutionPageSchemas } from "@/lib/jsonld-universal";
+import { buildSolutionPageKeywords } from "@/lib/keywords-builder";
 
 // Hero images
 const solutionImages: Record<string, { src: string; alt: string }> = {
@@ -80,7 +81,7 @@ export default async function SolutionCountryPage({ params }: Props) {
       <JsonLd
         data={getSolutionPageSchemas(
           strongestSolutionCountryJsonLd(
-            { name: vertical.name, slug: vertical.slug, keywords: vertical.keywords || [] },
+            { name: vertical.name, slug: vertical.slug, keywords: buildSolutionPageKeywords(vertical.name, countryData.countryName).split(", ") },
             countryData
           ),
           breadcrumbJsonLd(breadcrumbItems)
