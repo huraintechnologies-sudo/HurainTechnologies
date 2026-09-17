@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/Header";
@@ -69,6 +70,9 @@ export const metadata: Metadata = {
       "max-video-preview": -1,
     },
   },
+  verification: {
+    google: "g2KlAMRyGVABaoLz50QvG1r-Hv1oSVwFFDBuvw7WSUY",
+  },
   // Performance optimization hints
   other: {
     "dns-prefetch": "//cdn.jsdelivr.net,//cdnjs.cloudflare.com,//fonts.googleapis.com",
@@ -82,10 +86,23 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
+const GA_MEASUREMENT_ID = "G-R21Y7CWQ45";
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`} suppressHydrationWarning>
       <body className="min-h-full flex flex-col bg-grid" suppressHydrationWarning>
+        {/* Google tag (gtag.js) — loaded via next/script so it doesn't block
+            first paint; fires on every route since it lives in the root layout. */}
+        <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} strategy="afterInteractive" />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_MEASUREMENT_ID}');
+          `}
+        </Script>
         <JsonLd data={[organizationJsonLd(), websiteJsonLd()]} />
         <Header />
         <main className="flex-1">{children}</main>
