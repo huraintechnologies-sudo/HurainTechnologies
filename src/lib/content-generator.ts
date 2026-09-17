@@ -407,7 +407,7 @@ ${topKeywords}
 📍 ${city.cityName}, ${city.countryName}
 📧 Email: huraintechnologies@gmail.com
 📱 WhatsApp: +91 76009 07288
-🌐 Website: https://www.huraintechnologies.com
+🌐 Website: https://hurain-technologies.vercel.app
 
 ---
 
@@ -531,7 +531,7 @@ Contact us today to discuss your ${verticalSlug.replace(/-/g, " ")} project.
 
 📧 Email: huraintechnologies@gmail.com
 📱 WhatsApp: +91 76009 07288
-🌐 Website: https://www.huraintechnologies.com
+🌐 Website: https://hurain-technologies.vercel.app
 
 ---
 

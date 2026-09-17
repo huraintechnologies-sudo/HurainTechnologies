@@ -3,7 +3,11 @@ export const siteConfig = {
   legalName: "Hurain Technologies, a division of Hurain Engitech & Trade",
   shortName: "Hurain Technologies",
   parentGroup: "Hurain Engitech & Trade",
-  url: "https://www.huraintechnologies.com",
+  // NOTE: huraintechnologies.com is not yet registered/pointed at Vercel.
+  // Using the live, public Vercel production domain so sitemaps, canonical
+  // URLs, and JSON-LD actually resolve. Update this the moment a custom
+  // domain is connected in the Vercel project settings.
+  url: "https://hurain-technologies.vercel.app",
   description:
     "Hurain Technologies builds secure, scalable blockchain, payments, API, cloud, and AI platforms for regulated digital businesses worldwide.",
   tagline:
