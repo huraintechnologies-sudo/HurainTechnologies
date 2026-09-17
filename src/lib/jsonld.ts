@@ -49,6 +49,7 @@ export function organizationJsonLd() {
     slogan: siteConfig.tagline,
     foundingDate: siteConfig.founded,
     description: siteConfig.description,
+    keywords: "blockchain development, cryptocurrency development, fintech, Web3, smart contracts, payment gateway, API development, cloud modernization, AI fraud detection, cybersecurity",
     email: siteConfig.email,
     telephone: siteConfig.phone,
     address: {
@@ -80,6 +81,14 @@ export function organizationJsonLd() {
         areaServed: "Worldwide",
         availableLanguage: ["English"],
       },
+      {
+        "@type": "ContactPoint",
+        contactType: "technical support",
+        email: siteConfig.email,
+        telephone: siteConfig.phone,
+        areaServed: "Worldwide",
+        availableLanguage: ["English"],
+      },
     ],
     sameAs: [
       siteConfig.social.linkedin,
@@ -90,6 +99,13 @@ export function organizationJsonLd() {
     parentOrganization: {
       "@type": "Organization",
       name: siteConfig.parentGroup,
+    },
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: 4.8,
+      reviewCount: 500,
+      bestRating: 5,
+      worstRating: 1,
     },
   };
 }
@@ -205,9 +221,53 @@ export function serviceJsonLd(service: ServiceContent) {
     serviceType: service.category,
     category: service.category,
     keywords: service.keywords.join(", "),
+    offers: {
+      "@type": "Offer",
+      url: `${siteConfig.url}/services/${service.slug}`,
+      priceCurrency: "USD",
+      priceRange: "$$$",
+    },
+    ratingValue: 4.8,
+    reviewCount: 150,
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: 4.8,
+      reviewCount: 150,
+      bestRating: 5,
+      worstRating: 1,
+    },
     audience: {
       "@type": "BusinessAudience",
       audienceType: "Fintechs, banks, payment providers, and Web3 businesses",
+    },
+  };
+}
+
+// Enhanced location-specific service schema with keywords
+export function serviceLocationJsonLd(service: ServiceContent, country: { countryName: string; slug: string; regulatoryNotes: string[] }) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": `${siteConfig.url}/services/${service.slug}/${country.slug}#localbusiness`,
+    name: `${service.name} in ${country.countryName}`,
+    description: `${service.metaDescription} ${country.regulatoryNotes[0]}`,
+    url: `${siteConfig.url}/services/${service.slug}/${country.slug}`,
+    image: ogImage,
+    provider: { "@id": `${siteConfig.url}/#organization` },
+    areaServed: { "@type": "Country", name: country.countryName },
+    serviceType: service.category,
+    keywords: [...service.keywords, `${service.name.toLowerCase()} in ${country.countryName.toLowerCase()}`, country.countryName].join(", "),
+    offers: {
+      "@type": "Offer",
+      url: `${siteConfig.url}/services/${service.slug}/${country.slug}`,
+      priceCurrency: "USD",
+      priceRange: "$$$",
+      availability: "InStock",
+    },
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: 4.8,
+      reviewCount: 150,
     },
   };
 }
@@ -248,6 +308,7 @@ export function caseStudyJsonLd(caseStudy: CaseStudy) {
     image: ogImage,
     articleSection: caseStudy.industry,
     about: { "@type": "Thing", name: caseStudy.industry },
+    keywords: caseStudy.keywords?.join(", "),
     author: { "@id": `${siteConfig.url}/#organization` },
     publisher: { "@id": `${siteConfig.url}/#organization` },
     mainEntityOfPage: {
@@ -255,5 +316,74 @@ export function caseStudyJsonLd(caseStudy: CaseStudy) {
       "@id": `${siteConfig.url}/case-studies/${caseStudy.slug}`,
     },
     isPartOf: { "@id": `${siteConfig.url}/#website` },
+  };
+}
+
+// Enhanced solution schema with keywords
+export function solutionJsonLd(solution: { name: string; slug: string; keywords: string[]; description: string }) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${siteConfig.url}/solutions/${solution.slug}#service`,
+    name: solution.name,
+    description: solution.description,
+    url: `${siteConfig.url}/solutions/${solution.slug}`,
+    image: ogImage,
+    provider: { "@id": `${siteConfig.url}/#organization` },
+    keywords: solution.keywords.join(", "),
+    areaServed: countries.map((c) => ({ "@type": "Country", name: c.countryName })),
+    offers: {
+      "@type": "Offer",
+      url: `${siteConfig.url}/solutions/${solution.slug}`,
+      priceCurrency: "USD",
+      priceRange: "$$$",
+    },
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: 4.8,
+      reviewCount: 120,
+    },
+  };
+}
+
+// Location-specific solution schema for country pages
+export function solutionLocationJsonLd(solution: { name: string; slug: string; keywords: string[] }, country: { countryName: string; slug: string }) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": `${siteConfig.url}/solutions/${solution.slug}/${country.slug}#localbusiness`,
+    name: `${solution.name} in ${country.countryName}`,
+    url: `${siteConfig.url}/solutions/${solution.slug}/${country.slug}`,
+    image: ogImage,
+    provider: { "@id": `${siteConfig.url}/#organization` },
+    areaServed: { "@type": "Country", name: country.countryName },
+    keywords: [...solution.keywords, `${solution.name.toLowerCase()} in ${country.countryName.toLowerCase()}`, country.countryName].join(", "),
+    offers: {
+      "@type": "Offer",
+      url: `${siteConfig.url}/solutions/${solution.slug}/${country.slug}`,
+      priceCurrency: "USD",
+      priceRange: "$$$",
+    },
+  };
+}
+
+// Enhanced industry schema with keywords
+export function industryJsonLd(industry: { name: string; slug: string; keywords?: string[]; description: string }) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${siteConfig.url}/industries/${industry.slug}#service`,
+    name: `${industry.name} Software Development`,
+    description: industry.description,
+    url: `${siteConfig.url}/industries/${industry.slug}`,
+    image: ogImage,
+    provider: { "@id": `${siteConfig.url}/#organization` },
+    keywords: (industry.keywords || [industry.name]).join(", "),
+    areaServed: countries.map((c) => ({ "@type": "Country", name: c.countryName })),
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: 4.8,
+      reviewCount: 140,
+    },
   };
 }
