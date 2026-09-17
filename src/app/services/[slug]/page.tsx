@@ -21,6 +21,7 @@ import { LiveDemos } from "@/components/LiveDemos";
 import { buildMetadata } from "@/lib/seo";
 import { faqJsonLd, serviceJsonLd } from "@/lib/jsonld";
 import { services, getServiceBySlug } from "@/data/services";
+import { getServiceImage } from "@/lib/unsplash-service";
 
 // Unique photorealistic image per service
 const serviceImages: Record<string, { src: string; alt: string }> = {
@@ -80,7 +81,15 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
   const { slug } = await params;
   const service = getServiceBySlug(slug);
   if (!service) notFound();
-  const serviceImg = serviceImages[slug] ?? defaultServiceImage;
+
+  // Try to fetch unique image from Unsplash, fallback to static image
+  let serviceImg: { src: string; alt: string };
+  const unsplashImage = await getServiceImage(service.name);
+  if (unsplashImage) {
+    serviceImg = { src: unsplashImage.url, alt: unsplashImage.alt };
+  } else {
+    serviceImg = serviceImages[slug] ?? defaultServiceImage;
+  }
 
   return (
     <>

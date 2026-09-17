@@ -1,8 +1,10 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import { serviceVerticals } from "@/data/service-verticals";
 import { siteConfig } from "@/lib/site-config";
 import Link from "next/link";
+import { getServiceImage } from "@/lib/unsplash-service";
 
 interface Props {
   params: Promise<{
@@ -45,10 +47,26 @@ export default async function SolutionVerticalPage({ params }: Props) {
 
   if (!vertical) return notFound();
 
+  // Fetch unique image for this solution
+  const solutionImage = await getServiceImage(vertical.name);
+
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section */}
-      <section className="py-16 px-4 md:px-8 bg-gradient-to-br from-blue-50 to-indigo-50">
+      {/* Hero Section with Image */}
+      {solutionImage && (
+        <div className="relative h-64 md:h-96 overflow-hidden">
+          <Image
+            src={solutionImage.url}
+            alt={solutionImage.alt}
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-600/80 to-indigo-600/40" />
+        </div>
+      )}
+
+      <section className="py-16 px-4 md:px-8 -mt-8 relative z-10 bg-white rounded-t-2xl mx-4 md:mx-8">
         <div className="max-w-4xl mx-auto">
           <div className="mb-4">
             <Link href="/solutions" className="text-blue-600 hover:text-blue-800 text-sm font-medium">
