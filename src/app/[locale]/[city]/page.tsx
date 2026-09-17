@@ -1,84 +1,250 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { cities } from "@/data/cities";
-import { countries } from "@/data/countries";
-import { siteConfig } from "@/lib/site-config";
-import { countrySlugForLocale } from "@/lib/locale";
 import Link from "next/link";
-import { generateCityPageContent } from "@/lib/content-generator";
+import { Container } from "@/components/Container";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { SectionHeading } from "@/components/SectionHeading";
+import { CtaSection } from "@/components/CtaSection";
+import { FaqAccordion } from "@/components/FaqAccordion";
+import { JsonLd } from "@/components/JsonLd";
+import { Icon } from "@/components/Icon";
+import { LiveDemos } from "@/components/LiveDemos";
+import { PainPointGrid, SolutionGrid } from "@/components/ContentGrids";
+import { buildMetadata } from "@/lib/seo";
+import { faqJsonLd } from "@/lib/jsonld";
+import { cities, getCityBySlug } from "@/data/cities";
+import { getCountryBySlug } from "@/data/countries";
+import { getServiceBySlug } from "@/data/services";
+import { countrySlugForLocale } from "@/lib/locale";
+import {
+  buildCityOverview,
+  buildCityProblems,
+  buildCityServiceHighlights,
+  buildCityIndustries,
+  buildCityEngineeringChecklist,
+  buildCityExtendedFaqs,
+} from "@/lib/city-content-builder";
 
 interface Props {
-  params: Promise<{
-    locale: string;
-    city: string;
-  }>;
+  params: Promise<{ locale: string; city: string }>;
+}
+
+// ISR: pre-build nothing, generate on first visit and cache for an hour —
+// matches the pattern used by services/[slug]/[country]/[city].
+export const dynamicParams = true;
+export const revalidate = 3600;
+
+export function generateStaticParams() {
+  return [];
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale, city } = await params;
-  const citySlug = city;
+  const { locale, city: citySlug } = await params;
   const countrySlug = countrySlugForLocale(locale);
-  if (!countrySlug) return notFound();
-  const cityData = cities.find((c) => c.slug === citySlug && c.countrySlug === countrySlug);
+  const city = countrySlug ? getCityBySlug(citySlug) : undefined;
+  if (!city || city.countrySlug !== countrySlug) return {};
 
-  if (!cityData) return notFound();
-
-  const title = `Blockchain, Cryptocurrency & Fintech Development in ${cityData.cityName} | Hurain Technologies`;
-  const description = `Expert blockchain, cryptocurrency, and fintech development services in ${cityData.cityName}. Custom Web3 solutions for ${cityData.cityName} businesses. 16+ years experience, 2000+ projects delivered.`;
-
-  return {
-    title,
-    description,
-  };
+  return buildMetadata({
+    title: city.metaTitle,
+    description: city.metaDescription,
+    path: `/${locale}/${city.slug}`,
+  });
 }
 
-// Disable static generation for city pages - they're dynamic
-export const dynamic = "force-dynamic";
-
 export default async function CityPage({ params }: Props) {
-  const { locale, city } = await params;
-  const citySlug = city;
+  const { locale, city: citySlug } = await params;
   const countrySlug = countrySlugForLocale(locale);
-  if (!countrySlug) return notFound();
-  const cityData = cities.find((c) => c.slug === citySlug && c.countrySlug === countrySlug);
-  const countryData = countries.find((c) => c.slug === countrySlug);
+  if (!countrySlug) notFound();
 
-  if (!cityData || !countryData) return notFound();
+  const city = getCityBySlug(citySlug);
+  if (!city || city.countrySlug !== countrySlug) notFound();
 
-  const content = generateCityPageContent(citySlug, countrySlug);
+  const country = getCountryBySlug(countrySlug);
+
+  const overviewParagraphs = buildCityOverview(city, country);
+  const cityProblems = buildCityProblems(city, country);
+  const serviceHighlights = buildCityServiceHighlights(city);
+  const industryHighlights = buildCityIndustries(city);
+  const engineeringChecklist = buildCityEngineeringChecklist(city);
+  const extendedFaqs = buildCityExtendedFaqs(city, country);
+  const allFaqs = [...city.faqs, ...extendedFaqs];
 
   return (
-    <div className="min-h-screen bg-white">
-      <section className="py-16 px-4 md:px-8 bg-gradient-to-br from-blue-50 to-indigo-50">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            {cityData.cityName}, {countryData.countryName}
+    <>
+      <JsonLd data={faqJsonLd(allFaqs)} />
+
+      <section className="border-b border-border py-14">
+        <Container>
+          <Breadcrumbs
+            items={[
+              { name: "Locations", href: "/locations" },
+              ...(country ? [{ name: country.countryName, href: `/${locale}` }] : []),
+              { name: city.cityName, href: `/${locale}/${city.slug}` },
+            ]}
+          />
+          <span className="mt-4 inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-primary">
+            <Icon name="map" className="w-3.5 h-3.5" />
+            {country?.countryName ?? city.countrySlug}
+          </span>
+          <h1 className="mt-4 max-w-3xl text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+            {city.h1}
           </h1>
-          <p className="text-lg text-gray-600 mb-6">
-            Expert blockchain development services for {cityData.cityName} businesses.
-          </p>
-        </div>
-      </section>
-
-      <section className="py-16 px-4 md:px-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="prose prose-lg max-w-none">
-            <div dangerouslySetInnerHTML={{ __html: content.replace(/^#/gm, "##") }} />
+          <div className="mt-8">
+            <a
+              href="/contact"
+              className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3.5 text-sm font-semibold text-background hover:bg-primary/90 transition-colors"
+            >
+              Talk to Our Team
+              <Icon name="arrow" className="w-4 h-4" />
+            </a>
           </div>
-        </div>
+        </Container>
       </section>
 
-      <section className="py-16 px-4 md:px-8 bg-blue-600 text-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-6">Ready to Build in {cityData.cityName}?</h2>
-          <a
-            href={`${siteConfig.url}/contact`}
-            className="inline-block px-8 py-3 bg-white text-blue-600 font-bold rounded-lg hover:bg-gray-100"
-          >
-            Get Free Consultation
-          </a>
-        </div>
+      <section className="py-16 border-b border-border">
+        <Container className="max-w-3xl">
+          <SectionHeading eyebrow="Overview" title={`Building technology for ${city.cityName} businesses`} />
+          <div className="mt-8 space-y-5">
+            {overviewParagraphs.map((paragraph, i) => (
+              <p key={i} className="text-sm leading-relaxed text-muted sm:text-base">
+                {paragraph}
+              </p>
+            ))}
+          </div>
+        </Container>
       </section>
-    </div>
+
+      {cityProblems.length > 0 && (
+        <section className="py-16">
+          <Container>
+            <SectionHeading eyebrow="The Challenge" title={`What businesses run into in ${city.cityName}`} />
+            <div className="mt-8">
+              <PainPointGrid items={cityProblems} />
+            </div>
+          </Container>
+        </section>
+      )}
+
+      {serviceHighlights.length > 0 && (
+        <section className="py-16 border-t border-border bg-surface">
+          <Container>
+            <SectionHeading eyebrow="How We Solve It" title={`Engineering focus for ${city.cityName} businesses`} />
+            <div className="mt-8">
+              <SolutionGrid items={serviceHighlights} />
+            </div>
+          </Container>
+        </section>
+      )}
+
+      {city.detailedAnalysis && city.detailedAnalysis.length > 0 && (
+        <section className="py-16 border-t border-border">
+          <Container className="max-w-3xl">
+            <SectionHeading eyebrow="Market Analysis" title={`A closer look at ${city.cityName}`} />
+            <div className="mt-8 space-y-10">
+              {city.detailedAnalysis.map((analysis, i) => (
+                <div key={i}>
+                  <h3 className="text-lg font-semibold text-foreground">{analysis.heading}</h3>
+                  <div className="mt-3 space-y-4">
+                    {analysis.paragraphs.map((paragraph, j) => (
+                      <p key={j} className="text-sm leading-relaxed text-muted sm:text-base">
+                        {paragraph}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Container>
+        </section>
+      )}
+
+      {city.marketDrivers && city.marketDrivers.length > 0 && (
+        <section className="py-16 border-t border-border bg-surface">
+          <Container>
+            <SectionHeading eyebrow="Market Drivers" title={`What's accelerating growth in ${city.cityName}`} />
+            <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+              {city.marketDrivers.map((driver, i) => (
+                <div key={i} className="rounded-xl border border-border bg-background p-5">
+                  <Icon name="check" className="w-5 h-5 text-primary mb-4" />
+                  <p className="text-sm leading-relaxed text-foreground/90">{driver}</p>
+                </div>
+              ))}
+            </div>
+          </Container>
+        </section>
+      )}
+
+      {industryHighlights.length > 0 && (
+        <section className="py-16 border-t border-border">
+          <Container>
+            <SectionHeading eyebrow="Industries" title={`Sectors we support in ${city.cityName}`} />
+            <div className="mt-8">
+              <PainPointGrid items={industryHighlights} />
+            </div>
+          </Container>
+        </section>
+      )}
+
+      <section className="py-16 border-t border-border bg-surface">
+        <Container>
+          <SectionHeading eyebrow="Our Standard" title={`What every ${city.cityName} engagement includes`} />
+          <div className="mt-8">
+            <SolutionGrid items={engineeringChecklist} />
+          </div>
+        </Container>
+      </section>
+
+      <section className="py-16 border-t border-border bg-surface">
+        <Container>
+          <SectionHeading eyebrow="Where We Help" title={`Services we lead with in ${city.cityName}`} />
+          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+            {city.focusServiceSlugs.map((slug) => {
+              const service = getServiceBySlug(slug);
+              if (!service) return null;
+              return (
+                <Link
+                  key={slug}
+                  href={`/services/${slug}/${city.countrySlug}/${city.slug}`}
+                  className="group rounded-xl border border-border bg-background p-5 hover:border-primary/50 transition-colors"
+                >
+                  <p className="text-xs font-medium uppercase tracking-wide text-primary">{service.category}</p>
+                  <h3 className="mt-1.5 text-sm font-semibold text-foreground">
+                    {service.name} in {city.cityName}
+                  </h3>
+                  <span className="mt-3 inline-flex items-center gap-1.5 text-xs font-medium text-primary">
+                    View details
+                    <Icon name="arrow" className="w-3.5 h-3.5" />
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+        </Container>
+      </section>
+
+      <section className="py-16 border-t border-border">
+        <Container className="max-w-3xl">
+          <SectionHeading eyebrow="FAQ" title={`${city.cityName} — frequently asked questions`} />
+          <div className="mt-8">
+            <FaqAccordion faqs={allFaqs} />
+          </div>
+        </Container>
+      </section>
+
+      <section className="py-16 border-t border-border bg-surface">
+        <Container>
+          <LiveDemos />
+        </Container>
+      </section>
+
+      <section className="py-16">
+        <Container>
+          <CtaSection
+            title={`Building for the ${city.cityName} market?`}
+            description="Book a discovery call and get a scoped technical estimate within 5 business days."
+          />
+        </Container>
+      </section>
+    </>
   );
 }

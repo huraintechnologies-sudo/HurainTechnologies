@@ -20,6 +20,7 @@ import { cities } from "@/data/cities";
 import { allLocales, countrySlugForLocale } from "@/lib/locale";
 import {
   buildCountryOverview,
+  buildCountryProblems,
   buildCountryServiceHighlights,
   buildCountryIndustries,
   buildCountryEngineeringChecklist,
@@ -50,6 +51,7 @@ export default async function LocaleCountryPage({ params }: { params: Promise<{ 
   if (!country) notFound();
 
   const overviewParagraphs = buildCountryOverview(country);
+  const countryProblems = buildCountryProblems(country);
   const serviceHighlights = buildCountryServiceHighlights(country);
   const industryHighlights = buildCountryIndustries(country);
   const engineeringChecklist = buildCountryEngineeringChecklist(country);
@@ -213,10 +215,21 @@ export default async function LocaleCountryPage({ params }: { params: Promise<{ 
         </Container>
       </section>
 
-      {serviceHighlights.length > 0 && (
+      {countryProblems.length > 0 && (
         <section className="py-16 border-t border-border">
           <Container>
-            <SectionHeading eyebrow="What We Build" title={`Engineering focus for ${country.countryName} businesses`} />
+            <SectionHeading eyebrow="The Challenge" title={`What businesses run into in ${country.countryName}`} />
+            <div className="mt-8">
+              <PainPointGrid items={countryProblems} />
+            </div>
+          </Container>
+        </section>
+      )}
+
+      {serviceHighlights.length > 0 && (
+        <section className="py-16 border-t border-border bg-surface">
+          <Container>
+            <SectionHeading eyebrow="How We Solve It" title={`Engineering focus for ${country.countryName} businesses`} />
             <div className="mt-8">
               <SolutionGrid items={serviceHighlights} />
             </div>

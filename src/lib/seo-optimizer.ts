@@ -332,7 +332,7 @@ Contact our team today to discuss your project requirements and get a custom pro
 **Contact Information:**
 📧 Email: huraintechnologies@gmail.com
 📱 WhatsApp: +91 76009 07288
-🌐 Website: https://hurain-technologies.vercel.app
+🌐 Website: https://www.huraintechnologies.com
 
 ---
 

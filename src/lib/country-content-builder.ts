@@ -83,6 +83,37 @@ export function buildCountryOverview(country: CountryPage): string[] {
   return [paragraphOne, paragraphTwo, additionalRegulatoryContext, paragraphThree, paragraphFour];
 }
 
+const SCALE_CHALLENGES = [
+  "a platform that passed early review but wasn't architected for the transaction volume that comes with real growth",
+  "engineering decisions made for a different market's regulatory assumptions that don't transfer cleanly",
+  "a security posture that was adequate at launch but hasn't kept pace with the platform's own growth in value and attack surface",
+  "manual processes — reconciliation, compliance review, reporting — that worked at low volume and now consume disproportionate team time",
+];
+
+export function buildCountryProblems(country: CountryPage): { title: string; description: string }[] {
+  const seed = seedFromSlug(country.slug);
+  const problems: { title: string; description: string }[] = [];
+
+  country.regulatoryNotes.slice(0, 2).forEach((note, i) => {
+    problems.push({
+      title: i === 0 ? `Meeting ${country.countryName}'s regulatory expectations technically` : `Staying current as ${country.countryName}'s framework evolves`,
+      description: note,
+    });
+  });
+
+  problems.push({
+    title: `Scaling past ${pick(SCALE_CHALLENGES, seed)}`,
+    description: `Businesses operating in ${country.countryName} often reach a point where the platform that got them to launch isn't the platform that can carry them through their next stage of growth — and retrofitting scale onto a system not designed for it is far more expensive than designing for it from the start.`,
+  });
+
+  problems.push({
+    title: `Finding an engineering partner who understands ${country.countryName} specifically`,
+    description: `Generic development shops apply the same playbook everywhere, which means someone on your team ends up re-explaining local regulatory and market context on every decision — slowing delivery and increasing the risk that something specific to ${country.countryName} gets missed.`,
+  });
+
+  return problems;
+}
+
 export function buildCountryServiceHighlights(
   country: CountryPage
 ): { title: string; description: string }[] {
