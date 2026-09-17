@@ -15,10 +15,9 @@ import { JsonLd } from "@/components/JsonLd";
 import { Icon } from "@/components/Icon";
 import {
   strongestSolutionCountryJsonLd,
-  breadcrumbJsonLd,
-  strongestOrganizationJsonLd,
-  strongestWebsiteJsonLd
+  breadcrumbJsonLd
 } from "@/lib/jsonld-enhanced";
+import { getSolutionPageSchemas } from "@/lib/jsonld-universal";
 
 // Hero images
 const solutionImages: Record<string, { src: string; alt: string }> = {
@@ -79,15 +78,13 @@ export default async function SolutionCountryPage({ params }: Props) {
   return (
     <>
       <JsonLd
-        data={[
-          strongestOrganizationJsonLd(),
-          strongestWebsiteJsonLd(),
+        data={getSolutionPageSchemas(
           strongestSolutionCountryJsonLd(
             { name: vertical.name, slug: vertical.slug, keywords: vertical.keywords || [] },
             countryData
           ),
-          breadcrumbJsonLd(breadcrumbItems),
-        ]}
+          breadcrumbJsonLd(breadcrumbItems)
+        )}
       />
 
       {/* Hero Section with Image */}

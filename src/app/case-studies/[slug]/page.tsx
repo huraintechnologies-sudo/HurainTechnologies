@@ -11,6 +11,7 @@ import { RelatedServices } from "@/components/ContentGrids";
 import { LiveDemos } from "@/components/LiveDemos";
 import { buildMetadata } from "@/lib/seo";
 import { caseStudyJsonLd } from "@/lib/jsonld";
+import { getCaseStudySchemas } from "@/lib/jsonld-universal";
 import { caseStudies, getCaseStudyBySlug } from "@/data/case-studies";
 import { getCaseStudyImage } from "@/lib/unsplash-service";
 
@@ -41,7 +42,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
 
   return (
     <>
-      <JsonLd data={caseStudyJsonLd(caseStudy)} />
+      <JsonLd data={getCaseStudySchemas(caseStudyJsonLd(caseStudy))} />
 
       <section className="border-b border-border py-14">
         <Container className="max-w-4xl">

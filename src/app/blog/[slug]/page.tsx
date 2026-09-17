@@ -10,6 +10,7 @@ import { RelatedServices } from "@/components/ContentGrids";
 import { LiveDemos } from "@/components/LiveDemos";
 import { buildMetadata } from "@/lib/seo";
 import { blogPostingJsonLd } from "@/lib/jsonld";
+import { getBlogPostSchemas } from "@/lib/jsonld-universal";
 import { blogPosts, getBlogPostBySlug } from "@/data/blog-posts";
 import { getBlogPostImage } from "@/lib/unsplash-service";
 
@@ -42,7 +43,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   return (
     <>
-      <JsonLd data={blogPostingJsonLd(post)} />
+      <JsonLd data={getBlogPostSchemas(blogPostingJsonLd(post))} />
 
       <article>
         <section className="border-b border-border py-14">

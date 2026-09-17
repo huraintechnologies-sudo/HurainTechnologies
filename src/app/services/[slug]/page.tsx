@@ -20,6 +20,7 @@ import { CountryLinksGrid } from "@/components/CountryLinksGrid";
 import { LiveDemos } from "@/components/LiveDemos";
 import { buildMetadata } from "@/lib/seo";
 import { faqJsonLd, serviceJsonLd } from "@/lib/jsonld";
+import { getServicePageSchemas } from "@/lib/jsonld-universal";
 import { services, getServiceBySlug } from "@/data/services";
 import { getServiceImage } from "@/lib/unsplash-service";
 
@@ -93,7 +94,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
 
   return (
     <>
-      <JsonLd data={[serviceJsonLd(service), faqJsonLd(service.faqs)]} />
+      <JsonLd data={getServicePageSchemas(serviceJsonLd(service), faqJsonLd(service.faqs))} />
 
       <section className="border-b border-border">
         {/* Service hero image */}

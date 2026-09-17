@@ -12,6 +12,7 @@ import { CountryLinksGrid } from "@/components/CountryLinksGrid";
 import { LiveDemos } from "@/components/LiveDemos";
 import { JsonLd } from "@/components/JsonLd";
 import { faqJsonLd } from "@/lib/jsonld";
+import { getPageSchemas } from "@/lib/jsonld-universal";
 import { buildMetadata } from "@/lib/seo";
 import { industries, getIndustryBySlug } from "@/data/industries";
 import { getIndustryImage } from "@/lib/unsplash-service";
@@ -42,7 +43,7 @@ export default async function IndustryPage({ params }: { params: Promise<{ slug:
 
   return (
     <>
-      {industry.faqs && <JsonLd data={faqJsonLd(industry.faqs)} />}
+      {industry.faqs && <JsonLd data={getPageSchemas(faqJsonLd(industry.faqs))} />}
 
       {industryImage && (
         <section className="border-b border-border">
