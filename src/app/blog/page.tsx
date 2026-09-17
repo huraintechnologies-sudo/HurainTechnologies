@@ -9,6 +9,8 @@ import { itemListJsonLd } from "@/lib/jsonld";
 import { buildMetadata } from "@/lib/seo";
 import { siteConfig } from "@/lib/site-config";
 import { blogPosts } from "@/data/blog-posts";
+import { ultraStrongOrganizationJsonLd } from "@/lib/jsonld-ultra-strong";
+import { collectionPageJsonLd, webPageJsonLd, breadcrumbJsonLdComplete } from "@/lib/jsonld-seo-complete";
 
 export const metadata: Metadata = buildMetadata({
   title: "Blog | Blockchain, Payments & Security Insights",
@@ -18,13 +20,54 @@ export const metadata: Metadata = buildMetadata({
 });
 
 export default function BlogIndexPage() {
+  const blogKeywords = [
+    "blockchain development blog",
+    "fintech engineering insights",
+    "cloud architecture articles",
+    "API security best practices",
+    "smart contract development guide",
+    "cryptocurrency engineering",
+    "payment systems architecture",
+    "software development insights",
+  ];
+
+  const breadcrumbs = [
+    { name: "Home", url: siteConfig.url },
+    { name: "Blog", url: `${siteConfig.url}/blog` },
+  ];
+
   return (
     <>
       <JsonLd
-        data={itemListJsonLd(
-          "Hurain Technologies Blog",
-          blogPosts.map((p) => ({ name: p.title, url: `${siteConfig.url}/blog/${p.slug}` }))
-        )}
+        data={[
+          ultraStrongOrganizationJsonLd(),
+          {
+            "@type": "WebSite",
+            "@id": `${siteConfig.url}/#website`,
+            name: siteConfig.name,
+            url: siteConfig.url,
+          },
+          collectionPageJsonLd(
+            "Hurain Technologies Blog",
+            "Engineering insights on blockchain, fintech, cloud architecture, API security, and payments",
+            blogPosts.length,
+            blogPosts.map((p) => ({
+              name: p.title,
+              url: `${siteConfig.url}/blog/${p.slug}`,
+              description: p.excerpt,
+            }))
+          ),
+          itemListJsonLd(
+            "Blog Posts",
+            blogPosts.map((p) => ({ name: p.title, url: `${siteConfig.url}/blog/${p.slug}` }))
+          ),
+          webPageJsonLd(
+            "Engineering Blog - Hurain Technologies",
+            "Practical insights on blockchain, payments, cloud architecture, and security from experienced engineers",
+            blogKeywords
+          ),
+          breadcrumbJsonLdComplete(breadcrumbs),
+        ]}
       />
       <section className="border-b border-border py-14">
         <Container>

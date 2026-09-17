@@ -11,6 +11,8 @@ import { itemListJsonLd } from "@/lib/jsonld";
 import { buildMetadata } from "@/lib/seo";
 import { siteConfig } from "@/lib/site-config";
 import { caseStudies } from "@/data/case-studies";
+import { ultraStrongOrganizationJsonLd } from "@/lib/jsonld-ultra-strong";
+import { collectionPageJsonLd, webPageJsonLd, breadcrumbJsonLdComplete } from "@/lib/jsonld-seo-complete";
 
 export const metadata: Metadata = buildMetadata({
   title: "Case Studies | Blockchain, Payments & API Engineering Results",
@@ -20,13 +22,54 @@ export const metadata: Metadata = buildMetadata({
 });
 
 export default function CaseStudiesPage() {
+  const keywords = [
+    "blockchain case study",
+    "fintech engineering results",
+    "payment systems implementation",
+    "API integration case study",
+    "crypto exchange development",
+    "fraud detection system",
+    "cloud modernization case study",
+    "enterprise software results",
+  ];
+
+  const breadcrumbs = [
+    { name: "Home", url: siteConfig.url },
+    { name: "Case Studies", url: `${siteConfig.url}/case-studies` },
+  ];
+
   return (
     <>
       <JsonLd
-        data={itemListJsonLd(
-          "Hurain Technologies Case Studies",
-          caseStudies.map((cs) => ({ name: cs.title, url: `${siteConfig.url}/case-studies/${cs.slug}` }))
-        )}
+        data={[
+          ultraStrongOrganizationJsonLd(),
+          {
+            "@type": "WebSite",
+            "@id": `${siteConfig.url}/#website`,
+            name: siteConfig.name,
+            url: siteConfig.url,
+          },
+          collectionPageJsonLd(
+            "Hurain Technologies Case Studies",
+            "Real engineering results from blockchain, fintech, payments, and API projects",
+            caseStudies.length,
+            caseStudies.map((cs) => ({
+              name: cs.title,
+              url: `${siteConfig.url}/case-studies/${cs.slug}`,
+              description: cs.summary,
+            }))
+          ),
+          itemListJsonLd(
+            "Case Studies",
+            caseStudies.map((cs) => ({ name: cs.title, url: `${siteConfig.url}/case-studies/${cs.slug}` }))
+          ),
+          webPageJsonLd(
+            "Case Studies - Hurain Technologies",
+            "Real results from blockchain, fintech, payments, and API engineering projects",
+            keywords
+          ),
+          breadcrumbJsonLdComplete(breadcrumbs),
+        ]}
       />
       <section className="border-b border-border py-14">
         <Container>
