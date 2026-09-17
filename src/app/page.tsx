@@ -15,6 +15,8 @@ import { JsonLd } from "@/components/JsonLd";
 import { faqJsonLd } from "@/lib/jsonld";
 import { buildMetadata } from "@/lib/seo";
 import { siteConfig } from "@/lib/site-config";
+import { ultraStrongOrganizationJsonLd } from "@/lib/jsonld-ultra-strong";
+import { breadcrumbJsonLd } from "@/lib/jsonld-enhanced";
 import { services } from "@/data/services";
 import { industries } from "@/data/industries";
 import { caseStudies } from "@/data/case-studies";
@@ -70,9 +72,34 @@ export default async function HomePage() {
   const caseStudyImages = getCaseStudyImages();
   const blogImages = getBlogImages();
 
+  const breadcrumbItems = [
+    { name: "Home", url: `${siteConfig.url}` },
+  ];
+
   return (
     <>
-      <JsonLd data={faqJsonLd(homeFaqs)} />
+      <JsonLd
+        data={[
+          ultraStrongOrganizationJsonLd(),
+          {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "@id": `${siteConfig.url}/#website`,
+            name: siteConfig.name,
+            url: siteConfig.url,
+            potentialAction: {
+              "@type": "SearchAction",
+              target: {
+                "@type": "EntryPoint",
+                urlTemplate: `${siteConfig.url}/search?q={search_term_string}`,
+              },
+              query_input: "required name=search_term_string",
+            },
+          },
+          faqJsonLd(homeFaqs),
+          breadcrumbJsonLd(breadcrumbItems),
+        ]}
+      />
 
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-border">
