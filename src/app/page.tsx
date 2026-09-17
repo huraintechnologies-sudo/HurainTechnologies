@@ -66,13 +66,13 @@ const homeFaqs = [
 ];
 
 export default async function HomePage() {
-  // Fetch unique images for case studies and blog posts
+  // Fetch unique images for case studies and blog posts with index variation
   const caseStudyImages = await Promise.all(
-    caseStudies.map(cs => getCaseStudyImage(cs.industry))
+    caseStudies.map((cs, i) => getCaseStudyImage(cs.industry, i))
   );
 
   const blogPostImages = await Promise.all(
-    blogPosts.map(post => getBlogPostImage(post.title))
+    blogPosts.map((post, i) => getBlogPostImage(post.title, i))
   );
 
   return (

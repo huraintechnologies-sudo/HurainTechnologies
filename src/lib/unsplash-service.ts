@@ -149,19 +149,39 @@ export async function getImageForPageType(
   return null;
 }
 
-// Specific functions for different page types
-export async function getBlogPostImage(title: string): Promise<{ url: string; alt: string } | null> {
+// Specific functions for different page types with unique variation
+export async function getBlogPostImage(title: string, index?: number): Promise<{ url: string; alt: string } | null> {
+  // Create variation keywords for same title at different positions
+  const variations = [
+    `${title} technology`,
+    `${title} engineering`,
+    `${title} development`,
+    `${title} innovation`,
+    `${title} software`,
+  ];
+  const query = variations[index ? index % variations.length : 0] || `${title} technology`;
+
   return getUnsplashImage({
-    query: `${title} technology business`,
+    query,
     width: 1200,
     height: 630,
     orientation: "landscape",
   }).then(img => img ? { url: img.urls.regular, alt: img.alt_description || title } : null);
 }
 
-export async function getCaseStudyImage(industry: string): Promise<{ url: string; alt: string } | null> {
+export async function getCaseStudyImage(industry: string, index?: number): Promise<{ url: string; alt: string } | null> {
+  // Create variation keywords for same industry at different positions
+  const variations = [
+    `${industry} platform`,
+    `${industry} system`,
+    `${industry} application`,
+    `${industry} technology`,
+    `${industry} success`,
+  ];
+  const query = variations[index ? index % variations.length : 0] || `${industry} platform`;
+
   return getUnsplashImage({
-    query: `${industry} success case study`,
+    query,
     width: 1200,
     height: 800,
     orientation: "landscape",
