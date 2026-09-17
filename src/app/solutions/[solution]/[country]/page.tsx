@@ -4,6 +4,7 @@ import { serviceVerticals } from "@/data/service-verticals";
 import { countries } from "@/data/countries";
 import { siteConfig } from "@/lib/site-config";
 import { localeForCountrySlug } from "@/lib/locale";
+import { getCountryMarketContent, getCountryKeywords } from "@/lib/solution-country-content";
 import Link from "next/link";
 
 interface Props {
@@ -59,6 +60,9 @@ export default async function SolutionCountryPage({ params }: Props) {
 
   if (!vertical || !countryData) return notFound();
 
+  const content = getCountryMarketContent(countryData.countryName, vertical.name);
+  const keywords = getCountryKeywords(countryData.countryName, vertical.keywords);
+
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
@@ -79,93 +83,72 @@ export default async function SolutionCountryPage({ params }: Props) {
         </div>
       </section>
 
-      {/* Main Content */}
+      {/* Main Content - Rich, Comprehensive */}
       <section className="py-16 px-4 md:px-8">
         <div className="max-w-4xl mx-auto space-y-12">
-          {/* Overview */}
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Why Choose Us for {vertical.name} in {countryData.countryName}?</h2>
-            <p className="text-gray-600 mb-6 leading-relaxed">
-              Hurain Technologies brings specialized {vertical.name.toLowerCase()} expertise to {countryData.countryName}.
-              We understand the local market dynamics, business landscape, and regulatory requirements specific to {countryData.countryName}.
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-gray-50 p-6 rounded-lg">
-                <h3 className="font-bold text-gray-900 mb-3">Local Expertise</h3>
-                <p className="text-sm text-gray-600">
-                  Deep understanding of {countryData.countryName}'s market, business culture, and industry requirements.
-                </p>
-              </div>
-              <div className="bg-gray-50 p-6 rounded-lg">
-                <h3 className="font-bold text-gray-900 mb-3">Global Standards</h3>
-                <p className="text-sm text-gray-600">
-                  Enterprise-grade development that meets international quality and compliance standards.
-                </p>
-              </div>
-              <div className="bg-gray-50 p-6 rounded-lg">
-                <h3 className="font-bold text-gray-900 mb-3">Rapid Delivery</h3>
-                <p className="text-sm text-gray-600">
-                  Quick turnaround times with agile development methodology and local support.
-                </p>
-              </div>
-              <div className="bg-gray-50 p-6 rounded-lg">
-                <h3 className="font-bold text-gray-900 mb-3">24/7 Support</h3>
-                <p className="text-sm text-gray-600">
-                  Local support team available for {countryData.countryName} businesses with timezone alignment.
-                </p>
-              </div>
-            </div>
+
+          {/* Market Overview */}
+          <div className="prose prose-sm max-w-none">
+            <div dangerouslySetInnerHTML={{ __html: content.marketOverview.replace(/\n/g, '<br/>') }} className="text-gray-700 leading-relaxed space-y-4" />
           </div>
 
-          {/* Services */}
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">{vertical.name} Services in {countryData.countryName}</h2>
-            <div className="space-y-4">
-              {[
-                { title: "Custom Development", items: ["Full-stack development", "MVP to full product", "Custom features", "Legacy system modernization"] },
-                { title: "Technical Support", items: ["24/7 technical support", "Performance optimization", "Security updates", "Feature enhancements"] },
-                { title: "Integration Services", items: ["Third-party integrations", "API development", "Local payment integration", "Enterprise system integration"] },
-              ].map((service) => (
-                <div key={service.title} className="border rounded-lg p-6">
-                  <h3 className="font-bold text-gray-900 mb-3">{service.title}</h3>
-                  <ul className="grid grid-cols-2 gap-2">
-                    {service.items.map((item) => (
-                      <li key={item} className="text-gray-600 text-sm">✓ {item}</li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Why {Country} */}
+          {/* Why Country Matters */}
           <div className="bg-blue-50 p-8 rounded-lg">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Why {countryData.countryName} for {vertical.name}?</h2>
-            <p className="text-gray-600 mb-6">
-              {countryData.countryName} presents unique opportunities for {vertical.name.toLowerCase()} development.
-              With 16+ years of experience, we've successfully delivered solutions to 2,000+ businesses globally,
-              including many in {countryData.countryName}.
-            </p>
-            <div className="grid grid-cols-3 gap-4">
-              <div>
-                <div className="text-2xl font-bold text-blue-600 mb-2">16+</div>
-                <div className="text-sm text-gray-600">Years Experience</div>
+            <div dangerouslySetInnerHTML={{ __html: content.whyCountryMatters.replace(/\n/g, '<br/>') }} className="text-gray-700 leading-relaxed space-y-4" />
+          </div>
+
+          {/* Detailed Services */}
+          <div>
+            <div dangerouslySetInnerHTML={{ __html: content.detailedServices.replace(/\n/g, '<br/>').replace(/###/g, '<h4 class="text-xl font-bold text-gray-900 mt-6 mb-3">').replace(/##/g, '<h3 class="text-2xl font-bold text-gray-900 mb-4">') }} className="text-gray-700 leading-relaxed space-y-4" />
+          </div>
+
+          {/* Technology Stack */}
+          <div className="bg-gray-50 p-8 rounded-lg">
+            <div dangerouslySetInnerHTML={{ __html: content.technologyStack.replace(/\n/g, '<br/>').replace(/\*\*/g, '<strong>').replace(/::/g, '</strong>:') }} className="text-gray-700 leading-relaxed space-y-4" />
+          </div>
+
+          {/* Implementation Process */}
+          <div>
+            <div dangerouslySetInnerHTML={{ __html: content.implementationProcess.replace(/\n/g, '<br/>').replace(/###/g, '<h4 class="text-lg font-bold text-gray-900 mt-4 mb-2">').replace(/##/g, '<h3 class="text-2xl font-bold text-gray-900 mb-4">') }} className="text-gray-700 leading-relaxed space-y-4" />
+          </div>
+
+          {/* Case Studies */}
+          <div className="bg-blue-50 p-8 rounded-lg">
+            <div dangerouslySetInnerHTML={{ __html: content.casesAndExamples.replace(/\n/g, '<br/>').replace(/###/g, '<h4 class="text-lg font-bold text-gray-900 mt-4 mb-2">').replace(/##/g, '<h3 class="text-2xl font-bold text-gray-900 mb-4">') }} className="text-gray-700 leading-relaxed space-y-4" />
+          </div>
+
+          {/* FAQ */}
+          <div>
+            <div dangerouslySetInnerHTML={{ __html: content.faq.replace(/\n/g, '<br/>').replace(/###/g, '<h4 class="text-lg font-bold text-gray-900 mt-4 mb-2">').replace(/##/g, '<h3 class="text-2xl font-bold text-gray-900 mb-4">') }} className="text-gray-700 leading-relaxed space-y-4" />
+          </div>
+
+          {/* Why Choose Us */}
+          <div className="border-2 border-blue-200 p-8 rounded-lg">
+            <div dangerouslySetInnerHTML={{ __html: content.whyChooseUs.replace(/\n/g, '<br/>').replace(/###/g, '<h4 class="text-lg font-bold text-gray-900 mt-3 mb-2">').replace(/##/g, '<h3 class="text-2xl font-bold text-gray-900 mb-4">') }} className="text-gray-700 leading-relaxed space-y-4" />
+          </div>
+
+          {/* Stats Section */}
+          <div className="bg-blue-50 p-8 rounded-lg">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="text-center">
+                <div className="text-4xl font-bold text-blue-600 mb-2">16+</div>
+                <div className="text-gray-700 font-semibold">Years Experience</div>
               </div>
-              <div>
-                <div className="text-2xl font-bold text-blue-600 mb-2">2000+</div>
-                <div className="text-sm text-gray-600">Projects Delivered</div>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-blue-600 mb-2">2000+</div>
+                <div className="text-gray-700 font-semibold">Projects Delivered</div>
               </div>
-              <div>
-                <div className="text-2xl font-bold text-blue-600 mb-2">98%</div>
-                <div className="text-sm text-gray-600">Client Retention</div>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-blue-600 mb-2">98%</div>
+                <div className="text-gray-700 font-semibold">Client Retention</div>
               </div>
             </div>
           </div>
 
           {/* CTA */}
           <div className="bg-blue-600 text-white p-8 rounded-lg text-center">
-            <h2 className="text-2xl font-bold mb-4">Ready to Start Your {vertical.name} Project in {countryData.countryName}?</h2>
-            <p className="mb-6 text-blue-100">
+            <h2 className="text-3xl font-bold mb-4">Ready to Start Your {vertical.name} Project in {countryData.countryName}?</h2>
+            <p className="mb-6 text-blue-100 text-lg">
               Let's discuss how we can help you build a world-class {vertical.name.toLowerCase()} solution for your {countryData.countryName} business.
             </p>
             <a
@@ -174,6 +157,11 @@ export default async function SolutionCountryPage({ params }: Props) {
             >
               Get a Free Consultation
             </a>
+          </div>
+
+          {/* Keywords for SEO (hidden) */}
+          <div className="hidden">
+            <p>{keywords.join(', ')}</p>
           </div>
         </div>
       </section>
