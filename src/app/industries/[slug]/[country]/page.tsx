@@ -13,19 +13,19 @@ import { PainPointGrid, SolutionGrid, RelatedServices } from "@/components/Conte
 import { buildMetadata } from "@/lib/seo";
 import { faqJsonLd } from "@/lib/jsonld";
 import { industries, getIndustryBySlug } from "@/data/industries";
-import { countries, getCountryBySlug } from "@/data/countries";
+import { getCountryBySlug } from "@/data/countries";
+import { countries as curatedCountries } from "@/data/countries-curated";
 import { FaqItem } from "@/lib/types";
 import { localeForCountrySlug } from "@/lib/locale";
 
-export const revalidate = 3600; // ISR: revalidate every hour
+// Revalidate rarely — content is near-static, and this keeps ISR writes low
+// while every country combination still stays reachable via on-demand ISR
+// (dynamicParams defaults to true, so nothing 404s).
+export const revalidate = 2592000; // 30 days
 
 export function generateStaticParams() {
-  // Limit pre-rendering to top 2 industries × 10 top countries (~20 pages)
-  // Rest use on-demand ISR (Vercel will cache on first visit)
-  const topIndustries = industries.slice(0, 2);
-  const topCountries = countries.slice(0, 10);
-  return topIndustries.flatMap((industry) =>
-    topCountries.map((country) => ({ slug: industry.slug, country: country.slug }))
+  return industries.flatMap((industry) =>
+    curatedCountries.map((country) => ({ slug: industry.slug, country: country.slug }))
   );
 }
 

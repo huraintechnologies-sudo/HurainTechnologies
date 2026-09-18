@@ -12,10 +12,11 @@ import { LiveDemos } from "@/components/LiveDemos";
 import { PainPointGrid, SolutionGrid } from "@/components/ContentGrids";
 import { buildMetadata } from "@/lib/seo";
 import { faqJsonLd } from "@/lib/jsonld";
-import { cities, getCityBySlug } from "@/data/cities";
+import { getCityBySlug } from "@/data/cities";
+import { cities as curatedCities } from "@/data/cities-curated";
 import { getCountryBySlug } from "@/data/countries";
 import { getServiceBySlug } from "@/data/services";
-import { countrySlugForLocale } from "@/lib/locale";
+import { countrySlugForLocale, localeForCountrySlug } from "@/lib/locale";
 import {
   buildCityOverview,
   buildCityProblems,
@@ -29,13 +30,16 @@ interface Props {
   params: Promise<{ locale: string; city: string }>;
 }
 
-// ISR: pre-build nothing, generate on first visit and cache for an hour —
-// matches the pattern used by services/[slug]/[country]/[city].
-export const dynamicParams = true;
-export const revalidate = 3600;
+// dynamicParams stays true (default) so every city still resolves via
+// on-demand ISR; this just pre-renders the curated set and revalidates
+// rarely, since content is near-static, to keep ISR writes low.
+export const revalidate = 2592000; // 30 days
 
 export function generateStaticParams() {
-  return [];
+  return curatedCities.map((city) => ({
+    locale: localeForCountrySlug(city.countrySlug) ?? city.countrySlug,
+    city: city.slug,
+  }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

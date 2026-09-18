@@ -12,7 +12,7 @@ import { buildMetadata } from "@/lib/seo";
 import { siteConfig } from "@/lib/site-config";
 import { caseStudies } from "@/data/case-studies";
 import { ultraStrongOrganizationJsonLd } from "@/lib/jsonld-ultra-strong";
-import { collectionPageJsonLd, webPageJsonLd, breadcrumbJsonLdComplete } from "@/lib/jsonld-seo-complete";
+import { collectionPageJsonLd, webPageJsonLd } from "@/lib/jsonld-seo-complete";
 
 export const metadata: Metadata = buildMetadata({
   title: "Case Studies | Blockchain, Payments & API Engineering Results",
@@ -31,11 +31,6 @@ export default function CaseStudiesPage() {
     "fraud detection system",
     "cloud modernization case study",
     "enterprise software results",
-  ];
-
-  const breadcrumbs = [
-    { name: "Home", url: siteConfig.url },
-    { name: "Case Studies", url: `${siteConfig.url}/case-studies` },
   ];
 
   return (
@@ -68,7 +63,6 @@ export default function CaseStudiesPage() {
             "Real results from blockchain, fintech, payments, and API engineering projects",
             keywords
           ),
-          breadcrumbJsonLdComplete(breadcrumbs),
         ]}
       />
       <section className="border-b border-border py-14">

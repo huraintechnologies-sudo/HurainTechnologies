@@ -363,7 +363,12 @@ export function ultraStrongSolutionJsonLd(
 
   return {
     "@context": "https://schema.org",
-    "@type": ["Service", "LocalBusiness", "ProfessionalService"],
+    // "Service" only — LocalBusiness/ProfessionalService are LocalBusiness
+    // subtypes that Google expects a real postal `address` for, which a
+    // per-country/city service listing doesn't have. Declaring those types
+    // without one flags "missing field 'address'" across every solution
+    // page (~1200 pages) in the Local Business structured data report.
+    "@type": "Service",
     "@id": `${siteConfig.url}/solutions#service-${solutionName}-${location}`,
 
     // Identity

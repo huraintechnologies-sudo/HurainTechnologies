@@ -19,17 +19,14 @@ import { cities as curatedCities } from "@/data/cities-curated";
 import { FaqItem } from "@/lib/types";
 import { localeForCountrySlug } from "@/lib/locale";
 
-// Enable Incremental Static Regeneration for unbuilt cities
-export const dynamicParams = true;
-export const revalidate = 3600; // ISR: revalidate every hour
+// Revalidate rarely — content is near-static — to keep ISR writes low.
+// Every other city still resolves via on-demand ISR (dynamicParams
+// defaults to true, nothing 404s); this just pre-renders the curated set.
+export const revalidate = 2592000; // 30 days
 
 export function generateStaticParams() {
-  // Only build top service × top 3 curated cities (~3 pages for fast local builds)
-  // Rest use on-demand ISR (Vercel will cache on first visit)
-  const topServices = services.slice(0, 1);
-  const topCities = curatedCities.slice(0, 3);
-  return topServices.flatMap((service) =>
-    topCities.map((city) => ({
+  return services.flatMap((service) =>
+    curatedCities.map((city) => ({
       slug: service.slug,
       country: city.countrySlug,
       city: city.slug,

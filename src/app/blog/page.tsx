@@ -10,7 +10,7 @@ import { buildMetadata } from "@/lib/seo";
 import { siteConfig } from "@/lib/site-config";
 import { blogPosts } from "@/data/blog-posts";
 import { ultraStrongOrganizationJsonLd } from "@/lib/jsonld-ultra-strong";
-import { collectionPageJsonLd, webPageJsonLd, breadcrumbJsonLdComplete } from "@/lib/jsonld-seo-complete";
+import { collectionPageJsonLd, webPageJsonLd } from "@/lib/jsonld-seo-complete";
 
 export const metadata: Metadata = buildMetadata({
   title: "Blog | Blockchain, Payments & Security Insights",
@@ -29,11 +29,6 @@ export default function BlogIndexPage() {
     "cryptocurrency engineering",
     "payment systems architecture",
     "software development insights",
-  ];
-
-  const breadcrumbs = [
-    { name: "Home", url: siteConfig.url },
-    { name: "Blog", url: `${siteConfig.url}/blog` },
   ];
 
   return (
@@ -66,7 +61,6 @@ export default function BlogIndexPage() {
             "Practical insights on blockchain, payments, cloud architecture, and security from experienced engineers",
             blogKeywords
           ),
-          breadcrumbJsonLdComplete(breadcrumbs),
         ]}
       />
       <section className="border-b border-border py-14">

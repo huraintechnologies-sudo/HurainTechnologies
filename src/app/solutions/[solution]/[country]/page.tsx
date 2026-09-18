@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import { serviceVerticals } from "@/data/service-verticals";
 import { countries } from "@/data/countries";
+import { countries as curatedCountries } from "@/data/countries-curated";
 import { siteConfig } from "@/lib/site-config";
 import { CountryLinksGrid } from "@/components/CountryLinksGrid";
 import { CityLinksGrid } from "@/components/CityLinksGrid";
@@ -13,11 +14,7 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { CtaSection } from "@/components/CtaSection";
 import { JsonLd } from "@/components/JsonLd";
 import { Icon } from "@/components/Icon";
-import {
-  breadcrumbJsonLd
-} from "@/lib/jsonld-enhanced";
 import { ultraStrongOrganizationJsonLd, ultraStrongSolutionJsonLd } from "@/lib/jsonld-ultra-strong";
-import { getSolutionPageSchemas } from "@/lib/jsonld-universal";
 import { buildSolutionPageKeywords } from "@/lib/keywords-builder";
 
 // Hero images
@@ -49,14 +46,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export const revalidate = 3600;
-export const dynamicParams = true;
+// Revalidate rarely — content is near-static — to keep ISR writes low.
+// Every other country still resolves via on-demand ISR (dynamicParams
+// defaults to true, nothing 404s); this just pre-renders the curated set.
+export const revalidate = 2592000; // 30 days
 
 export async function generateStaticParams() {
-  const topVerticals = serviceVerticals.slice(0, 5);
-  const topCountries = countries.slice(0, 20);
-  return topVerticals.flatMap((v) =>
-    topCountries.map((c) => ({ solution: v.slug, country: c.slug }))
+  return serviceVerticals.flatMap((v) =>
+    curatedCountries.map((c) => ({ solution: v.slug, country: c.slug }))
   );
 }
 
@@ -70,7 +67,6 @@ export default async function SolutionCountryPage({ params }: Props) {
   const solutionImg = solutionImages[solution] ?? defaultImage;
 
   const breadcrumbItems = [
-    { name: "Home", href: "/" },
     { name: "Solutions", href: "/solutions" },
     { name: vertical.name, href: `/solutions/${vertical.slug}` },
     { name: countryData.countryName, href: `/solutions/${vertical.slug}/${country}` },
@@ -83,7 +79,6 @@ export default async function SolutionCountryPage({ params }: Props) {
           ultraStrongOrganizationJsonLd(),
           { "@type": "WebSite", "@id": `${siteConfig.url}/#website`, name: siteConfig.name, url: siteConfig.url },
           ultraStrongSolutionJsonLd(vertical.name, countryData.countryName),
-          breadcrumbJsonLd(breadcrumbItems),
         ]}
       />
 

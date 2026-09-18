@@ -13,22 +13,21 @@ import { LiveDemos } from "@/components/LiveDemos";
 import { buildMetadata } from "@/lib/seo";
 import { faqJsonLd, serviceJsonLd } from "@/lib/jsonld";
 import { services, getServiceBySlug } from "@/data/services";
-import { countries, getCountryBySlug } from "@/data/countries";
+import { getCountryBySlug } from "@/data/countries";
+import { countries as curatedCountries } from "@/data/countries-curated";
 import { FaqItem } from "@/lib/types";
 import { localeForCountrySlug } from "@/lib/locale";
 
+// Pre-render the curated set at build time; every other country still
+// resolves via on-demand ISR (dynamicParams defaults to true, nothing 404s).
 export function generateStaticParams() {
-  // Limit pre-rendering to top 2 services x 10 top countries (~20 pages)
-  // Rest use on-demand ISR (Vercel will cache on first visit)
-  // This keeps local builds fast while Vercel generates others on-demand
-  const topServices = services.slice(0, 2);
-  const topCountries = countries.slice(0, 10);
-  return topServices.flatMap((service) =>
-    topCountries.map((country) => ({ slug: service.slug, country: country.slug }))
+  return services.flatMap((service) =>
+    curatedCountries.map((country) => ({ slug: service.slug, country: country.slug }))
   );
 }
 
-export const revalidate = 3600; // ISR: revalidate every hour
+// Revalidate rarely — content is near-static — to keep ISR writes low.
+export const revalidate = 2592000; // 30 days
 
 export async function generateMetadata({
   params,

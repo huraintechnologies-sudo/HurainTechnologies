@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { serviceVerticals } from "@/data/service-verticals";
 import { countries } from "@/data/countries";
 import { cities } from "@/data/cities";
+import { cities as curatedCities } from "@/data/cities-curated";
 import { siteConfig } from "@/lib/site-config";
 import { localeForCountrySlug } from "@/lib/locale";
 import { getCityMarketContent } from "@/lib/solution-city-content";
@@ -44,17 +45,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export const revalidate = 3600; // ISR: revalidate every hour
-export const dynamicParams = true; // Enable on-demand ISR for ALL city combinations
+// Revalidate rarely — content is near-static — to keep ISR writes low.
+// Every other city still resolves via on-demand ISR (dynamicParams
+// defaults to true, nothing 404s); this just pre-renders the curated set.
+export const revalidate = 2592000; // 30 days
 
 export async function generateStaticParams() {
-  // Pre-render popular combinations only (Vercel handles the rest via ISR)
-  // Top 3 solutions × Top 10 cities = 30 pre-rendered pages
-  // ALL other combinations (1000+ pages) generated on-demand via ISR
-  const topVerticals = serviceVerticals.slice(0, 3);
-  const topCities = cities.slice(0, 10);
-  return topVerticals.flatMap((vertical) =>
-    topCities.map((city) => ({
+  return serviceVerticals.flatMap((vertical) =>
+    curatedCities.map((city) => ({
       solution: vertical.slug,
       country: city.countrySlug,
       city: city.slug,

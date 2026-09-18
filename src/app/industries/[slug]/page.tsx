@@ -12,7 +12,7 @@ import { CountryLinksGrid } from "@/components/CountryLinksGrid";
 import { LiveDemos } from "@/components/LiveDemos";
 import { JsonLd } from "@/components/JsonLd";
 import { faqJsonLd } from "@/lib/jsonld";
-import { getPageSchemas } from "@/lib/jsonld-universal";
+import { getBaseSchemas, getPageSchemas } from "@/lib/jsonld-universal";
 import { buildIndustryPageKeywords } from "@/lib/keywords-builder";
 import { buildMetadata } from "@/lib/seo";
 import { industries, getIndustryBySlug } from "@/data/industries";
@@ -44,7 +44,7 @@ export default async function IndustryPage({ params }: { params: Promise<{ slug:
 
   return (
     <>
-      {industry.faqs && <JsonLd data={getPageSchemas(faqJsonLd(industry.faqs))} />}
+      <JsonLd data={industry.faqs ? getPageSchemas(faqJsonLd(industry.faqs)) : getBaseSchemas()} />
 
       {industryImage && (
         <section className="border-b border-border">
