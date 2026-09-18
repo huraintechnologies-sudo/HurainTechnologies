@@ -13,13 +13,13 @@ export const caseStudies: CaseStudy[] = [
     solution:
       "Hurain Technologies designed a multi-layer custody architecture combining HSM-backed key management, multi-signature approval workflows, and automated hot/warm/cold rebalancing triggered by real-time liquidity thresholds. We integrated the settlement layer with the exchange's matching engine and built full audit logging for every custody event to support the client's licensing submission.",
     results: [
-      { metric: "$120M+", label: "monthly transaction volume processed post-launch" },
+      { metric: "Automated", label: "hot/warm/cold rebalancing across all tiers" },
       { metric: "0", label: "security incidents since go-live" },
       { metric: "14 weeks", label: "from kickoff to production launch" },
       { metric: "40+", label: "digital assets supported at launch" },
     ],
     metaDescription:
-      "How Hurain Technologies built multi-chain custody infrastructure for a licensed crypto exchange, processing $120M+ in monthly volume with zero security incidents.",
+      "How Hurain Technologies built multi-chain custody infrastructure for a licensed crypto exchange, supporting high transaction volume with zero security incidents.",
   },
   {
     slug: "open-banking-api-rollout-regional-bank",

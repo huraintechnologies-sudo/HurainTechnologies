@@ -91,7 +91,7 @@ For larger ${cityName} enterprises:
 A leading ${cityName} retail company scaled their online presence through our ${verticalLower} platform. We developed an e-commerce system handling 50,000+ daily transactions, integrated with POS systems across 100+ stores, and implemented real-time inventory management. Result: 200% increase in online sales.
 
 ### ${cityName} Startup Rapid Scaling
-A ${cityName} fintech startup needed MVP development for payment processing. Our rapid development approach delivered a production-ready platform in 8 weeks. The startup secured Series A funding and is now processing $50M+ annually through our platform.
+A ${cityName} fintech startup needed MVP development for payment processing. Our rapid development approach delivered a production-ready platform in 8 weeks. The startup secured Series A funding and the platform now processes a substantial and growing volume of transactions.
 
 ### ${cityName} Healthcare Platform
 A major ${cityName} hospital group implemented our healthcare management platform serving 1M+ patient records, appointment scheduling, and telemedicine capabilities. The system reduced patient wait times by 40% and improved operational efficiency by 35%.
