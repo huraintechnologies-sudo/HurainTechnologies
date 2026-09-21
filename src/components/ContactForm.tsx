@@ -33,6 +33,7 @@ export function ContactForm() {
       "Hi Hurain Technologies, I'd like to send you a project inquiry.",
       "",
       `Name: ${name}`,
+      `Email: ${email}`,
       company && `Company: ${company}`,
       service && `Service: ${service}`,
       budget && `Estimated budget: ${budget}`,
