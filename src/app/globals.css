@@ -119,3 +119,14 @@ a {
     animation: none !important;
   }
 }
+
+/* These decorative hero animations (blurred drifting blobs + animated SVG
+   network) cost real main-thread/GPU time every frame — fine on desktop,
+   but a major contributor to mobile Total Blocking Time under Lighthouse's
+   CPU throttling. They're purely decorative (aria-hidden), so freeze them
+   on small screens; the shapes still render, just static. */
+@media (max-width: 767px) {
+  .animate-drift, .animate-drift-slow, .animate-grid-pan, .network-line, .network-node {
+    animation: none !important;
+  }
+}
