@@ -100,13 +100,6 @@ export function organizationJsonLd() {
       "@type": "Organization",
       name: siteConfig.parentGroup,
     },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: 4.8,
-      reviewCount: 500,
-      bestRating: 5,
-      worstRating: 1,
-    },
   };
 }
 
@@ -227,15 +220,6 @@ export function serviceJsonLd(service: ServiceContent) {
       priceCurrency: "USD",
       priceRange: "$$$",
     },
-    ratingValue: 4.8,
-    reviewCount: 150,
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: 4.8,
-      reviewCount: 150,
-      bestRating: 5,
-      worstRating: 1,
-    },
     audience: {
       "@type": "BusinessAudience",
       audienceType: "Fintechs, banks, payment providers, and Web3 businesses",
@@ -263,11 +247,6 @@ export function serviceLocationJsonLd(service: ServiceContent, country: { countr
       priceCurrency: "USD",
       priceRange: "$$$",
       availability: "InStock",
-    },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: 4.8,
-      reviewCount: 150,
     },
   };
 }
@@ -338,11 +317,6 @@ export function solutionJsonLd(solution: { name: string; slug: string; keywords:
       priceCurrency: "USD",
       priceRange: "$$$",
     },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: 4.8,
-      reviewCount: 120,
-    },
   };
 }
 
@@ -380,10 +354,5 @@ export function industryJsonLd(industry: { name: string; slug: string; keywords?
     provider: { "@id": `${siteConfig.url}/#organization` },
     keywords: (industry.keywords || [industry.name]).join(", "),
     areaServed: countries.map((c) => ({ "@type": "Country", name: c.countryName })),
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: 4.8,
-      reviewCount: 140,
-    },
   };
 }

@@ -228,34 +228,6 @@ export function ultraStrongOrganizationJsonLd() {
     priceRange: "$$$",
     priceCurrency: "USD",
 
-    // Ratings
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: 4.9,
-      ratingCount: 500,
-      reviewCount: 500,
-      bestRating: 5,
-      worstRating: 1,
-      name: "Excellent Service Quality",
-      description: "Based on 500+ client reviews and testimonials across all services",
-    },
-    review: [
-      {
-        "@type": "Review",
-        author: { "@type": "Organization", name: "Fortune 500 Company" },
-        datePublished: "2024-01-15",
-        reviewRating: { "@type": "Rating", ratingValue: 5, bestRating: 5, worstRating: 1 },
-        reviewBody: "Exceptional software development company with top-tier expertise",
-      },
-      {
-        "@type": "Review",
-        author: { "@type": "Organization", name: "Global Fintech Startup" },
-        datePublished: "2024-02-10",
-        reviewRating: { "@type": "Rating", ratingValue: 5, bestRating: 5, worstRating: 1 },
-        reviewBody: "Best blockchain development partner we've worked with",
-      },
-    ],
-
     // Credentials
     award: [
       "Best Blockchain Development Company 2024",
@@ -463,34 +435,6 @@ export function ultraStrongSolutionJsonLd(
         },
       ],
     },
-
-    // Ratings & Reviews
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: 4.9,
-      ratingCount: 250,
-      reviewCount: 250,
-      bestRating: 5,
-      worstRating: 1,
-      description: "Based on client reviews for this specific service",
-    },
-
-    review: [
-      {
-        "@type": "Review",
-        author: { "@type": "Organization", name: `${location} Enterprise` },
-        datePublished: new Date().toISOString().split("T")[0],
-        reviewRating: { "@type": "Rating", ratingValue: 5, bestRating: 5, worstRating: 1 },
-        reviewBody: `Excellent ${solutionName} services. Professional team, great support.`,
-      },
-      {
-        "@type": "Review",
-        author: { "@type": "Organization", name: `${location} Startup` },
-        datePublished: new Date().toISOString().split("T")[0],
-        reviewRating: { "@type": "Rating", ratingValue: 5, bestRating: 5, worstRating: 1 },
-        reviewBody: `Best ${solutionName} development partner in ${location}.`,
-      },
-    ],
 
     // Hours
     openingHoursSpecification: {
