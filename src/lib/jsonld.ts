@@ -93,6 +93,8 @@ export function organizationJsonLd() {
     sameAs: [
       siteConfig.social.linkedin,
       siteConfig.social.twitter,
+      siteConfig.social.instagram,
+      siteConfig.social.googleBusiness,
     ],
     areaServed: countries.map((c) => ({ "@type": "Country", name: c.countryName })),
     knowsAbout,
@@ -113,14 +115,6 @@ export function websiteJsonLd() {
     description: siteConfig.description,
     inLanguage: "en-US",
     publisher: { "@id": `${siteConfig.url}/#organization` },
-    potentialAction: {
-      "@type": "SearchAction",
-      target: {
-        "@type": "EntryPoint",
-        urlTemplate: `${siteConfig.url}/search?q={search_term_string}`,
-      },
-      "query-input": "required name=search_term_string",
-    },
   };
 }
 

@@ -21,7 +21,9 @@ type IconName =
   | "linkedin"
   | "twitter"
   | "github"
-  | "facebook";
+  | "facebook"
+  | "instagram"
+  | "google";
 
 const paths: Record<IconName, React.ReactNode> = {
   blockchain: (
@@ -131,6 +133,21 @@ const paths: Record<IconName, React.ReactNode> = {
   ),
   facebook: (
     <path d="M14 21v-7h2.4l.4-3H14V9c0-.9.2-1.5 1.6-1.5H17V5c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2H8.5v3H11v7z" />
+  ),
+  instagram: (
+    <>
+      <rect x="3" y="3" width="18" height="18" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.2" cy="6.8" r="0.9" fill="currentColor" stroke="none" />
+    </>
+  ),
+  google: (
+    <>
+      <path d="M20.5 12.2c0-.7-.1-1.4-.2-2H12v3.9h4.8a4.1 4.1 0 01-1.8 2.7v2.2h2.9c1.7-1.6 2.6-3.9 2.6-6.8z" fill="currentColor" stroke="none" />
+      <path d="M12 21c2.4 0 4.5-.8 5.9-2.1l-2.9-2.2c-.8.5-1.8.9-3 .9-2.3 0-4.3-1.6-5-3.7H4v2.3A9 9 0 0012 21z" fill="currentColor" stroke="none" />
+      <path d="M7 13.9a5.4 5.4 0 010-3.8V7.8H4a9 9 0 000 8.1z" fill="currentColor" stroke="none" />
+      <path d="M12 6.6c1.3 0 2.5.5 3.4 1.3l2.5-2.5A9 9 0 004 7.8l3 2.3c.7-2 2.7-3.6 5-3.6z" fill="currentColor" stroke="none" />
+    </>
   ),
 };
 

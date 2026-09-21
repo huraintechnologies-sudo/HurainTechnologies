@@ -97,6 +97,40 @@ export default function ContactPage() {
                   </span>
                 </span>
               </div>
+              <a href={siteConfig.social.instagram} target="_blank" rel="noopener noreferrer" className="flex items-start gap-3 group">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <Icon name="instagram" className="w-4.5 h-4.5" />
+                </span>
+                <span>
+                  <span className="block text-xs text-muted">Instagram</span>
+                  <span className="block text-sm font-medium text-foreground group-hover:text-primary transition-colors">
+                    Follow us
+                  </span>
+                </span>
+              </a>
+              <a href={siteConfig.social.googleBusiness} target="_blank" rel="noopener noreferrer" className="flex items-start gap-3 group">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <Icon name="google" className="w-4.5 h-4.5" />
+                </span>
+                <span>
+                  <span className="block text-xs text-muted">Google Business Profile</span>
+                  <span className="block text-sm font-medium text-foreground group-hover:text-primary transition-colors">
+                    View listing &amp; reviews
+                  </span>
+                </span>
+              </a>
+            </div>
+
+            <div className="mt-8 overflow-hidden rounded-xl border border-border">
+              <iframe
+                src={siteConfig.mapEmbedUrl}
+                width="100%"
+                height="260"
+                style={{ border: 0 }}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title={`${siteConfig.name} location on Google Maps`}
+              />
             </div>
           </div>
 

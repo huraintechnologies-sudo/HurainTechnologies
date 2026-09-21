@@ -219,9 +219,8 @@ export function ultraStrongOrganizationJsonLd() {
     sameAs: [
       siteConfig.social.linkedin,
       siteConfig.social.twitter,
-      "https://www.facebook.com/huraintechnologies",
-      "https://www.instagram.com/huraintechnologies",
-      "https://github.com/huraintechnologies",
+      siteConfig.social.instagram,
+      siteConfig.social.googleBusiness,
     ],
 
     // Business Details

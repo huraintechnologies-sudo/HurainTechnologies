@@ -87,14 +87,6 @@ export default async function HomePage() {
             "@id": `${siteConfig.url}/#website`,
             name: siteConfig.name,
             url: siteConfig.url,
-            potentialAction: {
-              "@type": "SearchAction",
-              target: {
-                "@type": "EntryPoint",
-                urlTemplate: `${siteConfig.url}/search?q={search_term_string}`,
-              },
-              query_input: "required name=search_term_string",
-            },
           },
           faqJsonLd(homeFaqs),
           breadcrumbJsonLd(breadcrumbItems),

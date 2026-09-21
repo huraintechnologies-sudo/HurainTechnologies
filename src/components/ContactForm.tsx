@@ -110,17 +110,31 @@ export function ContactForm() {
       {/* Honeypot field, hidden from real users */}
       <input type="text" name="website" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
 
-      <div>
-        <label htmlFor="name" className="block text-xs font-medium text-foreground/85">Full name *</label>
-        <input
-          id="name"
-          name="name"
-          required
-          minLength={2}
-          className="mt-1.5 w-full rounded-lg border border-border bg-surface px-3.5 py-2.5 text-sm text-foreground outline-none focus:border-primary/60"
-          placeholder="Jane Doe"
-        />
-        {errors.name && <p className="mt-1 text-xs text-danger">{errors.name}</p>}
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        <div>
+          <label htmlFor="name" className="block text-xs font-medium text-foreground/85">Full name *</label>
+          <input
+            id="name"
+            name="name"
+            required
+            minLength={2}
+            className="mt-1.5 w-full rounded-lg border border-border bg-surface px-3.5 py-2.5 text-sm text-foreground outline-none focus:border-primary/60"
+            placeholder="Jane Doe"
+          />
+          {errors.name && <p className="mt-1 text-xs text-danger">{errors.name}</p>}
+        </div>
+        <div>
+          <label htmlFor="email" className="block text-xs font-medium text-foreground/85">Email *</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            required
+            className="mt-1.5 w-full rounded-lg border border-border bg-surface px-3.5 py-2.5 text-sm text-foreground outline-none focus:border-primary/60"
+            placeholder="jane@company.com"
+          />
+          {errors.email && <p className="mt-1 text-xs text-danger">{errors.email}</p>}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
@@ -188,17 +202,27 @@ export function ContactForm() {
         </p>
       )}
 
-      <div>
-        <p className="mb-3 text-xs text-muted">Send your project details via WhatsApp — we respond within hours.</p>
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <button
+          type="submit"
+          disabled={status === "submitting"}
+          className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3.5 text-sm font-semibold text-background transition-colors hover:bg-primary/90 disabled:opacity-60"
+        >
+          {status === "submitting" ? "Sending..." : "Send Message"}
+          <Icon name="mail" className="w-4 h-4" />
+        </button>
         <button
           type="button"
           onClick={handleWhatsApp}
-          className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-[#25D366] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#1fb958]"
+          className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#25D366] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#1fb958]"
         >
           Send via WhatsApp
           <Icon name="whatsapp" className="w-4 h-4" />
         </button>
       </div>
+      <p className="text-xs text-muted">
+        "Send Message" emails our team directly · WhatsApp gets a faster, informal reply.
+      </p>
     </form>
   );
 }

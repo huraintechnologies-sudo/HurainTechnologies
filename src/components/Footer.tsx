@@ -24,6 +24,8 @@ export function Footer() {
               {[
                 { name: "linkedin" as const, href: siteConfig.social.linkedin },
                 { name: "twitter" as const, href: siteConfig.social.twitter },
+                { name: "instagram" as const, href: siteConfig.social.instagram },
+                { name: "google" as const, href: siteConfig.social.googleBusiness },
               ].map((s) => (
                 <a
                   key={s.name}

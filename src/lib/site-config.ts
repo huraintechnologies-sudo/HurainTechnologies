@@ -34,7 +34,13 @@ export const siteConfig = {
   social: {
     linkedin: "https://www.linkedin.com/company/hurain-technologies",
     twitter: "https://x.com/huraintech",
+    instagram: "https://www.instagram.com/hurr.3613677/",
+    googleBusiness: "https://share.google/nvKu1XrKSVthDGn4W",
   },
+  // Embeddable Google Maps iframe src for the contact page — uses the
+  // business address as a text query, no API key required.
+  mapEmbedUrl:
+    "https://www.google.com/maps?q=Hurain+Technologies,+Mahmadipura+Vorvas,+Kamalpura+Road,+Palanpur,+Gujarat+385001&output=embed",
   calendly: "https://calendly.com/hurain-technologies/discovery-call",
 } as const;
 

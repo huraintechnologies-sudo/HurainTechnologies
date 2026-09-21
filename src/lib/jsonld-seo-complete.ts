@@ -309,14 +309,6 @@ export function webPageJsonLd(
       height: 630,
     },
     dateModified: new Date().toISOString(),
-    potentialAction: {
-      "@type": "SearchAction",
-      target: {
-        "@type": "EntryPoint",
-        urlTemplate: `${siteConfig.url}/search?q={search_term}`,
-      },
-      query_input: "required name=search_term",
-    },
   };
 }
 
