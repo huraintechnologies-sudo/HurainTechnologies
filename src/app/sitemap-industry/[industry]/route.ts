@@ -1,6 +1,8 @@
+import { CONTENT_UPDATED } from "@/lib/location-seo";
 import { siteConfig } from "@/lib/site-config";
 import { industries } from "@/data/industries";
 import { countries } from "@/data/countries";
+import { cities } from "@/data/cities";
 
 // One sitemap per industry: the industry hub page + every industry x country
 // page. Industries do not have city-level pages (no such route exists), so
@@ -19,7 +21,7 @@ export async function GET(
   }
 
   const baseUrl = siteConfig.url;
-  const now = new Date().toISOString();
+  const now = new Date(CONTENT_UPDATED).toISOString();
 
   let xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -37,6 +39,16 @@ export async function GET(
     <lastmod>${now}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+  </url>`;
+  }
+
+  for (const city of cities) {
+    xml += `
+  <url>
+    <loc>${baseUrl}/industries/${industry.slug}/${city.countrySlug}/${city.slug}</loc>
+    <lastmod>${now}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>`;
   }
 

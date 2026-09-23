@@ -1,7 +1,16 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import { Header } from "@/components/Header";
+import { Header, HeaderNav } from "@/components/Header";
+import { services } from "@/data/services";
+import { serviceVerticals } from "@/data/service-verticals";
+import { industries } from "@/data/industries";
+
+const headerNav: HeaderNav = {
+  services: services.map(({ slug, navLabel, category }) => ({ slug, navLabel, category })),
+  serviceVerticals: serviceVerticals.map(({ id, slug, name, category }) => ({ id, slug, name, category })),
+  industries: industries.map(({ slug, name }) => ({ slug, name })),
+};
 import { Footer } from "@/components/Footer";
 import { WhatsAppFloat } from "@/components/WhatsAppFloat";
 import { WhatsAppAutoOpen } from "@/components/WhatsAppAutoOpen";
@@ -92,29 +101,26 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`} suppressHydrationWarning>
       <head>
-        {/* Plain <script> tags (not next/script) so Google Search Console's
-            ownership verifier — which reads raw server HTML and never runs
-            JS — finds a literal snippet in <head>. next/script's
-            beforeInteractive strategy only emits a bootstrap array that
-            creates the tag client-side, which the verifier can't see. */}
-        <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} />
+        {/* Analytics are deferred until the visitor first interacts (scroll,
+            tap, key, mouse) or 8s after load, whichever comes first. Loading
+            gtag.js + gtm.js during page load cost ~850ms of main-thread time
+            on mobile and pushed LCP past 6s. dataLayer/gtag are defined
+            immediately so no events are lost. Search Console ownership is
+            verified by the meta tag above and public/google*.html, so it no
+            longer depends on these tags being in the raw HTML. */}
         <script
-          id="google-analytics"
+          id="analytics-loader"
           dangerouslySetInnerHTML={{
-            __html: `window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', '${GA_MEASUREMENT_ID}');`,
-          }}
-        />
-        <script
-          id="gtm"
-          dangerouslySetInnerHTML={{
-            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','${GTM_CONTAINER_ID}');`,
+            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());gtag('config','${GA_MEASUREMENT_ID}');
+dataLayer.push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+(function(){var done=false,ev=['scroll','pointerdown','keydown','touchstart','mousemove'];
+function add(src){var s=document.createElement('script');s.async=true;s.src=src;document.head.appendChild(s);}
+function load(){if(done)return;done=true;ev.forEach(function(e){removeEventListener(e,load,{passive:true});});
+add('https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}');
+add('https://www.googletagmanager.com/gtm.js?id=${GTM_CONTAINER_ID}');}
+ev.forEach(function(e){addEventListener(e,load,{passive:true,once:true});});
+addEventListener('load',function(){setTimeout(load,8000);});})();`,
           }}
         />
       </head>
@@ -128,7 +134,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           />
         </noscript>
         <JsonLd data={[organizationJsonLd(), websiteJsonLd()]} />
-        <Header />
+        <Header nav={headerNav} />
         <main className="flex-1">{children}</main>
         <Footer />
         <WhatsAppFloat />

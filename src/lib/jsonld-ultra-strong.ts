@@ -166,8 +166,10 @@ export function ultraStrongOrganizationJsonLd() {
     founder: [
       {
         "@type": "Person",
+        "@id": `${siteConfig.url}/about#founder`,
         name: siteConfig.founderName,
-        url: siteConfig.url,
+        url: `${siteConfig.url}/about`,
+        sameAs: [siteConfig.founder.linkedin],
       },
     ],
     employee: [

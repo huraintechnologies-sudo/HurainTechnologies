@@ -22,6 +22,7 @@ import { industries } from "@/data/industries";
 import { caseStudies } from "@/data/case-studies";
 import { blogPosts } from "@/data/blog-posts";
 import { getCaseStudyImages, getBlogImages } from "@/lib/image-allocations";
+import { TrustSections } from "@/components/TrustSections";
 
 export const metadata: Metadata = buildMetadata({
   title: "Blockchain, Crypto, Fintech & Software Development Company | Hurain Technologies",
@@ -379,6 +380,8 @@ export default async function HomePage() {
           </div>
         </Container>
       </section>
+
+      <TrustSections topic={"Custom Software"} />
 
       <section className="pb-20">
         <Container>

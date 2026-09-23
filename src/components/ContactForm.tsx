@@ -215,7 +215,7 @@ export function ContactForm() {
         <button
           type="button"
           onClick={handleWhatsApp}
-          className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#25D366] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#1fb958]"
+          className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#25D366] px-6 py-3.5 text-sm font-semibold text-[#05070d] transition-colors hover:bg-[#1fb958]"
         >
           Send via WhatsApp
           <Icon name="whatsapp" className="w-4 h-4" />

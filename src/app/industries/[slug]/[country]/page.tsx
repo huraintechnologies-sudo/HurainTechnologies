@@ -1,182 +1,110 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Link from "next/link";
-import { Container } from "@/components/Container";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { SectionHeading } from "@/components/SectionHeading";
-import { CtaSection } from "@/components/CtaSection";
-import { FaqAccordion } from "@/components/FaqAccordion";
-import { LiveDemos } from "@/components/LiveDemos";
-import { JsonLd } from "@/components/JsonLd";
-import { Icon } from "@/components/Icon";
-import { PainPointGrid, SolutionGrid, RelatedServices } from "@/components/ContentGrids";
-import { buildMetadata } from "@/lib/seo";
-import { faqJsonLd } from "@/lib/jsonld";
 import { industries, getIndustryBySlug } from "@/data/industries";
-import { getCountryBySlug } from "@/data/countries";
-import { countries as curatedCountries } from "@/data/countries-curated";
-import { FaqItem } from "@/lib/types";
-import { localeForCountrySlug } from "@/lib/locale";
+import { getCountryBySlug, priorityCountries } from "@/data/countries";
+import { cities } from "@/data/cities";
+import { getServiceBySlug } from "@/data/services";
+import { getIndustryPlaybook, industryAsVertical } from "@/data/industry-playbooks";
+import { buildMetadata } from "@/lib/seo";
+import { locationContext, getCityFacts } from "@/lib/geo-facts";
+import { buildCountryContent } from "@/lib/solution-location-content";
+import { countryHreflang, locationPageJsonLd, placeJsonLd } from "@/lib/location-seo";
+import { sameRegionCountries, cityDisplayName } from "@/lib/location-links";
+import { SolutionLocationPage } from "@/components/location/SolutionLocationPage";
 
-// Revalidate rarely — content is near-static, and this keeps ISR writes low
-// while every country combination still stays reachable via on-demand ISR
-// (dynamicParams defaults to true, so nothing 404s).
-export const revalidate = 2592000; // 30 days
+interface Props {
+  params: Promise<{ slug: string; country: string }>;
+}
+
+// Near-static content: revalidate monthly. Priority countries are pre-rendered;
+// every other country renders on first request via ISR (nothing 404s).
+export const revalidate = 2592000;
 
 export function generateStaticParams() {
-  return industries.flatMap((industry) =>
-    curatedCountries.map((country) => ({ slug: industry.slug, country: country.slug }))
-  );
+  return industries.flatMap((i) => priorityCountries.map((c) => ({ slug: i.slug, country: c.slug })));
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string; country: string }>;
-}): Promise<Metadata> {
-  const { slug, country: countrySlug } = await params;
+function load(slug: string, country: string) {
   const industry = getIndustryBySlug(slug);
-  const country = getCountryBySlug(countrySlug);
-  if (!industry || !country) return {};
+  const countryData = getCountryBySlug(country);
+  const playbook = getIndustryPlaybook(slug);
+  if (!industry || !countryData || !playbook) return null;
+  const ctx = locationContext(country);
+  const content = buildCountryContent(industryAsVertical(industry, playbook.localAngleAs), playbook, ctx, countryData.countryName);
+  // Industry pages read better as "<Industry> Software Development in <Country>".
+  content.h1 = `${industry.name} Software Development in ${countryData.countryName}`;
+  content.title = `${industry.name} Software Development in ${countryData.countryName}${ctx.country?.currency ? ` | ${ctx.country.currency.code} Pricing` : ""}`;
+  return { industry, countryData, playbook, ctx, content };
+}
 
-  return buildMetadata({
-    title: `${industry.name} Software Development in ${country.countryName}`,
-    description: `${industry.summary} ${country.regulatoryNotes[0]}`,
-    path: `/industries/${industry.slug}/${country.slug}`,
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug, country } = await params;
+  const d = load(slug, country);
+  if (!d) return {};
+  const meta = buildMetadata({ title: d.content.title, description: d.content.metaDescription, path: `/industries/${slug}/${country}`, keywords: d.content.keywords });
+  const image = d.ctx.country?.image || d.playbook.heroImage.src;
+  return {
+    ...meta,
+    alternates: { canonical: meta.alternates?.canonical, languages: countryHreflang(`/industries/${slug}`, `/industries/${slug}`) },
+    openGraph: { ...meta.openGraph, images: [{ url: image, alt: `${d.industry.name} software in ${d.countryData.countryName}` }] },
+  };
+}
+
+export default async function IndustryCountryPage({ params }: Props) {
+  const { slug, country } = await params;
+  const d = load(slug, country);
+  if (!d) notFound();
+  const { industry, countryData, playbook, ctx, content } = d;
+  const countryName = countryData.countryName;
+  const path = `/industries/${industry.slug}/${country}`;
+
+  const breadcrumbs = [
+    { name: "Industries", href: "/industries" },
+    { name: industry.name, href: `/industries/${industry.slug}` },
+    { name: countryName, href: path },
+  ];
+
+  const f = ctx.country;
+  const photo = f?.image
+    ? { src: f.image, alt: f.imageCaption && f.imageCaption !== countryName ? `${f.imageCaption}, ${countryName}` : countryName, width: f.imageWidth, height: f.imageHeight, commonsFile: f.imageFile }
+    : { src: playbook.heroImage.src, alt: `${industry.name} software in ${countryName}` };
+
+  const countryCities = cities
+    .filter((c) => c.countrySlug === country)
+    .map((c) => ({ name: cityDisplayName(c, getCityFacts(country, c.slug)), href: `${path}/${c.slug}`, pop: getCityFacts(country, c.slug)?.population || 0 }))
+    .sort((a, b) => b.pop - a.pop)
+    .slice(0, 24);
+
+  const jsonLd = locationPageJsonLd({
+    path,
+    name: content.title,
+    description: content.metaDescription,
+    serviceName: `${industry.name} software development in ${countryName}`,
+    serviceType: `${industry.name} software development`,
+    image: photo.src,
+    area: placeJsonLd(countryName, f),
+    faqs: content.faqs,
+    breadcrumbs,
+    currency: f?.currency?.code,
   });
-}
-
-export default async function IndustryCountryPage({
-  params,
-}: {
-  params: Promise<{ slug: string; country: string }>;
-}) {
-  const { slug, country: countrySlug } = await params;
-  const industry = getIndustryBySlug(slug);
-  const country = getCountryBySlug(countrySlug);
-  if (!industry || !country) notFound();
-
-  const combinedFaqs: FaqItem[] = [...country.faqs, ...(industry.faqs ?? []).slice(0, 4)];
 
   return (
-    <>
-      <JsonLd data={faqJsonLd(combinedFaqs)} />
-
-      <section className="border-b border-border py-14">
-        <Container>
-          <Breadcrumbs
-            items={[
-              { name: "Industries", href: "/industries" },
-              { name: industry.name, href: `/industries/${industry.slug}` },
-              { name: country.countryName, href: `/industries/${industry.slug}/${country.slug}` },
-            ]}
-          />
-          <span className="mt-4 inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-primary">
-            <Icon name={industry.icon as never} className="w-3.5 h-3.5" />
-            {industry.name} · {country.countryName}
-          </span>
-          <h1 className="mt-4 max-w-3xl text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-            {industry.name} Software Development in {country.countryName}
-          </h1>
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
-            {industry.summary} In {country.countryName}, that means building to the expectations of{" "}
-            {country.region.replace(/Tier \d+ — /, "")}: {country.regulatoryNotes[0]}
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link
-              href="/contact"
-              className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3.5 text-sm font-semibold text-background hover:bg-primary/90 transition-colors"
-            >
-              Get a {country.countryName} Estimate
-              <Icon name="arrow" className="w-4 h-4" />
-            </Link>
-            <Link
-              href={`/${localeForCountrySlug(country.slug)}`}
-              className="inline-flex items-center justify-center gap-2 rounded-lg border border-border px-6 py-3.5 text-sm font-semibold text-foreground hover:border-primary/50 hover:text-primary transition-colors"
-            >
-              View {country.countryName} Overview
-            </Link>
-          </div>
-        </Container>
-      </section>
-
-      <section className="py-16">
-        <Container>
-          <SectionHeading
-            eyebrow={`${country.countryName} Regulatory Landscape`}
-            title={`What ${industry.name.toLowerCase()} businesses in ${country.countryName} need to know`}
-          />
-          <ul className="mt-8 grid grid-cols-1 gap-4">
-            {country.regulatoryNotes.map((note) => (
-              <li key={note} className="flex items-start gap-3 rounded-xl border border-border bg-surface p-5">
-                <Icon name="check" className="w-4 h-4 mt-0.5 shrink-0 text-primary" />
-                <span className="text-sm leading-relaxed text-foreground/85">{note}</span>
-              </li>
-            ))}
-          </ul>
-          <p className="mt-6 max-w-2xl text-xs text-muted">
-            This information is provided for general orientation only and is not legal or licensing advice. Always
-            confirm current requirements with qualified local counsel.
-          </p>
-        </Container>
-      </section>
-
-      {industry.painPoints && (
-        <section className="py-16 border-t border-border bg-surface">
-          <Container>
-            <SectionHeading eyebrow="The Challenge" title={`What ${industry.name.toLowerCase()} operators struggle with`} />
-            <div className="mt-8">
-              <PainPointGrid items={industry.painPoints} />
-            </div>
-          </Container>
-        </section>
-      )}
-
-      {industry.approach && (
-        <section className="py-16">
-          <Container>
-            <SectionHeading eyebrow="Our Approach" title={`How we support ${industry.name.toLowerCase()} in ${country.countryName}`} />
-            <div className="mt-8">
-              <SolutionGrid items={industry.approach} />
-            </div>
-          </Container>
-        </section>
-      )}
-
-      <section className="py-16 border-t border-border bg-surface">
-        <Container>
-          <SectionHeading eyebrow="Relevant Services" title="Engineering practices for this industry" />
-          <div className="mt-8">
-            <RelatedServices slugs={industry.relatedServiceSlugs} />
-          </div>
-        </Container>
-      </section>
-
-      {combinedFaqs.length > 0 && (
-        <section className="py-16">
-          <Container className="max-w-3xl">
-            <SectionHeading eyebrow="FAQ" title={`${industry.name} in ${country.countryName} — FAQ`} />
-            <div className="mt-8">
-              <FaqAccordion faqs={combinedFaqs} />
-            </div>
-          </Container>
-        </section>
-      )}
-
-      <section className="py-16 border-t border-border">
-        <Container>
-          <LiveDemos />
-        </Container>
-      </section>
-
-      <section className="pb-20">
-        <Container>
-          <CtaSection
-            title={`Building for ${industry.name.toLowerCase()} in ${country.countryName}?`}
-            description="Book a discovery call and get a scoped technical estimate within 5 business days."
-          />
-        </Container>
-      </section>
-    </>
+    <SolutionLocationPage
+      solutionName={`${industry.name} Software`}
+      placeLabel={countryName}
+      content={content}
+      playbook={playbook}
+      photo={photo}
+      breadcrumbs={breadcrumbs}
+      jsonLd={jsonLd}
+      nearbyTitle={`${industry.name} software by city in ${countryName}`}
+      nearby={countryCities}
+      otherTitle={`Other industries we serve in ${countryName}`}
+      basePathLabel="industries"
+      otherSolutions={industries.filter((i) => i.slug !== industry.slug).map((i) => ({ name: i.name, href: `/industries/${i.slug}/${country}` }))}
+      relatedServices={playbook.relatedServices.map((s) => getServiceBySlug(s)).filter(Boolean).map((s) => ({ name: `${s!.navLabel} in ${countryName}`, href: `/services/${s!.slug}/${country}` }))}
+      regulatoryNotes={countryData.regulatoryNotes}
+      regionLinks={sameRegionCountries(country, 12).map((c) => ({ name: c.countryName, href: `/industries/${industry.slug}/${c.slug}` }))}
+    />
   );
 }

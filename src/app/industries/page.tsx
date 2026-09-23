@@ -15,6 +15,7 @@ import { localeForCountrySlug } from "@/lib/locale";
 import { industries } from "@/data/industries";
 import { countries } from "@/data/countries";
 import { getIndustryImage } from "@/lib/unsplash-service";
+import { TrustSections } from "@/components/TrustSections";
 
 // Exclude Pakistan, Israel, China, Japan
 const excludedCountries = ["pakistan", "israel", "china", "japan"];
@@ -211,6 +212,8 @@ export default async function IndustriesPage() {
           </div>
         </Container>
       </section>
+
+      <TrustSections topic={"Industry Software"} />
 
       <section className="pb-20">
         <Container>

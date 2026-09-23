@@ -12,6 +12,12 @@ import { LiveDemos } from "@/components/LiveDemos";
 import { PainPointGrid, SolutionGrid } from "@/components/ContentGrids";
 import { buildMetadata } from "@/lib/seo";
 import { faqJsonLd } from "@/lib/jsonld";
+import { locationContext } from "@/lib/geo-facts";
+import { buildMarketBrief } from "@/lib/solution-location-content";
+import { placeJsonLd } from "@/lib/location-seo";
+import { siteConfig } from "@/lib/site-config";
+import { LocalMarketSection } from "@/components/location/LocalMarketSection";
+import { TrustSections } from "@/components/TrustSections";
 import { getCityBySlug } from "@/data/cities";
 import { cities as curatedCities } from "@/data/cities-curated";
 import { getCountryBySlug } from "@/data/countries";
@@ -48,11 +54,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const city = countrySlug ? getCityBySlug(citySlug) : undefined;
   if (!city || city.countrySlug !== countrySlug) return {};
 
-  return buildMetadata({
+  const meta = buildMetadata({
     title: city.metaTitle,
     description: city.metaDescription,
     path: `/${locale}/${city.slug}`,
   });
+  const ctx = locationContext(city.countrySlug, city.slug);
+  const img = ctx.city?.image || ctx.country?.image;
+  return img ? { ...meta, openGraph: { ...meta.openGraph, images: [{ url: img, alt: city.cityName }] } } : meta;
 }
 
 export default async function CityPage({ params }: Props) {
@@ -71,11 +80,23 @@ export default async function CityPage({ params }: Props) {
   const industryHighlights = buildCityIndustries(city);
   const engineeringChecklist = buildCityEngineeringChecklist(city);
   const extendedFaqs = buildCityExtendedFaqs(city, country);
-  const allFaqs = [...city.faqs, ...extendedFaqs];
+  const ctx = locationContext(countrySlug, city.slug);
+  const countryName = country?.countryName ?? city.countrySlug;
+  const allFaqs = [...city.faqs, ...extendedFaqs, ...buildMarketBrief(ctx, city.cityName, countryName, "Software Development", true).faqs];
+  // ServiceArea signal for the city: our Organization serving this City
+  // (no fake local address — see locationPageJsonLd for why).
+  const serviceArea = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: `Software development in ${city.cityName}`,
+    provider: { "@id": `${siteConfig.url}/#organization` },
+    areaServed: placeJsonLd(countryName, ctx.country, city.cityName, ctx.city),
+    url: `${siteConfig.url}/${locale}/${city.slug}`,
+  };
 
   return (
     <>
-      <JsonLd data={faqJsonLd(allFaqs)} />
+      <JsonLd data={[faqJsonLd(allFaqs), serviceArea]} />
 
       <section className="border-b border-border py-14">
         <Container>
@@ -225,6 +246,10 @@ export default async function CityPage({ params }: Props) {
           </div>
         </Container>
       </section>
+
+      <LocalMarketSection ctx={ctx} placeName={city.cityName} countryName={countryName} topic="Software Development" isCity />
+
+      <TrustSections topic="Software Development" place={`${city.cityName}, ${countryName}`} />
 
       <section className="py-16 border-t border-border">
         <Container className="max-w-3xl">

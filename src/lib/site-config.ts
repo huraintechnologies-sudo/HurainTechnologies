@@ -15,6 +15,16 @@ export const siteConfig = {
     "Blockchain, Payments, API & Cloud Engineering Partner for Global Digital Businesses",
   founded: "2010",
   founderName: "Shahnavaz Syed",
+  founder: {
+    // Shown on /about and emitted as the Person behind the organization.
+    title: "Founder, Hurain Engitech & Trade and Hurain Technologies",
+    linkedin: "https://www.linkedin.com/in/saiyed-shahnavaz-3b9a93a6/",
+    // Drop a square photo at public/images/founder.jpg to show it on /about.
+    photo: "/images/founder.jpg",
+    yearsExperience: "11+",
+    productsBuilt: "15+",
+    customProjects: "100+",
+  },
   email: "huraintechnologies@gmail.com",
   salesEmail: "huraintechnologies+sales@gmail.com",
   supportEmail: "huraintechnologies+support@gmail.com",

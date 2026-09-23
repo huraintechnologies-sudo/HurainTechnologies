@@ -1,3 +1,4 @@
+import { CONTENT_UPDATED } from "@/lib/location-seo";
 import { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/site-config";
 
@@ -7,7 +8,7 @@ import { siteConfig } from "@/lib/site-config";
 // robots.ts advertises to crawlers. A single MetadataRoute.Sitemap export
 // can't paginate itself, so it must never carry the full route set here.
 export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date();
+  const now = new Date(CONTENT_UPDATED);
 
   return [
     { url: `${siteConfig.url}/`, lastModified: now, changeFrequency: "weekly", priority: 1 },

@@ -8,6 +8,25 @@ import { JsonLd } from "@/components/JsonLd";
 import { localBusinessJsonLd } from "@/lib/jsonld";
 import { buildMetadata } from "@/lib/seo";
 import { siteConfig } from "@/lib/site-config";
+import { SectionHeading } from "@/components/SectionHeading";
+import { FaqAccordion } from "@/components/FaqAccordion";
+import { faqJsonLd } from "@/lib/jsonld";
+
+const nextSteps = [
+  { title: "1. You send the brief", body: "Share what you want to build, your target market and any deadline — a few lines is enough. NDAs signed on request before details." },
+  { title: "2. Engineer reply within 2 business days", body: "An engineer — not a salesperson — reviews your brief and replies with questions and times for a call." },
+  { title: "3. 30–45 minute discovery call", body: "We walk through users, integrations, compliance and budget, and tell you honestly if we're the right fit." },
+  { title: "4. Scoped proposal in 5 business days", body: "Architecture outline, milestones, team, timeline and a fixed-scope estimate (or monthly rate for dedicated teams)." },
+];
+
+const contactFaqs = [
+  { question: "How quickly will Hurain Technologies respond?", answer: "Within 2 business days by email or WhatsApp, usually sooner. Urgent production issues for existing clients follow the support SLA." },
+  { question: "Is the first consultation free?", answer: "Yes. The discovery call and the scoped proposal are free and carry no obligation." },
+  { question: "Can you sign an NDA before we share details?", answer: "Yes. We sign mutual NDAs before any confidential product, compliance or architecture details are shared." },
+  { question: "Which time zones do you work in?", answer: "Our team is based in India (IST, UTC+5:30) and works 24/7, so clients in every time zone — the Americas, Europe, the Middle East, Africa and Asia-Pacific — are covered during their own business hours and for out-of-hours incidents." },
+  { question: "What information should I include in my enquiry?", answer: "What you want to build, who the users are, your target countries, any systems it must integrate with, your timeline and — if you have one — a budget range." },
+  { question: "Do you work with startups as well as enterprises?", answer: "Yes. We build MVPs for funded and bootstrapped startups and long-term platforms for enterprises and regulated businesses." },
+];
 
 export const metadata: Metadata = buildMetadata({
   title: "Contact Us | Book a Technical Consultation",
@@ -19,7 +38,7 @@ export const metadata: Metadata = buildMetadata({
 export default function ContactPage() {
   return (
     <>
-    <JsonLd data={localBusinessJsonLd()} />
+    <JsonLd data={[localBusinessJsonLd(), faqJsonLd(contactFaqs)]} />
     {/* Contact hero image */}
     <div className="relative h-52 sm:h-64 overflow-hidden border-b border-border">
       <Image
@@ -139,6 +158,29 @@ export default function ContactPage() {
               <ContactForm />
             </div>
           </div>
+        </div>
+      </Container>
+    </section>
+
+    <section className="border-t border-border bg-surface py-16">
+      <Container>
+        <SectionHeading eyebrow="What happens next" title="From first message to a fixed proposal in about a week" />
+        <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {nextSteps.map((st) => (
+            <div key={st.title} className="rounded-xl border border-border bg-background p-6">
+              <h2 className="text-base font-semibold text-foreground">{st.title}</h2>
+              <p className="mt-2 text-sm leading-relaxed text-muted">{st.body}</p>
+            </div>
+          ))}
+        </div>
+      </Container>
+    </section>
+
+    <section className="border-t border-border py-16">
+      <Container className="max-w-3xl">
+        <SectionHeading eyebrow="FAQ" title="Contact & consultation — frequently asked questions" />
+        <div className="mt-8">
+          <FaqAccordion faqs={contactFaqs} />
         </div>
       </Container>
     </section>

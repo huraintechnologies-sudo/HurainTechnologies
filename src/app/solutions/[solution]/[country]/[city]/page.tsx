@@ -1,192 +1,114 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { serviceVerticals } from "@/data/service-verticals";
-import { countries } from "@/data/countries";
-import { cities } from "@/data/cities";
 import { cities as curatedCities } from "@/data/cities-curated";
-import { siteConfig } from "@/lib/site-config";
+import { getServiceBySlug } from "@/data/services";
+import { getPlaybook } from "@/data/solution-playbooks";
+import { buildMetadata } from "@/lib/seo";
+import { locationContext, getCityFacts } from "@/lib/geo-facts";
+import { buildCityContent } from "@/lib/solution-location-content";
+import { locationPageJsonLd, placeJsonLd } from "@/lib/location-seo";
+import { cityDisplayName } from "@/lib/location-links";
+import { countryForSolution, cityForSolution, citiesForSolution } from "@/data/world-geo";
 import { localeForCountrySlug } from "@/lib/locale";
-import { getCityMarketContent } from "@/lib/solution-city-content";
-import { JsonLd } from "@/components/JsonLd";
-import { breadcrumbJsonLd } from "@/lib/jsonld-enhanced";
-import { ultraStrongOrganizationJsonLd, ultraStrongSolutionJsonLd } from "@/lib/jsonld-ultra-strong";
-import { buildSolutionCityPageKeywords } from "@/lib/keywords-builder";
-import Link from "next/link";
+import { getCountryBySlug } from "@/data/countries";
+import { cities } from "@/data/cities";
+import { SolutionLocationPage } from "@/components/location/SolutionLocationPage";
 
 interface Props {
-  params: Promise<{
-    solution: string;
-    country: string;
-    city: string;
-  }>;
+  params: Promise<{ solution: string; country: string; city: string }>;
+}
+
+// Near-static content: revalidate monthly. Curated cities are pre-rendered;
+// every other city renders on first request via ISR (nothing 404s).
+export const revalidate = 2592000;
+
+export async function generateStaticParams() {
+  return serviceVerticals.flatMap((v) => curatedCities.map((c) => ({ solution: v.slug, country: c.countrySlug, city: c.slug })));
+}
+
+function load(solution: string, country: string, city: string) {
+  const vertical = serviceVerticals.find((v) => v.slug === solution);
+  const countryData = countryForSolution(solution, country);
+  const cityData = cityForSolution(solution, country, city);
+  const playbook = getPlaybook(solution);
+  if (!vertical || !countryData || !cityData || !playbook) return null;
+  const ctx = locationContext(country, city);
+  const cityName = cityDisplayName(cityData, ctx.city);
+  const content = buildCityContent(vertical, playbook, ctx, cityName, countryData.countryName);
+  return { vertical, countryData, cityData, cityName, playbook, ctx, content };
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { solution, country, city } = await params;
-  const vertical = serviceVerticals.find((v) => v.slug === solution);
-  const countryData = countries.find((c) => c.slug === country);
-  const cityData = cities.find((c) => c.slug === city && c.countrySlug === country);
-
-  if (!vertical || !countryData || !cityData) return notFound();
-
-  const titleSuffix = vertical.name.toLowerCase().includes("development") ? "" : " Development";
-  const serviceLabel = vertical.name.toLowerCase().includes("development") ? vertical.name : `${vertical.name} Development`;
-  const title = `${vertical.name}${titleSuffix} in ${cityData.cityName} | Local ${serviceLabel} Services | Hurain Technologies`;
-  const description = `Professional ${vertical.name.toLowerCase()} development services in ${cityData.cityName}, ${countryData.countryName}. Local team, 24/7 support. Custom solutions for ${cityData.cityName} businesses. 16+ years expertise.`;
-
-  return {
-    title,
-    description,
-    openGraph: {
-      title,
-      description,
-      url: `${siteConfig.url}/solutions/${solution}/${country}/${city}`,
-    },
-  };
-}
-
-// Revalidate rarely — content is near-static — to keep ISR writes low.
-// Every other city still resolves via on-demand ISR (dynamicParams
-// defaults to true, nothing 404s); this just pre-renders the curated set.
-export const revalidate = 2592000; // 30 days
-
-export async function generateStaticParams() {
-  return serviceVerticals.flatMap((vertical) =>
-    curatedCities.map((city) => ({
-      solution: vertical.slug,
-      country: city.countrySlug,
-      city: city.slug,
-    }))
-  );
+  const d = load(solution, country, city);
+  if (!d) return {};
+  const meta = buildMetadata({ title: d.content.title, description: d.content.metaDescription, path: `/solutions/${solution}/${country}/${city}`, keywords: d.content.keywords });
+  const image = d.ctx.city?.image || d.ctx.country?.image || d.playbook.heroImage.src;
+  return { ...meta, openGraph: { ...meta.openGraph, images: [{ url: image, alt: `${d.vertical.name} in ${d.cityName}` }] } };
 }
 
 export default async function SolutionCityPage({ params }: Props) {
   const { solution, country, city } = await params;
-  const vertical = serviceVerticals.find((v) => v.slug === solution);
-  const countryData = countries.find((c) => c.slug === country);
-  const cityData = cities.find((c) => c.slug === city && c.countrySlug === country);
+  const d = load(solution, country, city);
+  if (!d) notFound();
+  const { vertical, countryData, cityName, playbook, ctx, content } = d;
+  const countryName = countryData.countryName;
+  const path = `/solutions/${vertical.slug}/${country}/${city}`;
 
-  if (!vertical || !countryData || !cityData) return notFound();
-
-  const content = getCityMarketContent(cityData.cityName, countryData.countryName, vertical.name);
-
-  // Breadcrumb items for schema
-  const breadcrumbItems = [
-    { name: "Solutions", url: `${siteConfig.url}/solutions` },
-    { name: vertical.name, url: `${siteConfig.url}/solutions/${vertical.slug}` },
-    { name: countryData.countryName, url: `${siteConfig.url}/solutions/${vertical.slug}/${country}` },
-    { name: cityData.cityName, url: `${siteConfig.url}/solutions/${vertical.slug}/${country}/${city}` },
+  const breadcrumbs = [
+    { name: "Solutions", href: "/solutions" },
+    { name: vertical.name, href: `/solutions/${vertical.slug}` },
+    { name: countryName, href: `/solutions/${vertical.slug}/${country}` },
+    { name: cityName, href: path },
   ];
 
+  const cf = ctx.city;
+  const photo = cf?.image
+    ? { src: cf.image, alt: `${cityName}, ${countryName}`, width: cf.imageWidth, height: cf.imageHeight, commonsFile: cf.imageFile }
+    : ctx.country?.image
+      ? { src: ctx.country.image, alt: ctx.country.imageCaption ? `${ctx.country.imageCaption}, ${countryName}` : countryName, width: ctx.country.imageWidth, height: ctx.country.imageHeight, commonsFile: ctx.country.imageFile }
+      : { src: playbook.heroImage.src, alt: `${vertical.name} in ${cityName}` };
+
+  const siblings = citiesForSolution(vertical.slug, country)
+    .filter((c) => c.slug !== city)
+    .map((c) => ({ name: cityDisplayName(c, getCityFacts(country, c.slug)), href: `/solutions/${vertical.slug}/${country}/${c.slug}`, pop: getCityFacts(country, c.slug)?.population || 0 }))
+    .sort((a, b) => b.pop - a.pop)
+    .slice(0, 16);
+
+  // Only link to pages that exist: world-only cities/countries have no
+  // service or /en-xx pages, and other solutions may not cover this city.
+  const inSiteGeo = !!getCountryBySlug(country) && cities.some((c) => c.countrySlug === country && c.slug === city);
+  const locale = inSiteGeo ? localeForCountrySlug(country) : undefined;
+  const jsonLd = locationPageJsonLd({
+    path,
+    name: content.title,
+    description: content.metaDescription,
+    serviceName: `${vertical.name} in ${cityName}`,
+    serviceType: vertical.name,
+    image: photo.src,
+    area: placeJsonLd(countryName, ctx.country, cityName, cf),
+    faqs: content.faqs,
+    breadcrumbs,
+    currency: ctx.country?.currency?.code,
+  });
+
   return (
-    <div className="min-h-screen bg-white">
-      {/* JSON-LD Structured Data - STRONGEST schemas for Google ranking */}
-      <JsonLd
-        data={[
-          ultraStrongOrganizationJsonLd(),
-          { "@type": "WebSite", "@id": `${siteConfig.url}/#website`, name: siteConfig.name, url: siteConfig.url },
-          ultraStrongSolutionJsonLd(vertical.name, countryData.countryName, cityData.cityName),
-          breadcrumbJsonLd(breadcrumbItems),
-        ]}
-      />
-
-      {/* Hero Section */}
-      <section className="py-16 px-4 md:px-8 bg-gradient-to-br from-blue-50 to-indigo-50">
-        <div className="max-w-4xl mx-auto">
-          <div className="mb-4 flex gap-2">
-            <Link href={`/solutions/${vertical.slug}`} className="text-blue-600 hover:text-blue-800 text-sm font-medium">
-              {vertical.name}
-            </Link>
-            <span className="text-gray-400">/</span>
-            <Link href={`/solutions/${vertical.slug}/${country}`} className="text-blue-600 hover:text-blue-800 text-sm font-medium">
-              {countryData.countryName}
-            </Link>
-          </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            {vertical.name} in {cityData.cityName}
-          </h1>
-          <p className="text-lg text-gray-600 mb-6">
-            Expert {vertical.name.toLowerCase()} development services in {cityData.cityName}, {countryData.countryName}.
-            Local expertise with global standards. Serving {cityData.cityName}'s thriving tech community.
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {["Local Team", "24/7 Support", "Fast Delivery", "Quality Focused"].map((tag) => (
-              <span key={tag} className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
-                {tag}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Main Content - Rich, Comprehensive */}
-      <section className="py-16 px-4 md:px-8">
-        <div className="max-w-4xl mx-auto space-y-12">
-
-          {/* City Introduction */}
-          <div className="prose prose-sm max-w-none">
-            <div dangerouslySetInnerHTML={{ __html: content.cityIntro.replace(/\n/g, '<br/>').replace(/###/g, '<h4 class="text-lg font-bold text-gray-900 mt-4 mb-2">').replace(/##/g, '<h3 class="text-2xl font-bold text-gray-900 mb-4">') }} className="text-gray-700 leading-relaxed space-y-4" />
-          </div>
-
-          {/* Market Dynamics */}
-          <div className="bg-blue-50 p-8 rounded-lg">
-            <div dangerouslySetInnerHTML={{ __html: content.marketDynamics.replace(/\n/g, '<br/>').replace(/\*\*/g, '<strong>').replace(/::/g, '</strong>:') }} className="text-gray-700 leading-relaxed space-y-4" />
-          </div>
-
-          {/* Local Services */}
-          <div>
-            <div dangerouslySetInnerHTML={{ __html: content.localServices.replace(/\n/g, '<br/>').replace(/###/g, '<h4 class="text-lg font-bold text-gray-900 mt-4 mb-2">').replace(/##/g, '<h3 class="text-2xl font-bold text-gray-900 mb-4">') }} className="text-gray-700 leading-relaxed space-y-4" />
-          </div>
-
-          {/* Success Stories */}
-          <div className="bg-gray-50 p-8 rounded-lg">
-            <div dangerouslySetInnerHTML={{ __html: content.successStories.replace(/\n/g, '<br/>').replace(/###/g, '<h4 class="text-lg font-bold text-gray-900 mt-4 mb-2">').replace(/##/g, '<h3 class="text-2xl font-bold text-gray-900 mb-4">') }} className="text-gray-700 leading-relaxed space-y-4" />
-          </div>
-
-          {/* Technical Expertise */}
-          <div>
-            <div dangerouslySetInnerHTML={{ __html: content.technicalExpertise.replace(/\n/g, '<br/>').replace(/###/g, '<h4 class="text-lg font-bold text-gray-900 mt-4 mb-2">').replace(/##/g, '<h3 class="text-2xl font-bold text-gray-900 mb-4">').replace(/\- /g, '<li>').replace(/\n<li>/g, '</li>\n<li>').replace(/\n$/g, '</li>') }} className="text-gray-700 leading-relaxed space-y-4" />
-          </div>
-
-          {/* Support & Maintenance */}
-          <div className="bg-blue-50 p-8 rounded-lg">
-            <div dangerouslySetInnerHTML={{ __html: content.supportAndMaintenance.replace(/\n/g, '<br/>').replace(/###/g, '<h4 class="text-lg font-bold text-gray-900 mt-4 mb-2">').replace(/##/g, '<h3 class="text-2xl font-bold text-gray-900 mb-4">').replace(/\- /g, '<li>').replace(/\n<li>/g, '</li>\n<li>') }} className="text-gray-700 leading-relaxed space-y-4" />
-          </div>
-
-          {/* FAQ */}
-          <div>
-            <div dangerouslySetInnerHTML={{ __html: content.faq.replace(/\n/g, '<br/>').replace(/\*\*Q:/g, '<h4 class="text-lg font-bold text-gray-900 mt-4 mb-2">Q:').replace(/\*\*A:/g, '</h4><p class="text-gray-700 mb-4">A:').replace(/##/g, '<h3 class="text-2xl font-bold text-gray-900 mb-4">') }} className="text-gray-700 leading-relaxed space-y-4" />
-          </div>
-
-          {/* Why Choose Local Partner */}
-          <div className="border-2 border-blue-200 p-8 rounded-lg">
-            <div dangerouslySetInnerHTML={{ __html: content.whyChooseLocalPartner.replace(/\n/g, '<br/>').replace(/###/g, '<h4 class="text-lg font-bold text-gray-900 mt-4 mb-2">').replace(/##/g, '<h3 class="text-2xl font-bold text-gray-900 mb-4">').replace(/\- /g, '<li>') }} className="text-gray-700 leading-relaxed space-y-4" />
-          </div>
-
-          {/* CTA */}
-          <div className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white p-8 rounded-lg text-center">
-            <h2 className="text-2xl font-bold mb-4">Ready to Build Your {vertical.name} Solution in {cityData.cityName}?</h2>
-            <p className="mb-6 text-blue-100 max-w-2xl mx-auto">
-              Let's discuss how we can help you build a world-class {vertical.name.toLowerCase()} solution for your {cityData.cityName} business.
-              Our local team is ready to help.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href={`${siteConfig.url}/contact`}
-                className="px-8 py-3 bg-white text-blue-600 font-bold rounded-lg hover:bg-gray-100 transition-colors"
-              >
-                Schedule Consultation
-              </a>
-              <a
-                href={`${siteConfig.url}/case-studies`}
-                className="px-8 py-3 bg-blue-700 text-white font-bold rounded-lg hover:bg-blue-800 transition-colors border border-blue-500"
-              >
-                View Case Studies
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
+    <SolutionLocationPage
+      solutionName={vertical.name}
+      placeLabel={`${cityName}, ${countryName}`}
+      content={content}
+      playbook={playbook}
+      photo={photo}
+      breadcrumbs={breadcrumbs}
+      jsonLd={jsonLd}
+      nearbyTitle={`${vertical.name} in other ${countryName} cities`}
+      nearby={[{ name: `All of ${countryName}`, href: `/solutions/${vertical.slug}/${country}` }, ...siblings]}
+      otherSolutions={serviceVerticals.filter((v) => v.slug !== vertical.slug && cityForSolution(v.slug, country, city)).map((v) => ({ name: v.name, href: `/solutions/${v.slug}/${country}/${city}` }))}
+      relatedServices={[
+        ...(inSiteGeo ? playbook.relatedServices : []).map((s) => getServiceBySlug(s)).filter(Boolean).map((s) => ({ name: `${s!.navLabel} in ${cityName}`, href: `/services/${s!.slug}/${country}/${city}` })),
+        ...(locale ? [{ name: `${cityName} technology overview`, href: `/${locale}/${city}` }] : []),
+      ]}
+    />
   );
 }

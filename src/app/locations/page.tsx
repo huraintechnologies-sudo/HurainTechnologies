@@ -87,9 +87,9 @@ export default function LocationsPage() {
                 <Link
                   key={city.slug}
                   href={`/${localeForCountrySlug(city.countrySlug)}/${city.slug}`}
-                  className="group flex items-center justify-between rounded-lg border border-border bg-background px-4 py-3 text-sm hover:border-primary/50 transition-colors"
+                  className="group flex min-w-0 items-center justify-between gap-2 rounded-lg border border-border bg-background px-4 py-3 text-sm hover:border-primary/50 transition-colors"
                 >
-                  <span>
+                  <span className="min-w-0 flex-1" style={{ overflowWrap: "anywhere" }}>
                     <span className="block text-foreground/85">{city.cityName}</span>
                     {country && <span className="block text-xs text-muted">{country.countryName}</span>}
                   </span>

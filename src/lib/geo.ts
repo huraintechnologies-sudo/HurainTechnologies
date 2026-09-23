@@ -206,6 +206,11 @@ export const COUNTRY_CODE_TO_SLUG: Record<string, string> = {
   ZA: "south-africa",
   ZM: "zambia",
   ZW: "zimbabwe",
+  CW: "curacao",
+  CY: "cyprus",
+  MA: "morocco",
+  PA: "panama",
+  VN: "vietnam",
 };
 
 export const GEO_PREF_COOKIE = "hurain_geo_pref";

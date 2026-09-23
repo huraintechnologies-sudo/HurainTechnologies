@@ -60,10 +60,7 @@ export function organizationJsonLd() {
       postalCode: siteConfig.address.postalCode,
       addressCountry: siteConfig.address.country,
     },
-    founder: {
-      "@type": "Person",
-      name: siteConfig.founderName,
-    },
+    founder: { "@id": `${siteConfig.url}/about#founder` },
     contactPoint: [
       {
         "@type": "ContactPoint",
@@ -149,6 +146,21 @@ export function localBusinessJsonLd() {
       closes: "18:00",
     },
     parentOrganization: { "@id": `${siteConfig.url}/#organization` },
+  };
+}
+
+export function founderJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": `${siteConfig.url}/about#founder`,
+    name: siteConfig.founderName,
+    jobTitle: siteConfig.founder.title,
+    url: `${siteConfig.url}/about`,
+    sameAs: [siteConfig.founder.linkedin],
+    worksFor: { "@id": `${siteConfig.url}/#organization` },
+    knowsAbout: ["Software product development", "Fintech and payments", "Blockchain and Web3", "SaaS platforms", "Mobile app development", "Cloud architecture", "AI automation"],
+    address: { "@type": "PostalAddress", addressLocality: siteConfig.address.city, addressRegion: siteConfig.address.state, addressCountry: siteConfig.address.country },
   };
 }
 

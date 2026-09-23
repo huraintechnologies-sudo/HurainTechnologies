@@ -18,7 +18,7 @@ export const cities: CityContent[] = [
     ],
     focusServiceSlugs: ["api-integration-services", "cybersecurity-compliance", "blockchain-cryptocurrency-development"],
     faqs: [
-      { question: "Do you work with London-based fintechs directly?", answer: "Yes, we regularly engage London-based fintech and crypto teams, with working hours overlapping UK business hours for real-time collaboration." },
+      { question: "Do you work with London-based fintechs directly?", answer: "Yes, we regularly engage London-based fintech and crypto teams, with a team available 24/7, so UK business hours are always covered for real-time collaboration." },
       { question: "Can you support FCA-adjacent compliance requirements for a London fintech?", answer: "Yes, we build the audit logging, reporting, and consent-flow infrastructure UK compliance teams commonly need, working alongside your FCA-facing legal counsel." },
     ],
   },
@@ -31,7 +31,7 @@ export const cities: CityContent[] = [
       "Blockchain, crypto exchange, and fintech software development for Dubai-based businesses across DIFC and Dubai Internet City.",
     h1: "Blockchain & Crypto Development Company in Dubai",
     intro:
-      "Dubai has built one of the world's most active regulated environments for virtual asset businesses, anchored by VARA and the DIFC free zone. Hurain Technologies works with Dubai-based exchanges, token issuers, and fintechs building on this foundation, with delivery teams structured to overlap Gulf business hours.",
+      "Dubai has built one of the world's most active regulated environments for virtual asset businesses, anchored by VARA and the DIFC free zone. Hurain Technologies works with Dubai-based exchanges, token issuers, and fintechs building on this foundation, with delivery teams available 24/7 across Gulf business hours.",
     hubFacts: [
       "The Dubai International Financial Centre (DIFC) and Dubai Internet City host a dense cluster of crypto, fintech, and Web3 companies operating under distinct regulatory tracks (DFSA in DIFC, VARA onshore Dubai).",
       "Dubai's position between European and Asian business hours makes it a practical operational base for platforms serving both regions.",
@@ -40,7 +40,7 @@ export const cities: CityContent[] = [
     focusServiceSlugs: ["blockchain-cryptocurrency-development", "crypto-exchange-wallet-development", "payment-gateway-integration"],
     faqs: [
       { question: "Do you build for both DIFC and onshore Dubai (VARA) entities?", answer: "Yes, we build technical infrastructure aligned to both DFSA (DIFC) and VARA (onshore) expectations, depending on which structure your business operates under." },
-      { question: "Can we schedule a call across the India-UAE time overlap?", answer: "Yes, our India-based team overlaps several working hours with Gulf business hours, making real-time collaboration straightforward." },
+      { question: "Can we schedule calls during UAE business hours?", answer: "Yes. Our India-based team works 24/7, so calls, releases and support are available throughout Gulf business hours and beyond." },
     ],
   },
   {

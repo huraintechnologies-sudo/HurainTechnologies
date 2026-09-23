@@ -15,6 +15,7 @@ export function CountryLinksGrid({ basePath }: { basePath: string }) {
         <Link
           key={`country-${country.slug}-${idx}`}
           href={`${basePath}/${country.slug}`}
+          prefetch={false}
           className="group flex items-center justify-between rounded-lg border border-border bg-surface px-4 py-3 text-sm hover:border-primary/50 transition-colors"
         >
           <span className="text-foreground/85">{country.countryName}</span>

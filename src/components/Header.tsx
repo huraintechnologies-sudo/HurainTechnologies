@@ -6,11 +6,18 @@ import { Container } from "@/components/Container";
 import { Logo } from "@/components/Logo";
 import { Icon } from "@/components/Icon";
 import { NAV_LINKS } from "@/lib/site-config";
-import { services } from "@/data/services";
-import { serviceVerticals } from "@/data/service-verticals";
-import { industries } from "@/data/industries";
 
-export function Header() {
+// Slim menu data, built on the server in layout.tsx. Importing the full
+// services/industries content files here would ship ~190KB of page copy to
+// every visitor because this is a client component.
+export interface HeaderNav {
+  services: { slug: string; navLabel: string; category: string }[];
+  serviceVerticals: { id: string; slug: string; name: string; category: string }[];
+  industries: { slug: string; name: string }[];
+}
+
+export function Header({ nav }: { nav: HeaderNav }) {
+  const { services, serviceVerticals, industries } = nav;
   const [mobileOpen, setMobileOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [solutionsOpen, setSolutionsOpen] = useState(false);

@@ -128,7 +128,7 @@ export function WhatsAppFloat() {
               </div>
               <button
                 type="submit"
-                className="mt-1 flex w-full items-center justify-center gap-2 rounded-lg bg-[#25D366] px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#1fb958]"
+                className="mt-1 flex w-full items-center justify-center gap-2 rounded-lg bg-[#25D366] px-4 py-3 text-sm font-semibold text-[#05070d] transition-colors hover:bg-[#1fb958]"
               >
                 <Icon name="whatsapp" className="w-4 h-4" />
                 Send Message

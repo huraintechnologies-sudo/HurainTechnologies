@@ -24,6 +24,7 @@ import { getServicePageSchemas } from "@/lib/jsonld-universal";
 import { buildServicePageKeywords } from "@/lib/keywords-builder";
 import { services, getServiceBySlug } from "@/data/services";
 import { getServiceImage } from "@/lib/unsplash-service";
+import { TrustSections } from "@/components/TrustSections";
 
 // Unique photorealistic image per service
 const serviceImages: Record<string, { src: string; alt: string }> = {
@@ -334,6 +335,8 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
           <LiveDemos />
         </Container>
       </section>
+
+      <TrustSections topic={service.navLabel} />
 
       <section className="pb-20">
         <Container>

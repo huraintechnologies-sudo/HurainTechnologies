@@ -15,6 +15,7 @@ import { getCaseStudySchemas } from "@/lib/jsonld-universal";
 import { buildCaseStudyKeywords } from "@/lib/keywords-builder";
 import { caseStudies, getCaseStudyBySlug } from "@/data/case-studies";
 import { getCaseStudyImage } from "@/lib/unsplash-service";
+import { TrustSections } from "@/components/TrustSections";
 
 export function generateStaticParams() {
   return caseStudies.map((cs) => ({ slug: cs.slug }));
@@ -175,6 +176,8 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
           <LiveDemos />
         </Container>
       </section>
+
+      <TrustSections topic={"Custom Software"} />
 
       <section className="py-16 border-t border-border bg-surface">
         <Container className="max-w-3xl">

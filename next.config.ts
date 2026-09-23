@@ -76,6 +76,17 @@ const nextConfig: NextConfig = {
     ];
   },
 
+  // Duplicate country slugs (see COUNTRY_SLUG_ALIASES in src/data/countries.ts)
+  // permanently redirect to their canonical slug so link equity consolidates.
+  redirects: async () =>
+    [
+      ["tanzania", "united-republic-of-tanzania"],
+      ["hong-kong", "china-hong-kong-sar"],
+    ].flatMap(([from, to]) => [
+      { source: `/:section(services|solutions|industries)/:item/${from}`, destination: `/:section/:item/${to}`, permanent: true },
+      { source: `/:section(services|solutions|industries)/:item/${from}/:city`, destination: `/:section/:item/${to}/:city`, permanent: true },
+    ]),
+
   // No experimental features needed for this version
 };
 

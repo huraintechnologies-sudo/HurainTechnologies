@@ -1,10 +1,11 @@
+import { CONTENT_UPDATED } from "@/lib/location-seo";
 import { siteConfig } from "@/lib/site-config";
 
 // Core site pages only — no country/city/service/solution/industry variants.
 // Those each live in their own dedicated sitemap (see sitemap_index.xml).
 export async function GET() {
   const baseUrl = siteConfig.url;
-  const now = new Date().toISOString();
+  const now = new Date(CONTENT_UPDATED).toISOString();
 
   const staticRoutes: { url: string; priority: number; changeFrequency: string }[] = [
     { url: `${baseUrl}/`, priority: 1.0, changeFrequency: "weekly" },
@@ -20,6 +21,8 @@ export async function GET() {
     { url: `${baseUrl}/markets-we-cover`, priority: 0.7, changeFrequency: "monthly" },
     { url: `${baseUrl}/privacy-policy`, priority: 0.3, changeFrequency: "yearly" },
     { url: `${baseUrl}/terms-of-service`, priority: 0.3, changeFrequency: "yearly" },
+    // Machine-readable site summary for AI answer engines.
+    { url: `${baseUrl}/llms.txt`, priority: 0.5, changeFrequency: "monthly" },
   ];
 
   let xml = `<?xml version="1.0" encoding="UTF-8"?>

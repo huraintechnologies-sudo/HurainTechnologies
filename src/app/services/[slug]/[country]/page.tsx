@@ -14,9 +14,17 @@ import { buildMetadata } from "@/lib/seo";
 import { faqJsonLd, serviceJsonLd } from "@/lib/jsonld";
 import { services, getServiceBySlug } from "@/data/services";
 import { getCountryBySlug } from "@/data/countries";
-import { countries as curatedCountries } from "@/data/countries-curated";
+import { priorityCountries as curatedCountries } from "@/data/countries";
 import { FaqItem } from "@/lib/types";
 import { localeForCountrySlug } from "@/lib/locale";
+import { cities } from "@/data/cities";
+import { locationContext, getCityFacts } from "@/lib/geo-facts";
+import { buildMarketBrief } from "@/lib/solution-location-content";
+import { countryHreflang, placeJsonLd } from "@/lib/location-seo";
+import { sameRegionCountries, cityDisplayName } from "@/lib/location-links";
+import { LocalMarketSection } from "@/components/location/LocalMarketSection";
+import { QuickAnswer, LinkPills } from "@/components/location/LocationBlocks";
+import { TrustSections } from "@/components/TrustSections";
 
 // Pre-render the curated set at build time; every other country still
 // resolves via on-demand ISR (dynamicParams defaults to true, nothing 404s).
@@ -39,12 +47,18 @@ export async function generateMetadata({
   const country = getCountryBySlug(countrySlug);
   if (!service || !country) return {};
 
-  return buildMetadata({
-    title: `${service.name} in ${country.countryName}`,
+  const ctx = locationContext(country.slug);
+  const meta = buildMetadata({
+    title: `${service.name} in ${country.countryName}${ctx.country?.currency ? ` | ${ctx.country.currency.code} Pricing` : ""}`,
     description: `${service.name} for businesses in ${country.countryName}. ${country.regulatoryNotes[0]} Talk to Hurain Technologies about your ${country.countryName} engagement.`,
     path: `/services/${service.slug}/${country.slug}`,
     keywords: [...service.keywords, `${service.name.toLowerCase()} in ${country.countryName.toLowerCase()}`],
   });
+  return {
+    ...meta,
+    alternates: { canonical: meta.alternates?.canonical, languages: countryHreflang(`/services/${service.slug}`, `/services/${service.slug}`) },
+    ...(ctx.country?.image ? { openGraph: { ...meta.openGraph, images: [{ url: ctx.country.image, alt: country.countryName }] } } : {}),
+  };
 }
 
 export default async function ServiceCountryPage({
@@ -57,7 +71,14 @@ export default async function ServiceCountryPage({
   const country = getCountryBySlug(countrySlug);
   if (!service || !country) notFound();
 
-  const combinedFaqs: FaqItem[] = [...country.faqs, ...service.faqs.slice(0, 4)];
+  const ctx = locationContext(country.slug);
+  const brief = buildMarketBrief(ctx, country.countryName, country.countryName, service.navLabel);
+  const combinedFaqs: FaqItem[] = [...country.faqs, ...brief.faqs, ...service.faqs.slice(0, 4)];
+  const countryCities = cities
+    .filter((c) => c.countrySlug === country.slug)
+    .map((c) => ({ name: cityDisplayName(c, getCityFacts(country.slug, c.slug)), href: `/services/${service.slug}/${country.slug}/${c.slug}`, pop: getCityFacts(country.slug, c.slug)?.population || 0 }))
+    .sort((a, b) => b.pop - a.pop)
+    .slice(0, 24);
 
   return (
     <>
@@ -67,7 +88,7 @@ export default async function ServiceCountryPage({
             ...serviceJsonLd(service),
             "@id": `${service.slug}-${country.slug}#service`,
             name: `${service.name} in ${country.countryName}`,
-            areaServed: { "@type": "Country", name: country.countryName },
+            areaServed: placeJsonLd(country.countryName, ctx.country),
           },
           faqJsonLd(combinedFaqs),
         ]}
@@ -93,6 +114,12 @@ export default async function ServiceCountryPage({
             {service.intro} In {country.countryName}, that means building to the technical expectations of{" "}
             {country.region.replace(/Tier \d+ — /, "")}: {country.regulatoryNotes[0]}
           </p>
+          <div className="max-w-3xl">
+            <QuickAnswer
+              question={`Who provides ${service.navLabel.toLowerCase()} in ${country.countryName}?`}
+              answer={`Hurain Technologies delivers ${service.name.toLowerCase()} for businesses in ${country.countryName}, with a team available 24/7. Builds account for ${ctx.market.tax ? `${ctx.market.tax}, ` : ""}${ctx.market.payments ? `local payment rails such as ${ctx.market.payments.slice(0, 2).join(" and ")}, ` : ""}and ${ctx.market.privacyLaw || "local data-protection rules"}. Discovery starts within 5 business days.`}
+            />
+          </div>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
               href="/contact"
@@ -132,6 +159,8 @@ export default async function ServiceCountryPage({
         </Container>
       </section>
 
+      <LocalMarketSection ctx={ctx} placeName={country.countryName} countryName={country.countryName} topic={service.navLabel} />
+
       <section className="py-16 border-t border-border bg-surface">
         <Container>
           <SectionHeading eyebrow="The Challenge" title="Problems we see teams struggling with" />
@@ -159,7 +188,9 @@ export default async function ServiceCountryPage({
         </Container>
       </section>
 
-      <section className="py-16">
+      <TrustSections topic={service.navLabel} place={country.countryName} />
+
+      <section className="py-16 border-t border-border">
         <Container className="max-w-3xl">
           <SectionHeading eyebrow="FAQ" title={`${service.navLabel} in ${country.countryName} — FAQ`} />
           <div className="mt-8">
@@ -169,6 +200,21 @@ export default async function ServiceCountryPage({
       </section>
 
       <section className="py-16 border-t border-border bg-surface">
+        <Container className="space-y-10">
+          {countryCities.length > 0 && (
+            <div>
+              <h2 className="text-lg font-semibold text-foreground">{service.navLabel} by city in {country.countryName}</h2>
+              <div className="mt-4"><LinkPills links={countryCities} /></div>
+            </div>
+          )}
+          <div>
+            <h2 className="text-lg font-semibold text-foreground">{service.navLabel} in nearby countries</h2>
+            <div className="mt-4"><LinkPills links={sameRegionCountries(country.slug, 12).map((c) => ({ name: c.countryName, href: `/services/${service.slug}/${c.slug}` }))} /></div>
+          </div>
+        </Container>
+      </section>
+
+      <section className="py-16 border-t border-border">
         <Container>
           <LiveDemos />
         </Container>

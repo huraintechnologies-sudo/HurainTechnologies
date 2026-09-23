@@ -1,3 +1,4 @@
+import { CONTENT_UPDATED } from "@/lib/location-seo";
 import { siteConfig } from "@/lib/site-config";
 import { services } from "@/data/services";
 import { serviceVerticals } from "@/data/service-verticals";
@@ -21,7 +22,7 @@ import { industries } from "@/data/industries";
 // its own path segment. Content-Type is still application/xml either way.
 export async function GET() {
   const baseUrl = siteConfig.url;
-  const lastModified = new Date().toISOString();
+  const lastModified = new Date(CONTENT_UPDATED).toISOString();
 
   const sitemapEntries = [
     `${baseUrl}/sitemap-main.xml`,

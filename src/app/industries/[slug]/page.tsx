@@ -1,103 +1,120 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Image from "next/image";
+import Link from "next/link";
+import { industries, getIndustryBySlug } from "@/data/industries";
+import { getServiceBySlug } from "@/data/services";
+import { serviceVerticals } from "@/data/service-verticals";
+import { priorityCountries } from "@/data/countries";
+import { cities as curatedCities } from "@/data/cities-curated";
+import { getIndustryPlaybook } from "@/data/industry-playbooks";
 import { Container } from "@/components/Container";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SectionHeading } from "@/components/SectionHeading";
 import { CtaSection } from "@/components/CtaSection";
-import { Icon } from "@/components/Icon";
-import { PainPointGrid, SolutionGrid, RelatedServices } from "@/components/ContentGrids";
 import { FaqAccordion } from "@/components/FaqAccordion";
-import { CountryLinksGrid } from "@/components/CountryLinksGrid";
-import { LiveDemos } from "@/components/LiveDemos";
 import { JsonLd } from "@/components/JsonLd";
-import { faqJsonLd } from "@/lib/jsonld";
-import { getBaseSchemas, getPageSchemas } from "@/lib/jsonld-universal";
-import { buildIndustryPageKeywords } from "@/lib/keywords-builder";
+import { Icon } from "@/components/Icon";
+import { CountryLinksGrid } from "@/components/CountryLinksGrid";
+import { TrustSections } from "@/components/TrustSections";
+import { PainPointGrid } from "@/components/ContentGrids";
+import { PlacePhoto, QuickAnswer, FeatureGrid, PhaseTimeline, TechStackRow, LinkPills } from "@/components/location/LocationBlocks";
 import { buildMetadata } from "@/lib/seo";
-import { industries, getIndustryBySlug } from "@/data/industries";
-import { getIndustryImage } from "@/lib/unsplash-service";
+import { lc } from "@/lib/solution-location-content";
+import { locationPageJsonLd } from "@/lib/location-seo";
 
 export function generateStaticParams() {
-  return industries.map((industry) => ({ slug: industry.slug }));
+  return industries.map((i) => ({ slug: i.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const industry = getIndustryBySlug(slug);
-  if (!industry) return {};
-
+  const pb = getIndustryPlaybook(slug);
+  if (!industry || !pb) return {};
   return buildMetadata({
-    title: `${industry.name} Software Development`,
-    description: industry.metaDescription ?? industry.summary,
-    path: `/industries/${industry.slug}`,
+    title: `${industry.name} Software Development Company | Cost, Timeline & Compliance`,
+    description: (industry.metaDescription || pb.answer).slice(0, 158),
+    path: `/industries/${slug}`,
+    keywords: pb.keywords,
   });
 }
 
 export default async function IndustryPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const industry = getIndustryBySlug(slug);
-  if (!industry) notFound();
+  const pb = getIndustryPlaybook(slug);
+  if (!industry || !pb) notFound();
 
-  // Fetch unique image for this industry
-  const industryImage = await getIndustryImage(industry.name);
+  const name = industry.name;
+  const path = `/industries/${industry.slug}`;
+  const breadcrumbs = [
+    { name: "Industries", href: "/industries" },
+    { name, href: path },
+  ];
+
+  const faqs = [
+    { question: `What does Hurain Technologies build for ${lc(name)}?`, answer: pb.answer },
+    { question: `How long does ${lc(name)} software development take?`, answer: `A first production release typically takes ${pb.mvpWeeks}; a full platform ${pb.fullWeeks}, depending on scope, integrations and compliance requirements.` },
+    { question: `How much does ${lc(name)} software development cost?`, answer: `Cost depends mainly on ${pb.costDrivers.slice(0, 3).map((d) => d.charAt(0).toLowerCase() + d.slice(1)).join(", ")}. Share your requirements and we return a fixed-scope estimate within 5 business days.` },
+    ...pb.faqs,
+  ];
+
+  const jsonLd = locationPageJsonLd({
+    path,
+    name: `${name} Software Development`,
+    description: pb.answer,
+    serviceName: `${name} software development`,
+    serviceType: `${name} software development`,
+    image: pb.heroImage.src,
+    area: { "@type": "Place", name: "Worldwide" },
+    faqs,
+    breadcrumbs,
+  });
 
   return (
     <>
-      <JsonLd data={industry.faqs ? getPageSchemas(faqJsonLd(industry.faqs)) : getBaseSchemas()} />
+      <JsonLd data={jsonLd} />
 
-      {industryImage && (
-        <section className="border-b border-border">
-          <div className="relative h-64 sm:h-80 overflow-hidden">
-            <Image
-              src={industryImage.url}
-              alt={industryImage.alt}
-              fill
-              className="object-cover"
-              priority
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-transparent to-background" />
+      <section className="relative overflow-hidden border-b border-border">
+        <div className="pointer-events-none absolute inset-0 bg-grid opacity-40" />
+        <Container className="relative grid grid-cols-1 items-center gap-10 py-12 lg:grid-cols-2 lg:py-16">
+          <div>
+            <Breadcrumbs items={breadcrumbs} withSchema={false} />
+            <span className="mt-5 inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-primary">
+              <Icon name="check" className="h-3.5 w-3.5" />
+              Industry
+            </span>
+            <h1 className="mt-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">{pb.headline}</h1>
+            <QuickAnswer question={`What does Hurain Technologies build for ${lc(name)}?`} answer={pb.answer} />
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Link href="/contact" className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3.5 text-sm font-semibold text-background hover:bg-primary/90">
+                Get a free estimate
+                <Icon name="arrow" className="h-4 w-4" />
+              </Link>
+              <a href="#countries" className="inline-flex items-center gap-2 rounded-lg border border-border px-6 py-3.5 text-sm font-semibold text-foreground hover:border-primary/50 hover:text-primary">
+                Find your country
+              </a>
+            </div>
           </div>
-        </section>
-      )}
-
-      <section className="border-b border-border py-14">
-        <Container>
-          <Breadcrumbs
-            items={[
-              { name: "Industries", href: "/industries" },
-              { name: industry.name, href: `/industries/${industry.slug}` },
-            ]}
-          />
-          <span className="mt-4 inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-primary">
-            <Icon name={industry.icon as never} className="w-3.5 h-3.5" />
-            Industry
-          </span>
-          <h1 className="mt-4 max-w-3xl text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-            Software Development for {industry.name}
-          </h1>
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">{industry.summary}</p>
+          <PlacePhoto src={pb.heroImage.src} alt={pb.heroImage.alt} width={1200} height={800} priority />
         </Container>
       </section>
 
       <section className="py-16">
-        <Container>
-          <SectionHeading eyebrow="What This Industry Needs" title="Common requirements we build for" />
-          <ul className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {industry.needs.map((need) => (
-              <li key={need} className="flex items-start gap-3 rounded-xl border border-border bg-surface p-5">
-                <Icon name="check" className="w-4 h-4 mt-0.5 shrink-0 text-primary" />
-                <span className="text-sm text-foreground/85">{need}</span>
-              </li>
+        <Container className="max-w-4xl">
+          <SectionHeading eyebrow="Overview" title={`${name} software, built for how the industry really works`} />
+          <div className="mt-6 space-y-4 text-base leading-relaxed text-foreground/85">
+            {pb.overview.map((p) => (
+              <p key={p}>{p}</p>
             ))}
-          </ul>
+          </div>
         </Container>
       </section>
 
-      {industry.painPoints && (
-        <section className="py-16 border-t border-border bg-surface">
+      {industry.painPoints && industry.painPoints.length > 0 && (
+        <section className="border-t border-border bg-surface py-16">
           <Container>
-            <SectionHeading eyebrow="The Challenge" title="Problems we see this industry struggling with" />
+            <SectionHeading eyebrow="The challenge" title={`What ${lc(name)} teams struggle with`} />
             <div className="mt-8">
               <PainPointGrid items={industry.painPoints} />
             </div>
@@ -105,62 +122,111 @@ export default async function IndustryPage({ params }: { params: Promise<{ slug:
         </section>
       )}
 
-      {industry.approach && (
-        <section className="py-16">
-          <Container>
-            <SectionHeading eyebrow="Our Approach" title="How Hurain Technologies solves it" />
-            <div className="mt-8">
-              <SolutionGrid items={industry.approach} />
-            </div>
-          </Container>
-        </section>
-      )}
-
-      <section className="py-16 border-t border-border bg-surface">
+      <section className="border-t border-border py-16">
         <Container>
-          <SectionHeading eyebrow="Relevant Services" title="Engineering practices for this industry" />
-          <div className="mt-8">
-            <RelatedServices slugs={industry.relatedServiceSlugs} />
+          <SectionHeading eyebrow="Our approach" title={`How we build for ${lc(name)}`} />
+          <div className="mt-10">
+            <FeatureGrid items={pb.features} />
+          </div>
+          <h3 className="mt-14 text-lg font-semibold text-foreground">Typical projects</h3>
+          <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {pb.useCases.map((u) => (
+              <div key={u.title} className="rounded-xl border border-border bg-surface p-5">
+                <h4 className="text-sm font-semibold text-foreground">{u.title}</h4>
+                <p className="mt-2 text-sm leading-relaxed text-muted">{u.description}</p>
+              </div>
+            ))}
           </div>
         </Container>
       </section>
 
-      {industry.faqs && (
-        <section className="py-16">
-          <Container className="max-w-3xl">
-            <SectionHeading eyebrow="FAQ" title={`${industry.name} — frequently asked questions`} />
-            <div className="mt-8">
-              <FaqAccordion faqs={industry.faqs} />
+      <section className="border-t border-border bg-surface py-16">
+        <Container className="grid grid-cols-1 gap-12 lg:grid-cols-2">
+          <div>
+            <SectionHeading eyebrow="Cost & timeline" title={`How much does ${lc(name)} software cost and how long does it take?`} />
+            <p className="mt-5 text-base leading-relaxed text-foreground/85">
+              A first production release typically takes <strong className="text-foreground">{pb.mvpWeeks}</strong>, and a full platform <strong className="text-foreground">{pb.fullWeeks}</strong>. These are the factors that move the price most:
+            </p>
+            <ul className="mt-5 grid grid-cols-1 gap-2 sm:grid-cols-2">
+              {pb.costDrivers.map((d) => (
+                <li key={d} className="flex gap-2 text-sm text-muted">
+                  <Icon name="check" className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                  {d}
+                </li>
+              ))}
+            </ul>
+            <h3 className="mt-10 text-lg font-semibold text-foreground">Technology</h3>
+            <div className="mt-4">
+              <TechStackRow groups={pb.techStack.slice(0, 2)} />
             </div>
-          </Container>
-        </section>
-      )}
+          </div>
+          <div>
+            <h3 className="mb-6 text-lg font-semibold text-foreground">Our delivery process</h3>
+            <PhaseTimeline phases={pb.phases} />
+            <h3 className="mt-10 text-lg font-semibold text-foreground">Standards we build to</h3>
+            <ul className="mt-4 flex flex-wrap gap-2">
+              {pb.compliance.map((c) => (
+                <li key={c} className="rounded-full border border-border bg-background px-3.5 py-1.5 text-xs text-foreground/80">{c}</li>
+              ))}
+            </ul>
+          </div>
+        </Container>
+      </section>
 
-      <section className="py-16">
+      <TrustSections topic={`${name} Software`} />
+
+      <section id="faq" className="border-t border-border py-16">
+        <Container className="max-w-3xl">
+          <SectionHeading eyebrow="FAQ" title={`${name} software: frequently asked questions`} />
+          <div className="mt-8">
+            <FaqAccordion faqs={faqs} />
+          </div>
+        </Container>
+      </section>
+
+      <section id="countries" className="border-t border-border bg-surface py-16">
         <Container>
           <SectionHeading
-            eyebrow="Markets We Cover"
-            title={`${industry.name} by country`}
-            description={`Local regulatory context for ${industry.name.toLowerCase()} businesses in each market we serve.`}
+            eyebrow="By location"
+            title={`${name} software by country and city`}
+            description="Each location page covers local regulation, payment methods, tax, data-protection law and 24/7 support."
           />
-          <div className="mt-8">
-            <CountryLinksGrid basePath={`/industries/${industry.slug}`} />
+          <h3 className="mt-8 text-sm font-semibold uppercase tracking-widest text-foreground/60">Priority markets</h3>
+          <div className="mt-4">
+            <LinkPills links={priorityCountries.slice(0, 18).map((c) => ({ name: c.countryName, href: `${path}/${c.slug}` }))} />
+          </div>
+          <h3 className="mt-8 text-sm font-semibold uppercase tracking-widest text-foreground/60">Major cities</h3>
+          <div className="mt-4">
+            <LinkPills links={curatedCities.slice(0, 20).map((c) => ({ name: c.cityName, href: `${path}/${c.countrySlug}/${c.slug}` }))} />
+          </div>
+          <h3 className="mt-8 text-sm font-semibold uppercase tracking-widest text-foreground/60">All countries</h3>
+          <div className="mt-4">
+            <CountryLinksGrid basePath={path} />
           </div>
         </Container>
       </section>
 
-      <section className="py-16 border-t border-border bg-surface">
-        <Container>
-          <LiveDemos />
-        </Container>
-      </section>
-
-      <section className="py-16">
-        <Container>
-          <CtaSection
-            title={`Building for ${industry.name.toLowerCase()}?`}
-            description="Book a discovery call and get a scoped technical estimate within 5 business days."
-          />
+      <section className="border-t border-border py-16">
+        <Container className="space-y-8">
+          <div>
+            <h2 className="text-lg font-semibold text-foreground">Related solutions</h2>
+            <div className="mt-4">
+              <LinkPills links={pb.relatedSolutions.map((s) => serviceVerticals.find((v) => v.slug === s)).filter(Boolean).map((v) => ({ name: v!.name, href: `/solutions/${v!.slug}` }))} />
+            </div>
+          </div>
+          <div>
+            <h2 className="text-lg font-semibold text-foreground">Related engineering services</h2>
+            <div className="mt-4">
+              <LinkPills links={pb.relatedServices.map((s) => getServiceBySlug(s)).filter(Boolean).map((s) => ({ name: s!.navLabel, href: `/services/${s!.slug}` }))} />
+            </div>
+          </div>
+          <div>
+            <h2 className="text-lg font-semibold text-foreground">Other industries</h2>
+            <div className="mt-4">
+              <LinkPills links={industries.filter((i) => i.slug !== industry.slug).map((i) => ({ name: i.name, href: `/industries/${i.slug}` }))} />
+            </div>
+          </div>
+          <CtaSection title={`Building for ${lc(name)}?`} description="Share your idea and get a scoped plan, timeline and fixed estimate within 5 business days." primaryLabel="Get a free estimate" />
         </Container>
       </section>
     </>

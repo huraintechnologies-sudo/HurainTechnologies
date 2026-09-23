@@ -1,12 +1,15 @@
+import { CONTENT_UPDATED } from "@/lib/location-seo";
 import { siteConfig } from "@/lib/site-config";
 import { serviceVerticals } from "@/data/service-verticals";
 import { countries } from "@/data/countries";
 import { cities } from "@/data/cities";
+import { isWorldSolution, worldCountries, worldCities } from "@/data/world-geo";
 
 // One sitemap per solution/vertical: the solution hub page + every
 // solution x country page + every solution x country x city page.
 // Matches the real routes at /solutions/[solution], /solutions/[solution]/[country],
-// /solutions/[solution]/[country]/[city].
+// /solutions/[solution]/[country]/[city]. World-coverage solutions (Remote
+// DBA) list every country and the 500 high-demand world cities instead.
 export const dynamic = "force-dynamic";
 
 export async function GET(
@@ -20,7 +23,7 @@ export async function GET(
   }
 
   const baseUrl = siteConfig.url;
-  const now = new Date().toISOString();
+  const now = new Date(CONTENT_UPDATED).toISOString();
 
   let xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -31,7 +34,10 @@ export async function GET(
     <priority>0.9</priority>
   </url>`;
 
-  for (const country of countries) {
+  const solutionCountries = isWorldSolution(solution.slug) ? worldCountries : countries;
+  const solutionCities = isWorldSolution(solution.slug) ? worldCities : cities;
+
+  for (const country of solutionCountries) {
     xml += `
   <url>
     <loc>${baseUrl}/solutions/${solution.slug}/${country.slug}</loc>
@@ -41,7 +47,7 @@ export async function GET(
   </url>`;
   }
 
-  for (const city of cities) {
+  for (const city of solutionCities) {
     xml += `
   <url>
     <loc>${baseUrl}/solutions/${solution.slug}/${city.countrySlug}/${city.slug}</loc>

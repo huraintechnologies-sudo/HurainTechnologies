@@ -17,7 +17,23 @@ import { faqJsonLd } from "@/lib/jsonld";
 import { countries, getCountryBySlug } from "@/data/countries";
 import { getServiceBySlug } from "@/data/services";
 import { cities } from "@/data/cities";
-import { allLocales, countrySlugForLocale } from "@/lib/locale";
+import { allLocales, countrySlugForLocale, localeForCountrySlug } from "@/lib/locale";
+import { locationContext } from "@/lib/geo-facts";
+import { buildMarketBrief } from "@/lib/solution-location-content";
+import { LocalMarketSection } from "@/components/location/LocalMarketSection";
+import { TrustSections } from "@/components/TrustSections";
+import { siteConfig } from "@/lib/site-config";
+
+// hreflang cluster for the /en-xx country hubs; the global homepage is x-default.
+function localeHreflang(): Record<string, string> {
+  const languages: Record<string, string> = {};
+  for (const c of countries) {
+    const l = localeForCountrySlug(c.slug);
+    if (l) languages[`en-${l.slice(3).toUpperCase()}`] = `${siteConfig.url}/${l}`;
+  }
+  languages["x-default"] = siteConfig.url;
+  return languages;
+}
 import {
   buildCountryOverview,
   buildCountryProblems,
@@ -37,11 +53,17 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const country = countrySlug ? getCountryBySlug(countrySlug) : undefined;
   if (!country) return {};
 
-  return buildMetadata({
+  const meta = buildMetadata({
     title: country.metaTitle,
     description: country.metaDescription,
     path: `/${locale}`,
   });
+  const img = locationContext(country.slug).country?.image;
+  return {
+    ...meta,
+    alternates: { canonical: meta.alternates?.canonical, languages: localeHreflang() },
+    ...(img ? { openGraph: { ...meta.openGraph, images: [{ url: img, alt: country.countryName }] } } : {}),
+  };
 }
 
 export default async function LocaleCountryPage({ params }: { params: Promise<{ locale: string }> }) {
@@ -56,7 +78,8 @@ export default async function LocaleCountryPage({ params }: { params: Promise<{ 
   const industryHighlights = buildCountryIndustries(country);
   const engineeringChecklist = buildCountryEngineeringChecklist(country);
   const extendedFaqs = buildCountryExtendedFaqs(country);
-  const allFaqs = [...country.faqs, ...extendedFaqs];
+  const ctx = locationContext(country.slug);
+  const allFaqs = [...country.faqs, ...extendedFaqs, ...buildMarketBrief(ctx, country.countryName, country.countryName, "Software Development").faqs];
 
   return (
     <>
@@ -258,7 +281,7 @@ export default async function LocaleCountryPage({ params }: { params: Promise<{ 
       </section>
 
       {cities.filter((c) => c.countrySlug === country.slug).length > 0 && (
-        <section className="py-16">
+        <section id="cities" className="py-16">
           <Container>
             <SectionHeading eyebrow="Cities" title={`Demand hub cities in ${country.countryName}`} />
             <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -278,6 +301,10 @@ export default async function LocaleCountryPage({ params }: { params: Promise<{ 
           </Container>
         </section>
       )}
+
+      <LocalMarketSection ctx={ctx} placeName={country.countryName} countryName={country.countryName} topic="Software Development" />
+
+      <TrustSections topic="Software Development" place={country.countryName} />
 
       <section className="py-16 border-t border-border">
         <Container className="max-w-3xl">

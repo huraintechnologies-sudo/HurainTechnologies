@@ -19,6 +19,16 @@ export const serviceVerticals: ServiceVertical[] = [
     keywords: ["mobile app development", "iOS development", "Android development", "app creation", "mobile solutions"],
     serviceSlug: "smart-contract-development",
   },
+  // Database administration (world coverage — see src/data/world-geo.ts)
+  {
+    id: "remote-dba",
+    slug: "remote-dba-services",
+    name: "Remote DBA Services",
+    category: "Enterprise Solutions",
+    description: "24/7 remote database administration, monitoring, performance tuning, backup and recovery, migration and security for Oracle, SQL Server, MySQL, PostgreSQL, MongoDB and cloud databases.",
+    keywords: ["remote DBA services", "database administration services", "database management services", "database performance tuning", "database migration services", "managed database support"],
+    serviceSlug: "cloud-application-modernization",
+  },
   // E-Commerce Verticals
   {
     id: "ecommerce-app",

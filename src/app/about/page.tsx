@@ -9,6 +9,26 @@ import { LiveDemos } from "@/components/LiveDemos";
 import { Icon } from "@/components/Icon";
 import { buildMetadata } from "@/lib/seo";
 import { siteConfig } from "@/lib/site-config";
+import fs from "node:fs";
+import path from "node:path";
+import { JsonLd } from "@/components/JsonLd";
+import { founderJsonLd } from "@/lib/jsonld";
+import { TrustSections } from "@/components/TrustSections";
+
+const hasFounderPhoto = fs.existsSync(path.join(process.cwd(), "public", siteConfig.founder.photo));
+
+const founderHighlights = [
+  { value: siteConfig.founder.yearsExperience, label: "Years building software" },
+  { value: siteConfig.founder.productsBuilt, label: "Products built and launched" },
+  { value: siteConfig.founder.customProjects, label: "Custom client projects delivered" },
+];
+
+const founderWork = [
+  "Founded Hurain Engitech & Trade and built Hurain Technologies as its software and blockchain division, from a one-person engineering practice into a multi-practice delivery team.",
+  "Built and launched 15+ in-house products — SaaS platforms, marketplaces, fintech and payment tools, and property-technology products — and still actively builds new platforms today.",
+  "Led 100+ custom projects for clients: mobile apps, web platforms, payment-gateway and API integrations, blockchain and smart-contract systems, cloud migrations and AI automation.",
+  "Works hands-on across architecture, product scoping and delivery, so every engagement has a technical founder accountable for the outcome.",
+];
 
 export const metadata: Metadata = buildMetadata({
   title: "About Us | Blockchain, Payments & Cloud Engineering",
@@ -116,6 +136,62 @@ export default function AboutPage() {
         </Container>
       </section>
 
+      <section id="founder" className="py-16 border-t border-border">
+        <JsonLd data={founderJsonLd()} />
+        <Container>
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-5 lg:items-start">
+            <div className="lg:col-span-2">
+              <div className="card-glow mx-auto max-w-sm overflow-hidden rounded-2xl bg-surface lg:max-w-none">
+                {hasFounderPhoto ? (
+                  <Image src={siteConfig.founder.photo} alt={`${siteConfig.founderName}, founder of Hurain Technologies`} width={400} height={400} sizes="(min-width: 1024px) 400px, 100vw" className="aspect-square w-full object-cover" />
+                ) : (
+                  <div className="flex aspect-square w-full items-center justify-center bg-gradient-to-br from-primary/20 via-surface to-primary-2/20">
+                    <span className="text-7xl font-bold gradient-text">{siteConfig.founderName.split(" ").map((w) => w[0]).join("")}</span>
+                  </div>
+                )}
+                <div className="p-6">
+                  <p className="text-lg font-semibold text-foreground">{siteConfig.founderName}</p>
+                  <p className="mt-1 text-sm text-muted">{siteConfig.founder.title}</p>
+                  <a href={siteConfig.founder.linkedin} target="_blank" rel="noopener me" className="mt-4 inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-primary/50 hover:text-primary">
+                    <Icon name="linkedin" className="h-4 w-4" />
+                    Connect on LinkedIn
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div className="lg:col-span-3">
+              <SectionHeading eyebrow="Meet the founder" title={`${siteConfig.founderName} — founder of Hurain Engitech & Trade`} />
+              <p className="mt-5 text-base leading-relaxed text-foreground/85">
+                {siteConfig.founderName} is a software entrepreneur and product engineer with {siteConfig.founder.yearsExperience} years of experience turning ideas into working products. As founder of Hurain Engitech &amp; Trade and Hurain Technologies, {siteConfig.founderName.split(" ")[0]} has built {siteConfig.founder.productsBuilt} in-house products and delivered {siteConfig.founder.customProjects} custom software projects for businesses across fintech, payments, blockchain, e-commerce, real estate and SaaS.
+              </p>
+              <div className="mt-8 grid grid-cols-3 gap-3">
+                {founderHighlights.map((h) => (
+                  <div key={h.label} className="rounded-xl border border-border bg-surface p-4 text-center">
+                    <p className="text-2xl font-bold gradient-text sm:text-3xl">{h.value}</p>
+                    <p className="mt-1 text-xs leading-snug text-muted">{h.label}</p>
+                  </div>
+                ))}
+              </div>
+              <h3 className="mt-10 text-lg font-semibold text-foreground">Track record</h3>
+              <ul className="mt-4 space-y-3">
+                {founderWork.map((w) => (
+                  <li key={w} className="flex gap-3 text-sm leading-relaxed text-muted sm:text-base">
+                    <Icon name="check" className="mt-1 h-4 w-4 shrink-0 text-primary" />
+                    {w}
+                  </li>
+                ))}
+              </ul>
+              <h3 className="mt-10 text-lg font-semibold text-foreground">Areas of expertise</h3>
+              <ul className="mt-4 flex flex-wrap gap-2">
+                {["Product strategy & MVPs", "SaaS architecture", "Fintech & payments", "Blockchain & smart contracts", "Mobile & web apps", "Cloud & DevOps", "AI automation", "Team building"].map((t) => (
+                  <li key={t} className="rounded-full border border-border bg-surface px-3.5 py-1.5 text-xs text-foreground/80">{t}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </Container>
+      </section>
+
       <section className="py-16 border-t border-border bg-surface">
         <Container>
           <WhyChooseUs />
@@ -181,6 +257,8 @@ export default function AboutPage() {
           </div>
         </Container>
       </section>
+
+      <TrustSections topic="Custom Software" />
 
       <section className="py-16 border-t border-border bg-surface">
         <Container>

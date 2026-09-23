@@ -7,6 +7,24 @@ import { LiveDemos } from "@/components/LiveDemos";
 import { Icon } from "@/components/Icon";
 import { buildMetadata } from "@/lib/seo";
 import { siteConfig } from "@/lib/site-config";
+import { FaqAccordion } from "@/components/FaqAccordion";
+import { JsonLd } from "@/components/JsonLd";
+import { faqJsonLd } from "@/lib/jsonld";
+
+const hiringSteps = [
+  { title: "Apply", body: "Send your CV, GitHub or portfolio and a few lines on the most interesting system you have built." },
+  { title: "Intro call (30 min)", body: "A conversation with an engineering lead about your experience, interests and what you want to work on next." },
+  { title: "Practical exercise", body: "A short, realistic task from our domain — reviewed with you, not just scored. No whiteboard puzzles." },
+  { title: "Team interview", body: "Architecture discussion with future teammates, followed by an offer within a week." },
+];
+
+const careerFaqs = [
+  { question: "Can I work remotely at Hurain Technologies?", answer: "Yes. Most roles are remote-friendly within India, with some fully remote. Teams meet in person in Gujarat each quarter." },
+  { question: "What does the hiring process look like?", answer: "Application, a 30-minute intro call, a short practical exercise, and a team interview. Most candidates hear back within a week at each stage." },
+  { question: "What technologies will I work with?", answer: "TypeScript/Node.js, Python, Go, Java, Solidity and Rust, React/Next.js and Flutter, on AWS/GCP with Kubernetes and Terraform — depending on the practice you join." },
+  { question: "Do you hire freshers or interns?", answer: "Occasionally, for candidates with strong project work. Send your GitHub and we'll consider you for upcoming openings." },
+  { question: "Don't see a role that fits?", answer: `Email ${siteConfig.email} with your profile — we keep strong engineers in mind for new projects.` },
+];
 
 export const metadata: Metadata = buildMetadata({
   title: "Careers | Join Our Engineering Team",
@@ -93,6 +111,31 @@ export default function CareersPage() {
       <section className="py-16 border-t border-border">
         <Container>
           <LiveDemos />
+        </Container>
+      </section>
+
+      <JsonLd data={faqJsonLd(careerFaqs)} />
+      <section className="border-t border-border bg-surface py-16">
+        <Container>
+          <SectionHeading eyebrow="Hiring process" title="How we hire" />
+          <ol className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {hiringSteps.map((st, n) => (
+              <li key={st.title} className="rounded-xl border border-border bg-background p-6">
+                <span className="text-xs font-semibold text-primary">Step {n + 1}</span>
+                <h3 className="mt-2 text-base font-semibold text-foreground">{st.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted">{st.body}</p>
+              </li>
+            ))}
+          </ol>
+        </Container>
+      </section>
+
+      <section className="border-t border-border py-16">
+        <Container className="max-w-3xl">
+          <SectionHeading eyebrow="FAQ" title="Careers — frequently asked questions" />
+          <div className="mt-8">
+            <FaqAccordion faqs={careerFaqs} />
+          </div>
         </Container>
       </section>
 

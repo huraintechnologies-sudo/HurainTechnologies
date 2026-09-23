@@ -17,7 +17,7 @@ const edges: [number, number][] = [
 export function HeroMotion({ className = "" }: { className?: string }) {
   return (
     <div className={`pointer-events-none absolute inset-0 overflow-hidden ${className}`} aria-hidden="true">
-      <div className="absolute inset-0 bg-grid animate-grid-pan opacity-60" />
+      <div className="absolute inset-0 bg-grid opacity-60" />
 
       <div className="absolute -left-16 top-10 h-72 w-72 rounded-full bg-primary/15 blur-3xl animate-drift-slow" />
       <div className="absolute right-0 top-1/3 h-80 w-80 rounded-full bg-accent/10 blur-3xl animate-drift" />
