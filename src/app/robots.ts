@@ -4,6 +4,43 @@ import { services } from "@/data/services";
 import { serviceVerticals } from "@/data/service-verticals";
 import { industries } from "@/data/industries";
 
+const AI_BOTS = [
+  // OpenAI / ChatGPT
+  "GPTBot",
+  "ChatGPT-User",
+  "OAI-SearchBot",
+  // Anthropic / Claude
+  "ClaudeBot",
+  "Claude-User",
+  "Claude-SearchBot",
+  "Claude-Web",
+  "anthropic-ai",
+  // Perplexity
+  "PerplexityBot",
+  "Perplexity-User",
+  // Google Gemini / AI Overviews
+  "Google-Extended",
+  // Apple Intelligence / Siri
+  "Applebot",
+  "Applebot-Extended",
+  // Meta AI
+  "meta-externalagent",
+  "FacebookBot",
+  // Amazon / Alexa
+  "Amazonbot",
+  // Microsoft Copilot (via Bing)
+  "bingbot",
+  // DuckDuckGo AI
+  "DuckAssistBot",
+  // Mistral, Cohere, You.com
+  "MistralAI-User",
+  "cohere-ai",
+  "YouBot",
+  // Common Crawl (training data for many models) and ByteDance
+  "CCBot",
+  "Bytespider",
+];
+
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
@@ -12,16 +49,10 @@ export default function robots(): MetadataRoute.Robots {
         allow: ["/", "/llms.txt"],
         disallow: ["/api/", "/admin/"],
       },
-      { userAgent: "GPTBot", allow: "/" },
-      { userAgent: "ChatGPT-User", allow: "/" },
-      { userAgent: "OAI-SearchBot", allow: "/" },
-      { userAgent: "ClaudeBot", allow: "/" },
-      { userAgent: "Claude-Web", allow: "/" },
-      { userAgent: "anthropic-ai", allow: "/" },
-      { userAgent: "PerplexityBot", allow: "/" },
-      { userAgent: "Google-Extended", allow: "/" },
-      { userAgent: "CCBot", allow: "/" },
-      { userAgent: "Bytespider", allow: "/" },
+      // AI assistants and answer engines: full access to every page and
+      // llms.txt. A crawler matched by name ignores the "*" group above, so
+      // /api/ and /admin/ are repeated here to stay closed for them too.
+      ...AI_BOTS.map((userAgent) => ({ userAgent, allow: ["/", "/llms.txt"], disallow: ["/api/", "/admin/"] })),
       // Block bad bots
       { userAgent: "AhrefsBot", disallow: "/" },
       { userAgent: "SemrushBot", disallow: "/" },
