@@ -1,5 +1,8 @@
 import { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/site-config";
+import { services } from "@/data/services";
+import { serviceVerticals } from "@/data/service-verticals";
+import { industries } from "@/data/industries";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -24,13 +27,18 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "SemrushBot", disallow: "/" },
       { userAgent: "DotBot", disallow: "/" },
     ],
+    // Every sitemap is listed explicitly (not just the index) so crawlers
+    // that don't follow sitemap indexes still discover all of them.
     sitemap: [
-      // Master index — references sitemap-main, sitemap-pages, sitemap-countries,
-      // sitemap-cities, and one sitemap per service/solution/industry.
       `${siteConfig.url}/sitemap_index.xml`,
-      // Also advertised directly so crawlers that only read the first
-      // sitemap entry still see the core static pages.
       `${siteConfig.url}/sitemap.xml`,
+      `${siteConfig.url}/sitemap-main.xml`,
+      `${siteConfig.url}/sitemap-pages.xml`,
+      `${siteConfig.url}/sitemap-countries.xml`,
+      `${siteConfig.url}/sitemap-cities.xml`,
+      ...services.map((s) => `${siteConfig.url}/sitemap-service/${s.slug}`),
+      ...serviceVerticals.map((v) => `${siteConfig.url}/sitemap-solution/${v.slug}`),
+      ...industries.map((i) => `${siteConfig.url}/sitemap-industry/${i.slug}`),
     ],
     host: siteConfig.url,
   };
