@@ -4,6 +4,8 @@
 // Delivery page actually read differently from a Healthcare page.
 
 import { ContentBlock, FaqItem } from "@/lib/types";
+import { databasePlaybooks } from "@/data/database-playbooks";
+import { dbFaqs } from "@/data/database-services";
 
 export interface SolutionPlaybook {
   slug: string;
@@ -78,9 +80,10 @@ export const solutionPlaybooks: Record<string, SolutionPlaybook> = {
       { question: "Is remote DBA support secure?", answer: "Yes. We connect through your VPN or bastion host with named, least-privilege accounts and MFA, log every session, and never copy production data off your systems. NDAs and data-processing agreements are signed before access." },
       { question: "Remote DBA vs hiring an in-house DBA — which is cheaper?", answer: "For most companies a remote DBA service costs a fraction of one senior full-time DBA and gives you 24/7 coverage and multiple specialists (Oracle, SQL Server, PostgreSQL) instead of one person who needs holidays and sleep." },
       { question: "Can you migrate our database to the cloud or to PostgreSQL?", answer: "Yes. We plan and run version upgrades, platform migrations such as Oracle or SQL Server to PostgreSQL, and on-premise to AWS, Azure or Google Cloud moves, with replication-based cutovers to keep downtime to minutes." },
+      ...dbFaqs.filter((f) => !f.question.startsWith("Can you help with database migration")),
     ],
     relatedServices: ["cloud-application-modernization", "cybersecurity-compliance", "api-integration-services"],
-    relatedSolutions: ["cloud-application-modernization", "saas-development", "hire-developers"],
+    relatedSolutions: ["database-consulting-services", "database-migration-services", "database-audit-services"],
     keywords: ["remote DBA services", "database administration services", "database management services", "database support services", "database performance tuning", "database migration services", "Oracle DBA support", "SQL Server DBA", "PostgreSQL DBA", "MySQL DBA"],
   },
 
@@ -864,6 +867,8 @@ export const solutionPlaybooks: Record<string, SolutionPlaybook> = {
     keywords: ["real estate software development", "property management software", "real estate portal development", "real estate CRM", "proptech development", "property listing website"],
   },
 };
+
+Object.assign(solutionPlaybooks, databasePlaybooks);
 
 export function getPlaybook(slug: string): SolutionPlaybook | undefined {
   return solutionPlaybooks[slug];

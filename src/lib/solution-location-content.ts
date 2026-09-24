@@ -10,6 +10,7 @@ import { FaqItem } from "@/lib/types";
 import { SolutionPlaybook } from "@/data/solution-playbooks";
 import { ServiceVertical } from "@/data/service-verticals";
 import { LocationContext, formatPopulation } from "@/lib/geo-facts";
+import { isDatabaseService } from "@/data/database-services";
 
 export interface KeyFact {
   label: string;
@@ -63,7 +64,8 @@ function localAngle(slug: string, ctx: LocationContext, place: string, countryNa
   const pay = m.payments ? list(m.payments) : "local cards and bank transfers";
   const law = m.privacyLaw || "the local data-protection framework";
   const tax = m.tax ? `${m.tax}` : "local indirect tax";
-  switch (slug) {
+  // All database services share the Remote DBA local angle.
+  switch (isDatabaseService(slug) ? "remote-dba-services" : slug) {
     case "mobile-app-development":
       return `${platformAdvice(m.mobile, place)} Checkout flows are built around the payment methods customers in ${countryName} actually use — ${pay} — and personal data is handled in line with ${law}.`;
     case "ecommerce-app":
@@ -229,7 +231,8 @@ export function buildCityContent(vertical: ServiceVertical, pb: SolutionPlaybook
     { question: `How long does it take to build ${/^[aeiou]/i.test(name) ? "an" : "a"} ${lc(name)} solution for a ${cityName} business?`, answer: timelineAnswer },
     { question: `Can you meet us in ${cityName}?`, answer: `Most work runs over video calls. For larger programmes we can arrange on-site workshops or go-live visits in ${cityName}.` },
     { question: `Which payment methods will the product support in ${cityName}?`, answer: ctx.market.payments ? `${list(ctx.market.payments)} — plus cards and international wallets where your customers need them.` : "Cards, bank transfers and the local wallets your customers use, confirmed during discovery." },
-    ...pb.faqs.slice(0, 2),
+    // Database pages keep every service FAQ (tuning, audit, migration, ongoing support).
+    ...pb.faqs.slice(0, isDatabaseService(vertical.slug) ? pb.faqs.length : 2),
   ];
 
   return {

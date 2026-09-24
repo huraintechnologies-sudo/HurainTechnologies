@@ -11,6 +11,8 @@ import { buildCountryContent } from "@/lib/solution-location-content";
 import { countryHreflang, locationPageJsonLd, placeJsonLd } from "@/lib/location-seo";
 import { sameRegionCountries, sameRegionWorldCountries, cityDisplayName } from "@/lib/location-links";
 import { SolutionLocationPage } from "@/components/location/SolutionLocationPage";
+import { DatabaseServicesSection } from "@/components/location/DatabaseServicesSection";
+import { isDatabaseService } from "@/data/database-services";
 
 interface Props {
   params: Promise<{ solution: string; country: string }>;
@@ -99,6 +101,7 @@ export default async function SolutionCountryPage({ params }: Props) {
       otherSolutions={serviceVerticals.filter((v) => v.slug !== vertical.slug && countryForSolution(v.slug, country)).map((v) => ({ name: v.name, href: `/solutions/${v.slug}/${country}` }))}
       relatedServices={(getCountryBySlug(country) ? playbook.relatedServices : []).map((s) => getServiceBySlug(s)).filter(Boolean).map((s) => ({ name: `${s!.navLabel} in ${countryName}`, href: `/services/${s!.slug}/${country}` }))}
       regulatoryNotes={getCountryBySlug(country)?.regulatoryNotes}
+      extraSections={isDatabaseService(vertical.slug) ? <DatabaseServicesSection currentSlug={vertical.slug} countrySlug={country} place={countryName} /> : undefined}
       regionLinks={(isWorldSolution(vertical.slug) ? sameRegionWorldCountries(country, worldCountries, 12) : sameRegionCountries(country, 12)).map((c) => ({ name: c.countryName, href: `/solutions/${vertical.slug}/${c.slug}` }))}
     />
   );

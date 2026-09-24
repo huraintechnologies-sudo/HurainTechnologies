@@ -20,6 +20,8 @@ import { buildMetadata } from "@/lib/seo";
 import { lc } from "@/lib/solution-location-content";
 import { locationPageJsonLd } from "@/lib/location-seo";
 import { isWorldSolution, worldCountries, worldCities } from "@/data/world-geo";
+import { DatabaseServicesSection } from "@/components/location/DatabaseServicesSection";
+import { isDatabaseService } from "@/data/database-services";
 
 interface Props {
   params: Promise<{ solution: string }>;
@@ -169,6 +171,8 @@ export default async function SolutionVerticalPage({ params }: Props) {
           </div>
         </Container>
       </section>
+
+      {isDatabaseService(vertical.slug) && <DatabaseServicesSection currentSlug={vertical.slug} />}
 
       <TrustSections topic={name} />
 

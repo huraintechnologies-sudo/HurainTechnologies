@@ -14,6 +14,8 @@ import { localeForCountrySlug } from "@/lib/locale";
 import { getCountryBySlug } from "@/data/countries";
 import { cities } from "@/data/cities";
 import { SolutionLocationPage } from "@/components/location/SolutionLocationPage";
+import { DatabaseServicesSection } from "@/components/location/DatabaseServicesSection";
+import { isDatabaseService } from "@/data/database-services";
 
 interface Props {
   params: Promise<{ solution: string; country: string; city: string }>;
@@ -104,6 +106,7 @@ export default async function SolutionCityPage({ params }: Props) {
       jsonLd={jsonLd}
       nearbyTitle={`${vertical.name} in other ${countryName} cities`}
       nearby={[{ name: `All of ${countryName}`, href: `/solutions/${vertical.slug}/${country}` }, ...siblings]}
+      extraSections={isDatabaseService(vertical.slug) ? <DatabaseServicesSection currentSlug={vertical.slug} countrySlug={country} citySlug={city} place={`${cityName}, ${countryName}`} /> : undefined}
       otherSolutions={serviceVerticals.filter((v) => v.slug !== vertical.slug && cityForSolution(v.slug, country, city)).map((v) => ({ name: v.name, href: `/solutions/${v.slug}/${country}/${city}` }))}
       relatedServices={[
         ...(inSiteGeo ? playbook.relatedServices : []).map((s) => getServiceBySlug(s)).filter(Boolean).map((s) => ({ name: `${s!.navLabel} in ${cityName}`, href: `/services/${s!.slug}/${country}/${city}` })),

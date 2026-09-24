@@ -2,6 +2,7 @@ import { countries } from "@/data/countries";
 import { cities } from "@/data/cities";
 import worldCitiesRaw from "@/data/world-cities.json";
 import { getCountryFacts } from "@/lib/geo-facts";
+import { DATABASE_SERVICE_SLUGS } from "@/data/database-services";
 
 // Geography for "world coverage" solutions (currently Remote DBA Services):
 // every country — including markets excluded elsewhere on the site — and a
@@ -9,7 +10,7 @@ import { getCountryFacts } from "@/lib/geo-facts";
 // scripts/build-world-cities.mjs. Other solutions keep using the regular
 // countries/cities datasets.
 
-export const WORLD_SOLUTIONS = new Set(["remote-dba-services"]);
+export const WORLD_SOLUTIONS = new Set<string>(DATABASE_SERVICE_SLUGS);
 
 export function isWorldSolution(slug: string): boolean {
   return WORLD_SOLUTIONS.has(slug);

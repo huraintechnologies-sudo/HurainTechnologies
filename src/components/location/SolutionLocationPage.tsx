@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ReactNode } from "react";
 import { Container } from "@/components/Container";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SectionHeading } from "@/components/SectionHeading";
@@ -40,6 +41,7 @@ export function SolutionLocationPage({
   regulatoryNotes,
   otherTitle,
   basePathLabel = "solutions",
+  extraSections,
 }: {
   solutionName: string;
   placeLabel: string; // "Kenya" or "Nairobi, Kenya"
@@ -58,6 +60,8 @@ export function SolutionLocationPage({
   // Heading for the cross-links block, e.g. "Other industries we serve in Kenya".
   otherTitle?: string;
   basePathLabel?: "solutions" | "industries";
+  // Solution-family sections (e.g. the database services catalog).
+  extraSections?: ReactNode;
 }) {
   const place = placeLabel.split(",")[0];
   return (
@@ -156,6 +160,8 @@ export function SolutionLocationPage({
           </div>
         </Container>
       </section>
+
+      {extraSections}
 
       {regulatoryNotes && regulatoryNotes.length > 0 && (
         <section id="regulation" className="border-t border-border bg-surface py-16">
