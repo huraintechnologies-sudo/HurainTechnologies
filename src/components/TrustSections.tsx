@@ -1,6 +1,7 @@
 import { Container } from "@/components/Container";
 import { SectionHeading } from "@/components/SectionHeading";
 import { Icon } from "@/components/Icon";
+import { DeliveryPlanSections } from "@/components/DeliveryPlanSections";
 import { lc } from "@/lib/solution-location-content";
 
 // Four company-level sections shown on every service, solution, industry and
@@ -65,6 +66,8 @@ export function TrustSections({
 
   return (
     <>
+      <DeliveryPlanSections topic={topic} place={place} />
+
       <section id="methodologies" className="border-t border-border py-16">
         <Container>
           <SectionHeading

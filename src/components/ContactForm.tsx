@@ -4,6 +4,7 @@ import { FormEvent, useRef, useState } from "react";
 import { Icon } from "@/components/Icon";
 import { services } from "@/data/services";
 import { siteConfig } from "@/lib/site-config";
+import { openWhatsApp } from "@/lib/whatsapp";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
@@ -43,7 +44,7 @@ export function ContactForm() {
       `Source page: ${sourceUrl}`,
     ].filter(Boolean);
 
-    window.open(`${siteConfig.whatsapp}?text=${encodeURIComponent(lines.join("\n"))}`, "_blank", "noopener,noreferrer");
+    openWhatsApp(lines.join("\n"));
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {

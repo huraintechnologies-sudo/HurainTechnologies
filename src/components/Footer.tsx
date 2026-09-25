@@ -12,7 +12,7 @@ export function Footer() {
   const featuredCountries = countries.slice(0, 10);
 
   return (
-    <footer className="border-t border-border bg-surface">
+    <footer className="theme-dark border-t border-border">
       <Container className="py-14">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-5">
           <div className="lg:col-span-2">

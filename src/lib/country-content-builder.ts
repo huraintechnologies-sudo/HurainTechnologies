@@ -134,7 +134,7 @@ export function buildCountryServiceHighlights(
   return items;
 }
 
-export function buildCountryIndustries(country: CountryPage): { title: string; description: string }[] {
+export function buildCountryIndustries(country: CountryPage): { title: string; description: string; href: string }[] {
   const relevant = industries.filter((industry) =>
     industry.relatedServiceSlugs.some((slug) => country.focusServiceSlugs.includes(slug))
   );
@@ -142,6 +142,7 @@ export function buildCountryIndustries(country: CountryPage): { title: string; d
   return selected.map((industry) => ({
     title: `${industry.name} in ${country.countryName}`,
     description: `${industry.summary} ${industry.needs[0] ? `A common starting point: ${industry.needs[0].toLowerCase()}.` : ""}`,
+    href: `/industries/${industry.slug}/${country.slug}`,
   }));
 }
 

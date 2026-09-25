@@ -32,15 +32,16 @@ export function Header({ nav }: { nav: HeaderNav }) {
   };
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/80 bg-background/85 backdrop-blur">
-      {/* Top Badge */}
-      <div className="bg-gradient-to-r from-blue-600/10 to-cyan-600/10 border-b border-border/50 py-2">
-        <Container className="flex items-center justify-center gap-2">
-          <span className="text-xs font-semibold text-foreground/80">✓ 16+ Years of Excellence</span>
-          <span className="text-xs text-foreground/60">|</span>
-          <span className="text-xs text-foreground/80">2,000+ Projects Delivered</span>
-          <span className="text-xs text-foreground/60">|</span>
-          <span className="text-xs text-foreground/80">98% Client Retention</span>
+    <header className="theme-dark sticky top-0 z-50 border-b border-border/80 !bg-background/85 backdrop-blur-xl">
+      {/* Top strip */}
+      <div className="hidden sm:block border-b border-border/60">
+        <Container className="flex h-8 items-center justify-between font-mono text-[10.5px] uppercase tracking-[0.1em] text-muted">
+          <span>Software engineering since 2010 · Palanpur, Gujarat, India</span>
+          <span className="flex items-center gap-4">
+            <span>2,000+ projects</span>
+            <span className="text-border">/</span>
+            <span>98% client retention</span>
+          </span>
         </Container>
       </div>
 
@@ -53,13 +54,13 @@ export function Header({ nav }: { nav: HeaderNav }) {
             onMouseEnter={() => setServicesOpen(true)}
             onMouseLeave={() => setServicesOpen(false)}
           >
-            <button className="flex items-center gap-1 px-3 py-2 text-sm text-foreground/85 hover:text-primary transition-colors">
+            <button className="flex items-center gap-1 px-3 py-2 text-sm text-foreground/85 hover:text-foreground transition-colors">
               Services
               <Icon name="chevron" className="w-3.5 h-3.5" />
             </button>
             {servicesOpen && (
               <div className="absolute left-1/2 top-full -translate-x-1/2 pt-2 w-[560px]">
-                <div className="grid grid-cols-2 gap-1 rounded-xl border border-border bg-surface p-3 card-glow">
+                <div className="grid grid-cols-2 gap-1 rounded-xl border border-border bg-surface p-2 card-glow">
                   {services.map((service) => (
                     <Link
                       key={service.slug}
@@ -87,13 +88,13 @@ export function Header({ nav }: { nav: HeaderNav }) {
             onMouseEnter={() => setSolutionsOpen(true)}
             onMouseLeave={() => setSolutionsOpen(false)}
           >
-            <button className="flex items-center gap-1 px-3 py-2 text-sm text-foreground/85 hover:text-primary transition-colors">
+            <button className="flex items-center gap-1 px-3 py-2 text-sm text-foreground/75 hover:text-foreground transition-colors">
               Solutions
               <Icon name="chevron" className="w-3.5 h-3.5" />
             </button>
             {solutionsOpen && (
               <div className="absolute left-0 top-full pt-2 w-[500px]">
-                <div className="grid grid-cols-2 gap-1 rounded-xl border border-border bg-surface p-3 card-glow">
+                <div className="grid grid-cols-2 gap-1 rounded-xl border border-border bg-surface p-2 card-glow">
                   {serviceVerticals.slice(0, 12).map((vertical) => (
                     <Link
                       key={vertical.id}
@@ -121,13 +122,13 @@ export function Header({ nav }: { nav: HeaderNav }) {
             onMouseEnter={() => setIndustriesOpen(true)}
             onMouseLeave={() => setIndustriesOpen(false)}
           >
-            <button className="flex items-center gap-1 px-3 py-2 text-sm text-foreground/85 hover:text-primary transition-colors">
+            <button className="flex items-center gap-1 px-3 py-2 text-sm text-foreground/75 hover:text-foreground transition-colors">
               Industries
               <Icon name="chevron" className="w-3.5 h-3.5" />
             </button>
             {industriesOpen && (
               <div className="absolute left-0 top-full pt-2 w-[500px]">
-                <div className="grid grid-cols-2 gap-1 rounded-xl border border-border bg-surface p-3 card-glow">
+                <div className="grid grid-cols-2 gap-1 rounded-xl border border-border bg-surface p-2 card-glow">
                   {industries.slice(0, 12).map((industry) => (
                     <Link
                       key={industry.slug}
@@ -154,13 +155,13 @@ export function Header({ nav }: { nav: HeaderNav }) {
             onMouseEnter={() => setCompanyOpen(true)}
             onMouseLeave={() => setCompanyOpen(false)}
           >
-            <button className="flex items-center gap-1 px-3 py-2 text-sm text-foreground/85 hover:text-primary transition-colors">
+            <button className="flex items-center gap-1 px-3 py-2 text-sm text-foreground/75 hover:text-foreground transition-colors">
               Company
               <Icon name="chevron" className="w-3.5 h-3.5" />
             </button>
             {companyOpen && (
               <div className="absolute right-0 top-full pt-2 w-[280px]">
-                <div className="flex flex-col gap-1 rounded-xl border border-border bg-surface p-3 card-glow">
+                <div className="flex flex-col gap-1 rounded-xl border border-border bg-surface p-2 card-glow">
                   <Link
                     href="/case-studies"
                     className="rounded-lg px-3 py-2.5 text-sm text-foreground/85 hover:bg-surface-2 hover:text-primary transition-colors"
@@ -207,7 +208,7 @@ export function Header({ nav }: { nav: HeaderNav }) {
             <Link
               key={link.href}
               href={link.href}
-              className="px-3 py-2 text-sm text-foreground/85 hover:text-primary transition-colors"
+              className="px-3 py-2 text-sm text-foreground/75 hover:text-foreground transition-colors"
             >
               {link.label}
             </Link>
@@ -237,7 +238,7 @@ export function Header({ nav }: { nav: HeaderNav }) {
       </Container>
 
       {mobileOpen && (
-        <div className="lg:hidden border-t border-border bg-background max-h-[calc(100dvh-8rem)] overflow-y-auto">
+        <div className="lg:hidden border-t border-border bg-background h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain">
           <Container className="py-4 flex flex-col gap-1">
             {/* Mobile Services (accordion) */}
             <div className="border-b border-border/30 pb-1">
@@ -245,7 +246,7 @@ export function Header({ nav }: { nav: HeaderNav }) {
                 type="button"
                 onClick={() => toggleMobileSection("services")}
                 aria-expanded={mobileSection === "services"}
-                className="w-full flex items-center justify-between px-2 py-2.5 text-sm font-medium text-foreground/85 hover:text-primary"
+                className="w-full flex items-center justify-between px-2 py-3.5 text-[17px] font-medium text-foreground/90 hover:text-foreground"
               >
                 Services
                 <Icon
@@ -282,7 +283,7 @@ export function Header({ nav }: { nav: HeaderNav }) {
                 type="button"
                 onClick={() => toggleMobileSection("solutions")}
                 aria-expanded={mobileSection === "solutions"}
-                className="w-full flex items-center justify-between px-2 py-2.5 text-sm font-medium text-foreground/85 hover:text-primary"
+                className="w-full flex items-center justify-between px-2 py-3.5 text-[17px] font-medium text-foreground/90 hover:text-foreground"
               >
                 Solutions
                 <Icon
@@ -319,7 +320,7 @@ export function Header({ nav }: { nav: HeaderNav }) {
                 type="button"
                 onClick={() => toggleMobileSection("industries")}
                 aria-expanded={mobileSection === "industries"}
-                className="w-full flex items-center justify-between px-2 py-2.5 text-sm font-medium text-foreground/85 hover:text-primary"
+                className="w-full flex items-center justify-between px-2 py-3.5 text-[17px] font-medium text-foreground/90 hover:text-foreground"
               >
                 Industries
                 <Icon
@@ -356,7 +357,7 @@ export function Header({ nav }: { nav: HeaderNav }) {
                 type="button"
                 onClick={() => toggleMobileSection("company")}
                 aria-expanded={mobileSection === "company"}
-                className="w-full flex items-center justify-between px-2 py-2.5 text-sm font-medium text-foreground/85 hover:text-primary"
+                className="w-full flex items-center justify-between px-2 py-3.5 text-[17px] font-medium text-foreground/90 hover:text-foreground"
               >
                 Company
                 <Icon
@@ -410,7 +411,7 @@ export function Header({ nav }: { nav: HeaderNav }) {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className="px-2 py-2.5 text-sm text-foreground/85 hover:text-primary"
+                className="px-2 py-3.5 text-[17px] font-medium text-foreground/90 hover:text-foreground"
               >
                 {link.label}
               </Link>

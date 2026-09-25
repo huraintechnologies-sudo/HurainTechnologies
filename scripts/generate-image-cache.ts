@@ -61,7 +61,7 @@ async function generateImageCache() {
     console.log(`🏢 Generating ${industries.length} industry images...`);
     for (let i = 0; i < industries.length; i++) {
       const ind = industries[i];
-      const img = await getIndustryImage(ind.name, i).catch(() => null);
+      const img = await getIndustryImage(ind.name).catch(() => null);
       cache.industries[ind.slug] = img;
     }
 

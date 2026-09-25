@@ -6,12 +6,27 @@ import { getServiceBySlug } from "@/data/services";
 export function PainPointGrid({ items }: { items: ContentBlock[] }) {
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-      {items.map((item) => (
-        <div key={item.title} className="rounded-xl border border-border bg-surface p-5">
-          <h3 className="text-sm font-semibold text-foreground">{item.title}</h3>
-          <p className="mt-2 text-sm leading-relaxed text-muted">{item.description}</p>
-        </div>
-      ))}
+      {items.map((item) =>
+        item.href ? (
+          <Link
+            key={item.title}
+            href={item.href}
+            className="group flex flex-col rounded-xl border border-border bg-surface p-5 transition-colors hover:border-foreground/25"
+          >
+            <h3 className="text-[15px] font-semibold text-foreground">{item.title}</h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted">{item.description}</p>
+            <span className="mt-auto inline-flex items-center gap-1.5 pt-4 text-sm font-medium text-primary">
+              Learn more
+              <Icon name="arrow" className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+            </span>
+          </Link>
+        ) : (
+          <div key={item.title} className="rounded-xl border border-border bg-surface p-5">
+            <h3 className="text-sm font-semibold text-foreground">{item.title}</h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted">{item.description}</p>
+          </div>
+        )
+      )}
     </div>
   );
 }

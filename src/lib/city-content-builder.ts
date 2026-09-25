@@ -136,7 +136,7 @@ export function buildCityServiceHighlights(city: CityContent): { title: string; 
   return items;
 }
 
-export function buildCityIndustries(city: CityContent): { title: string; description: string }[] {
+export function buildCityIndustries(city: CityContent): { title: string; description: string; href: string }[] {
   const relevant = industries.filter((industry) =>
     industry.relatedServiceSlugs.some((slug) => city.focusServiceSlugs.includes(slug))
   );
@@ -144,6 +144,7 @@ export function buildCityIndustries(city: CityContent): { title: string; descrip
   return selected.map((industry) => ({
     title: `${industry.name} in ${city.cityName}`,
     description: `${industry.summary} ${industry.needs[0] ? `A common starting point: ${industry.needs[0].toLowerCase()}.` : ""}`,
+    href: `/industries/${industry.slug}/${city.countrySlug}/${city.slug}`,
   }));
 }
 

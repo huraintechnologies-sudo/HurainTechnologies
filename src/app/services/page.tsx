@@ -47,30 +47,45 @@ export default function ServicesPage() {
             Software Development Services
           </h1>
           <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
-            Eight specialized engineering practices covering blockchain and cryptocurrency, payments, API
+            {services.length} specialized engineering services covering blockchain and cryptocurrency, payments, API
             and open banking, cloud modernization, AI fraud detection, and cybersecurity/compliance — each led by
             engineers who work exclusively in that domain.
           </p>
         </Container>
       </section>
 
-      {categories.map((category) => (
-        <section key={category} className="py-14 border-b border-border last:border-b-0">
-          <Container>
-            <SectionHeading eyebrow={category} title={`${category} services`} />
-            <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {services
-                .filter((s) => s.category === category)
-                .map((service) => (
-                  <ServiceCard key={service.slug} service={service} />
-                ))}
-            </div>
-          </Container>
-        </section>
-      ))}
+      <section className="py-16">
+        <Container className="divide-y divide-border">
+          {categories.map((category, i) => {
+            const items = services.filter((s) => s.category === category);
+            return (
+              <div key={category} className="grid grid-cols-1 gap-6 py-12 first:pt-0 last:pb-0 lg:grid-cols-12 lg:gap-10">
+                <div className="lg:col-span-4">
+                  <div className="lg:sticky lg:top-32">
+                    <p className="font-mono text-xs text-primary">{String(i + 1).padStart(2, "0")}</p>
+                    <h2 className="mt-2 text-2xl text-foreground sm:text-3xl">{category}</h2>
+                    <p className="mt-2 text-sm text-muted">
+                      {items.length} {items.length === 1 ? "service" : "services"}
+                    </p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:col-span-8">
+                  {items.map((service) => (
+                    <ServiceCard
+                      key={service.slug}
+                      service={service}
+                      className={items.length === 1 ? "sm:col-span-2" : ""}
+                    />
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </Container>
+      </section>
 
       {/* Geographic Availability Section */}
-      <section className="py-16 border-t border-border bg-gray-50">
+      <section className="py-16 border-t border-border bg-surface-2">
         <Container>
           <SectionHeading
             eyebrow="Global Reach"
@@ -85,7 +100,7 @@ export default function ServicesPage() {
               <Link
                 key={country.slug}
                 href={`/${localeForCountrySlug(country.slug)}`}
-                className="p-3 bg-white rounded-lg border border-border hover:border-primary hover:shadow-md transition-all text-center text-sm font-medium text-foreground hover:text-primary"
+                className="rounded-lg border border-border bg-surface p-3 text-center text-sm font-medium text-foreground transition-colors hover:border-foreground/25 hover:text-primary"
               >
                 {country.countryName}
               </Link>
@@ -95,7 +110,7 @@ export default function ServicesPage() {
           <div className="mt-8 text-center">
             <Link
               href="/markets-we-cover"
-              className="inline-block px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium"
+              className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary/90"
             >
               View All Markets →
             </Link>

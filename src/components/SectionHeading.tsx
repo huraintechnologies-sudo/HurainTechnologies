@@ -12,10 +12,13 @@ export function SectionHeading({
   return (
     <div className={`max-w-2xl ${align === "center" ? "mx-auto text-center" : ""}`}>
       {eyebrow && (
-        <p className="text-xs font-semibold uppercase tracking-widest text-primary">{eyebrow}</p>
+        <p className={`eyebrow flex items-center gap-3 ${align === "center" ? "justify-center" : ""}`}>
+          <span className="h-px w-6 bg-primary" aria-hidden="true" />
+          {eyebrow}
+        </p>
       )}
-      <h2 className="mt-2 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">{title}</h2>
-      {description && <p className="mt-3 text-sm leading-relaxed text-muted sm:text-base">{description}</p>}
+      <h2 className="mt-4 text-3xl text-foreground sm:text-[2.6rem]">{title}</h2>
+      {description && <p className="mt-4 text-[15px] leading-relaxed text-muted sm:text-base">{description}</p>}
     </div>
   );
 }

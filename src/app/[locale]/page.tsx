@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { SolutionsDirectory } from "@/components/SolutionsDirectory";
 import Image from "next/image";
 import { Container } from "@/components/Container";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
@@ -237,6 +238,8 @@ export default async function LocaleCountryPage({ params }: { params: Promise<{ 
           </div>
         </Container>
       </section>
+
+      <SolutionsDirectory countrySlug={country.slug} placeName={country.countryName} />
 
       {countryProblems.length > 0 && (
         <section className="py-16 border-t border-border">

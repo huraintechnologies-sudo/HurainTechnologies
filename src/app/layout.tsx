@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Header, HeaderNav } from "@/components/Header";
 import { services } from "@/data/services";
@@ -13,19 +13,18 @@ const headerNav: HeaderNav = {
 };
 import { Footer } from "@/components/Footer";
 import { WhatsAppFloat } from "@/components/WhatsAppFloat";
-import { WhatsAppAutoOpen } from "@/components/WhatsAppAutoOpen";
 import { JsonLd } from "@/components/JsonLd";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/jsonld";
 import { siteConfig } from "@/lib/site-config";
 
-const inter = Inter({
-  variable: "--font-inter",
+const geist = Geist({
+  variable: "--font-geist",
   subsets: ["latin"],
   display: "swap",
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains-mono",
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
   subsets: ["latin"],
   display: "swap",
 });
@@ -50,10 +49,6 @@ export const metadata: Metadata = {
   authors: [{ name: siteConfig.name, url: siteConfig.url }],
   creator: siteConfig.name,
   publisher: siteConfig.name,
-  icons: {
-    icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect fill='%2300D9FF' width='32' height='32' rx='6'/><text x='50%' y='50%' font-size='20' font-weight='bold' fill='white' text-anchor='middle' dy='.3em'>H</text></svg>",
-    shortcut: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect fill='%2300D9FF' width='32' height='32' rx='6'/><text x='50%' y='50%' font-size='20' font-weight='bold' fill='white' text-anchor='middle' dy='.3em'>H</text></svg>",
-  },
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -89,7 +84,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#05070d",
+  themeColor: "#0d0e10",
   width: "device-width",
   initialScale: 1,
 };
@@ -99,7 +94,7 @@ const GTM_CONTAINER_ID = "GTM-MQSFZX8J";
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`} suppressHydrationWarning>
+    <html lang="en" className={`${geist.variable} ${geistMono.variable} h-full antialiased`} suppressHydrationWarning>
       <head>
         {/* Analytics are deferred until the visitor first interacts (scroll,
             tap, key, mouse) or 8s after load, whichever comes first. Loading
@@ -124,7 +119,7 @@ addEventListener('load',function(){setTimeout(load,8000);});})();`,
           }}
         />
       </head>
-      <body className="min-h-full flex flex-col bg-grid" suppressHydrationWarning>
+      <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <noscript>
           <iframe
             src={`https://www.googletagmanager.com/ns.html?id=${GTM_CONTAINER_ID}`}
@@ -138,7 +133,6 @@ addEventListener('load',function(){setTimeout(load,8000);});})();`,
         <main className="flex-1">{children}</main>
         <Footer />
         <WhatsAppFloat />
-        <WhatsAppAutoOpen />
       </body>
     </html>
   );

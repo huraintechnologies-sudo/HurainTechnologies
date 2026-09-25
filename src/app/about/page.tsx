@@ -14,6 +14,7 @@ import path from "node:path";
 import { JsonLd } from "@/components/JsonLd";
 import { founderJsonLd } from "@/lib/jsonld";
 import { TrustSections } from "@/components/TrustSections";
+import { TeamSection } from "@/components/TeamSection";
 
 const hasFounderPhoto = fs.existsSync(path.join(process.cwd(), "public", siteConfig.founder.photo));
 
@@ -110,7 +111,7 @@ export default function AboutPage() {
                   height={420}
                   className="w-full object-cover"
                 />
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background/80 to-transparent px-5 py-4">
+                <div className="theme-dark absolute bottom-0 left-0 right-0 !bg-transparent bg-gradient-to-t from-background/85 to-transparent px-5 py-4">
                   <p className="text-xs text-muted">Gujarat, India · Delivering across 60+ markets</p>
                 </div>
               </div>
@@ -145,8 +146,8 @@ export default function AboutPage() {
                 {hasFounderPhoto ? (
                   <Image src={siteConfig.founder.photo} alt={`${siteConfig.founderName}, founder of Hurain Technologies`} width={400} height={400} sizes="(min-width: 1024px) 400px, 100vw" className="aspect-square w-full object-cover" />
                 ) : (
-                  <div className="flex aspect-square w-full items-center justify-center bg-gradient-to-br from-primary/20 via-surface to-primary-2/20">
-                    <span className="text-7xl font-bold gradient-text">{siteConfig.founderName.split(" ").map((w) => w[0]).join("")}</span>
+                  <div className="flex aspect-square w-full items-center justify-center bg-surface-2">
+                    <span className="font-display text-8xl text-foreground/80">{siteConfig.founderName.split(" ").map((w) => w[0]).join("")}</span>
                   </div>
                 )}
                 <div className="p-6">
@@ -191,6 +192,8 @@ export default function AboutPage() {
           </div>
         </Container>
       </section>
+
+      <TeamSection />
 
       <section className="py-16 border-t border-border bg-surface">
         <Container>

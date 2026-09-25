@@ -30,17 +30,19 @@ export function CoverBanner({
 
   return (
     <div
-      className={`relative overflow-hidden rounded-t-2xl border-b border-border bg-gradient-to-br from-surface-2 via-surface to-background ${heights[size]}`}
+      className={`relative overflow-hidden rounded-t-2xl border-b border-border bg-surface-2 ${heights[size]}`}
     >
-      <div className="absolute inset-0 bg-grid opacity-70" />
-      <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-primary/15 blur-2xl" />
-      <div className="absolute -left-8 -bottom-8 h-32 w-32 rounded-full bg-accent/10 blur-2xl" />
+      <div
+        className="absolute inset-0 opacity-60"
+        style={{
+          backgroundImage: "linear-gradient(to right, var(--border) 1px, transparent 1px)",
+          backgroundSize: "48px 100%",
+        }}
+      />
       <div className="absolute inset-0 flex items-center justify-center">
-        <div className="flex items-center justify-center rounded-2xl border border-primary/20 bg-primary/10 p-4">
-          <Icon name={icon} className={`${iconSizes[size]} text-primary`} />
-        </div>
+        <Icon name={icon} className={`${iconSizes[size]} text-foreground/40`} />
       </div>
-      <span className="absolute left-4 top-4 rounded-full border border-border bg-background/80 px-3 py-1 text-[11px] font-medium uppercase tracking-wide text-primary backdrop-blur">
+      <span className="absolute left-4 top-4 rounded-md border border-border bg-background/80 px-2.5 py-1 font-mono text-[10.5px] uppercase tracking-[0.08em] text-foreground/80 backdrop-blur">
         {category}
       </span>
     </div>

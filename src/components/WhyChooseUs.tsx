@@ -1,22 +1,24 @@
-import { Icon } from "@/components/Icon";
 import { WHY_CHOOSE_US } from "@/lib/site-config";
 
 export function WhyChooseUs() {
   return (
-    <div>
-      <p className="text-xs font-semibold uppercase tracking-widest text-primary">{WHY_CHOOSE_US.eyebrow}</p>
-      <h2 className="mt-2 max-w-2xl text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
-        {WHY_CHOOSE_US.title}
-      </h2>
-      <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted sm:text-base">{WHY_CHOOSE_US.description}</p>
-      <ul className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
-        {WHY_CHOOSE_US.points.map((point) => (
-          <li key={point} className="flex items-start gap-2.5 rounded-xl border border-border bg-surface p-4">
-            <Icon name="check" className="w-4 h-4 mt-0.5 shrink-0 text-primary" />
-            <span className="text-sm text-foreground/85">{point}</span>
+    <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
+      <div className="lg:col-span-5">
+        <p className="eyebrow flex items-center gap-3">
+          <span className="h-px w-6 bg-primary" aria-hidden="true" />
+          {WHY_CHOOSE_US.eyebrow}
+        </p>
+        <h2 className="mt-4 text-3xl text-foreground sm:text-[2.6rem]">{WHY_CHOOSE_US.title}</h2>
+        <p className="mt-4 text-[15px] leading-relaxed text-muted sm:text-base">{WHY_CHOOSE_US.description}</p>
+      </div>
+      <ol className="lg:col-span-7 divide-y divide-border border-y border-border">
+        {WHY_CHOOSE_US.points.map((point, i) => (
+          <li key={point} className="flex items-baseline gap-5 py-5">
+            <span className="font-mono text-xs text-primary">{String(i + 1).padStart(2, "0")}</span>
+            <span className="text-[15px] leading-relaxed text-foreground/90">{point}</span>
           </li>
         ))}
-      </ul>
+      </ol>
     </div>
   );
 }

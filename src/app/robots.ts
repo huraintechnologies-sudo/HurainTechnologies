@@ -44,15 +44,17 @@ const AI_BOTS = [
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
+      // Other crawlers: everything except the contact-form endpoint, which
+      // only accepts POST and has nothing to index.
       {
         userAgent: "*",
         allow: ["/", "/llms.txt"],
-        disallow: ["/api/", "/admin/"],
+        disallow: ["/api/"],
       },
-      // AI assistants and answer engines: full access to every page and
-      // llms.txt. A crawler matched by name ignores the "*" group above, so
-      // /api/ and /admin/ are repeated here to stay closed for them too.
-      ...AI_BOTS.map((userAgent) => ({ userAgent, allow: ["/", "/llms.txt"], disallow: ["/api/", "/admin/"] })),
+      // AI assistants and answer engines: unrestricted access. A crawler
+      // matched by name ignores the "*" group, so nothing is disallowed for
+      // them (the site has no /admin/, and /api/ holds no readable content).
+      ...AI_BOTS.map((userAgent) => ({ userAgent, allow: ["/", "/llms.txt"] })),
       // Block bad bots
       { userAgent: "AhrefsBot", disallow: "/" },
       { userAgent: "SemrushBot", disallow: "/" },

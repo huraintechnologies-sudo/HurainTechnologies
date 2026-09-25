@@ -23,6 +23,7 @@ import { caseStudies } from "@/data/case-studies";
 import { blogPosts } from "@/data/blog-posts";
 import { getCaseStudyImages, getBlogImages } from "@/lib/image-allocations";
 import { TrustSections } from "@/components/TrustSections";
+import { SolutionsDirectory } from "@/components/SolutionsDirectory";
 
 export const metadata: Metadata = buildMetadata({
   title: "Blockchain, Crypto, Fintech & Software Development Company | Hurain Technologies",
@@ -97,18 +98,20 @@ export default async function HomePage() {
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-border">
         <HeroMotion />
-        <Container className="relative py-20 sm:py-28">
-          <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center">
-            <div className="max-w-3xl">
-              <span className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-primary">
-                <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                Blockchain, Payments, API &amp; Cloud Engineering
-              </span>
-              <h1 className="mt-6 text-4xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+        <Container className="relative pt-12 pb-12 sm:pt-24 sm:pb-20">
+          <p className="eyebrow flex items-center gap-3">
+            <span className="h-1.5 w-1.5 rounded-full bg-primary" aria-hidden="true" />
+            Blockchain · Payments · API · Cloud engineering
+          </p>
+          <div className="mt-6 grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-end">
+            <div className="lg:col-span-7">
+              <h1 className="text-[2.5rem] text-foreground sm:text-6xl lg:text-[4.6rem]">
                 Blockchain, Payments &amp; Cloud Platforms{" "}
                 <span className="gradient-text">Engineered for Scale</span>
               </h1>
-              <p className="mt-6 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
+            </div>
+            <div className="lg:col-span-5 lg:pb-3">
+              <p className="text-[15px] leading-relaxed text-muted sm:text-lg">
                 {siteConfig.name} helps fintechs, banks, payment providers, and Web3 businesses
                 build secure, scalable, compliance-ready platforms — from smart contracts and crypto exchanges to
                 payment gateways, cloud-native architecture, and AI fraud detection.
@@ -123,41 +126,48 @@ export default async function HomePage() {
                 </Link>
                 <Link
                   href="/services"
-                  className="inline-flex items-center justify-center gap-2 rounded-lg border border-border px-6 py-3.5 text-sm font-semibold text-foreground hover:border-primary/50 hover:text-primary transition-colors"
+                  className="inline-flex items-center justify-center gap-2 rounded-lg border border-border px-6 py-3.5 text-sm font-semibold text-foreground hover:border-foreground/30 transition-colors"
                 >
                   Explore Services
                 </Link>
               </div>
             </div>
-            {/* Hero image */}
-            <div className="relative hidden lg:block">
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-primary/20 via-transparent to-accent/10 blur-2xl" />
-              <div className="relative overflow-hidden rounded-2xl border border-border shadow-2xl shadow-primary/10">
-                <Image
-                  src="/images/hero-dashboard.jpg"
-                  alt="Fintech SaaS platform dashboard on a curved monitor showing live blockchain transactions, payment analytics, and API uptime metrics — built by Hurain Technologies"
-                  width={720}
-                  height={405}
-                  className="w-full object-cover"
-                  priority
-                />
-                {/* Floating stats overlay */}
-                <div className="absolute bottom-4 left-4 flex gap-3">
-                  <div className="rounded-lg border border-border bg-background/90 px-3 py-2 backdrop-blur-sm">
-                    <p className="text-[10px] font-medium uppercase tracking-wide text-muted">Uptime</p>
-                    <p className="text-sm font-bold text-primary">99.99%</p>
-                  </div>
-                  <div className="rounded-lg border border-border bg-background/90 px-3 py-2 backdrop-blur-sm">
-                    <p className="text-[10px] font-medium uppercase tracking-wide text-muted">Markets</p>
-                    <p className="text-sm font-bold text-primary">60+</p>
-                  </div>
-                  <div className="rounded-lg border border-border bg-background/90 px-3 py-2 backdrop-blur-sm">
-                    <p className="text-[10px] font-medium uppercase tracking-wide text-muted">Clients</p>
-                    <p className="text-sm font-bold text-primary">2,000+</p>
-                  </div>
+          </div>
+
+          {/* Hero image */}
+          <div className="relative mt-12 overflow-hidden rounded-2xl border border-border sm:mt-14">
+            <Image
+              src="/images/hero-dashboard.jpg"
+              alt="Fintech SaaS platform dashboard on a curved monitor showing live blockchain transactions, payment analytics, and API uptime metrics — built by Hurain Technologies"
+              width={1440}
+              height={810}
+              sizes="(max-width: 1280px) 100vw, 1216px"
+              className="h-[260px] w-full object-cover object-[35%_center] sm:h-[340px] lg:h-[420px]"
+              priority
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
+            <dl className="absolute bottom-0 left-0 right-0 grid grid-cols-3 divide-x divide-border/70 border-t border-border/70 bg-background/70 backdrop-blur-md">
+              {[
+                { label: "Platform uptime", value: "99.99%" },
+                { label: "Markets served", value: "60+" },
+                { label: "Clients", value: "2,000+" },
+              ].map((item) => (
+                <div key={item.label} className="px-3 py-3 sm:px-7 sm:py-4">
+                  <dt className="font-mono text-[9px] uppercase tracking-[0.08em] text-muted sm:text-[10.5px] sm:tracking-[0.1em]">{item.label}</dt>
+                  <dd className="mt-1 font-display text-xl text-foreground sm:text-3xl">{item.value}</dd>
                 </div>
-              </div>
-            </div>
+              ))}
+            </dl>
+          </div>
+
+          {/* Stack we ship on */}
+          <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-8">
+            <p className="eyebrow shrink-0">Production stack</p>
+            <ul className="flex flex-wrap gap-x-7 gap-y-2 text-[15px] font-semibold tracking-[-0.02em] text-foreground/45">
+              {["Ethereum", "Solana", "Polygon", "Hyperledger", "AWS", "Azure", "Google Cloud", "Kubernetes", "PostgreSQL", "Oracle"].map((t) => (
+                <li key={t}>{t}</li>
+              ))}
+            </ul>
           </div>
         </Container>
       </section>
@@ -177,24 +187,30 @@ export default async function HomePage() {
             title="Engineering practices built for regulated, high-stakes platforms"
             description="From blockchain and crypto infrastructure to payments, API, cloud, AI, and security — each practice is led by engineers who specialize in that domain, not generalists spread thin."
           />
-          <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {services.map((service) => (
-              <ServiceCard key={service.slug} service={service} />
+          <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:grid-flow-dense">
+            {services.map((service, i) => (
+              <ServiceCard
+                key={service.slug}
+                service={service}
+                className={i < 2 ? "lg:col-span-2" : ""}
+              />
             ))}
           </div>
         </Container>
       </section>
+
+      <SolutionsDirectory />
 
       {/* Blockchain & Crypto highlight */}
       <section className="py-20 border-y border-border bg-surface">
         <Container>
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:items-center">
             <div>
-              <span className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs font-medium text-accent">
-                <Icon name="blockchain" className="w-3.5 h-3.5" />
+              <p className="eyebrow flex items-center gap-3">
+                <span className="h-px w-6 bg-accent" aria-hidden="true" />
                 Blockchain &amp; Cryptocurrency
-              </span>
-              <h2 className="mt-4 text-3xl font-semibold tracking-tight text-foreground">
+              </p>
+              <h2 className="mt-4 text-3xl text-foreground sm:text-[2.6rem]">
                 Production-grade <span className="gradient-text-gold">blockchain engineering</span>, not prototype code
               </h2>
               <p className="mt-4 text-sm leading-relaxed text-muted sm:text-base">
@@ -225,7 +241,7 @@ export default async function HomePage() {
             </div>
             {/* Blockchain network image */}
             <div className="flex flex-col gap-4">
-              <div className="relative overflow-hidden rounded-2xl border border-border">
+              <div className="theme-dark relative overflow-hidden rounded-2xl border border-border">
                 <Image
                   src="/images/blockchain-network.jpg"
                   alt="3D visualization of a decentralized blockchain network with glowing teal and gold nodes connected by cryptographic transaction lines"
@@ -274,11 +290,19 @@ export default async function HomePage() {
           <SectionHeading eyebrow="Industries" title="Regulated industries we build for" />
           <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {industries.map((industry) => (
-              <div key={industry.slug} className="rounded-xl border border-border bg-background p-5">
-                <Icon name={industry.icon as never} className="w-6 h-6 text-primary" />
-                <h3 className="mt-3 text-sm font-semibold text-foreground">{industry.name}</h3>
+              <Link
+                key={industry.slug}
+                href={`/industries/${industry.slug}`}
+                className="group flex flex-col rounded-xl border border-border bg-background p-6 transition-colors hover:border-foreground/25"
+              >
+                <Icon name={industry.icon as never} className="w-5 h-5 text-foreground/70 transition-colors group-hover:text-primary" />
+                <h3 className="mt-4 text-[15px] font-semibold text-foreground">{industry.name}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted">{industry.summary}</p>
-              </div>
+                <span className="mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-medium text-primary">
+                  Learn more
+                  <Icon name="arrow" className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+                </span>
+              </Link>
             ))}
           </div>
           <div className="mt-8">
@@ -315,14 +339,14 @@ export default async function HomePage() {
                   <div className="relative h-44 overflow-hidden">
                     <Image src={imgSrc} alt={imgAlt} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="object-cover group-hover:scale-105 transition-transform duration-500" />
                     <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/40 to-transparent" />
-                    <span className="absolute top-3 left-3 rounded-full bg-background/80 backdrop-blur px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-primary">{cs.industry}</span>
+                    <span className="absolute top-3 left-3 rounded-full bg-background/80 backdrop-blur px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.08em] text-foreground">{cs.industry}</span>
                   </div>
                   <div className="p-6">
                     <h3 className="text-base font-semibold text-foreground">{cs.title}</h3>
                     <div className="mt-4 grid grid-cols-2 gap-3">
                       {cs.results.slice(0, 2).map((r) => (
                         <div key={r.label}>
-                          <p className="text-lg font-bold gradient-text">{r.metric}</p>
+                          <p className="font-display text-2xl text-foreground">{r.metric}</p>
                           <p className="text-xs text-muted">{r.label}</p>
                         </div>
                       ))}
@@ -357,7 +381,7 @@ export default async function HomePage() {
                   <div className="relative h-40 overflow-hidden">
                     <Image src={imgSrc} alt={imgAlt} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="object-cover group-hover:scale-105 transition-transform duration-500" />
                     <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
-                    <span className="absolute top-3 left-3 rounded-full bg-background/80 backdrop-blur px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-primary">{post.category}</span>
+                    <span className="absolute top-3 left-3 rounded-full bg-background/80 backdrop-blur px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.08em] text-foreground">{post.category}</span>
                   </div>
                   <div className="p-5">
                     <h3 className="text-base font-semibold leading-snug text-foreground">{post.title}</h3>

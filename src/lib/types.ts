@@ -11,6 +11,8 @@ export interface ProcessStep {
 export interface ContentBlock {
   title: string;
   description: string;
+  // Optional: renders the block as a card link with a "Learn more" action.
+  href?: string;
 }
 
 export interface ServiceContent {
@@ -61,6 +63,7 @@ export interface CaseStudy {
   challengeDetail?: { heading: string; paragraphs: string[] }[];
   solutionDetail?: { heading: string; paragraphs: string[] }[];
   outcomeDetail?: { heading: string; paragraphs: string[] }[];
+  keywords?: string[];
 }
 
 export interface BlogPost {
@@ -105,6 +108,7 @@ export interface IndustryContent {
   approach?: ContentBlock[];
   faqs?: FaqItem[];
   metaDescription?: string;
+  keywords?: string[];
 }
 
 export interface CityContent {

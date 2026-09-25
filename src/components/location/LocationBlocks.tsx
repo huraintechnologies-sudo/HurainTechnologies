@@ -20,7 +20,7 @@ export interface PhotoProps {
 export function PlacePhoto({ src, alt, width = 960, height = 640, commonsFile, priority = false }: PhotoProps) {
   const remote = src.startsWith("http");
   return (
-    <figure className="relative overflow-hidden rounded-2xl border border-border bg-surface">
+    <figure className="theme-dark relative overflow-hidden rounded-2xl border border-border bg-surface">
       <Image
         src={src}
         alt={alt}

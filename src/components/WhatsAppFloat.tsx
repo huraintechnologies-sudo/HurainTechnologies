@@ -1,13 +1,36 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Icon } from "@/components/Icon";
 import { siteConfig } from "@/lib/site-config";
+import { openWhatsApp } from "@/lib/whatsapp";
+
+const AUTO_OPEN_KEY = "wa-form-auto-opened";
 
 export function WhatsAppFloat() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+
+  // Pop the in-page WhatsApp form open once per visit after 15s. Only the
+  // form opens here — WhatsApp itself launches when the visitor taps Send,
+  // because phones refuse to hand wa.me to the app without a real tap.
+  useEffect(() => {
+    try {
+      if (sessionStorage.getItem(AUTO_OPEN_KEY)) return;
+    } catch {}
+    const timer = setTimeout(() => {
+      try {
+        sessionStorage.setItem(AUTO_OPEN_KEY, "1");
+      } catch {}
+      setOpen(true);
+    }, 15000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  function openForm() {
+    setOpen(true);
+  }
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -33,22 +56,20 @@ export function WhatsAppFloat() {
       `Source page: ${sourceUrl}`,
     ].filter(Boolean);
 
-    const url = `${siteConfig.whatsapp}?text=${encodeURIComponent(lines.join("\n"))}`;
-    window.open(url, "_blank", "noopener,noreferrer");
-    setOpen(false);
     event.currentTarget.reset();
+    setOpen(false);
+    openWhatsApp(lines.join("\n"));
   }
 
   return (
     <>
       <button
         type="button"
-        onClick={() => setOpen(true)}
+        onClick={openForm}
         aria-label="Chat with us on WhatsApp"
-        className="group fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] shadow-lg shadow-black/30 transition-transform hover:scale-105"
+        className="fixed bottom-5 right-5 z-50 flex h-13 w-13 items-center justify-center rounded-full bg-[#25D366] shadow-lg shadow-black/40 transition-transform hover:scale-105"
       >
-        <span className="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-40" />
-        <Icon name="whatsapp" className="relative w-7 h-7 text-white" />
+        <Icon name="whatsapp" className="w-6 h-6 text-white" />
       </button>
 
       {open && (

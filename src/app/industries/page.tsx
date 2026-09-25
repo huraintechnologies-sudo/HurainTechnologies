@@ -25,7 +25,7 @@ const filteredCountries = countries.filter(
 
 // Generate unique Unsplash images for each industry based on keywords
 async function getIndustryImageUrl(name: string, index: number): Promise<{ src: string; alt: string }> {
-  const image = await getIndustryImage(name, index);
+  const image = await getIndustryImage(name);
   if (image) {
     return { src: image.url, alt: image.alt };
   }

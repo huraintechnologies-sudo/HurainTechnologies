@@ -1,18 +1,45 @@
 @import "tailwindcss";
 
 :root {
-  --background: #05070d;
-  --surface: #0b0f1a;
-  --surface-2: #111629;
-  --border: #1f2740;
-  --foreground: #eef1f8;
-  --muted: #8b93ab;
-  --primary: #2dd4ef;
-  --primary-2: #3b82f6;
-  --accent: #f5b942;
-  --accent-2: #f97316;
-  --success: #34d399;
-  --danger: #f87171;
+  /* Light, warm paper base with ink text and one signal colour. The header,
+     each page's hero, CTA panels and the footer switch to the dark palette
+     below (.theme-dark), giving every page a dark top band and a calm,
+     readable body. */
+  --background: #f7f6f2;
+  --surface: #ffffff;
+  --surface-2: #f0eee8;
+  --border: #e3e0d8;
+  --foreground: #16171a;
+  --muted: #5f6368;
+  --primary: #cf4410;
+  --primary-2: #f07a3c;
+  --accent: #9a6a12;
+  --accent-2: #9a6a12;
+  --success: #1f8a4c;
+  --danger: #c93b3b;
+  --shadow-card: 0 1px 2px rgba(22, 23, 26, 0.04), 0 8px 24px -12px rgba(22, 23, 26, 0.12);
+  --shadow-card-hover: 0 1px 2px rgba(22, 23, 26, 0.05), 0 18px 40px -16px rgba(22, 23, 26, 0.22);
+}
+
+.theme-dark,
+main > section:first-of-type {
+  --background: #0d0e10;
+  --surface: #141518;
+  --surface-2: #1b1d21;
+  --border: #26292e;
+  --foreground: #ecebe6;
+  --muted: #9a9b98;
+  --primary: #ff7a45;
+  --primary-2: #ffb08a;
+  --accent: #d8b46a;
+  --accent-2: #d8b46a;
+  --success: #6fcf97;
+  --danger: #f2797a;
+  --shadow-card: none;
+  --shadow-card-hover: none;
+  background-color: var(--background);
+  color: var(--foreground);
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -28,48 +55,99 @@
   --color-accent-2: var(--accent-2);
   --color-success: var(--success);
   --color-danger: var(--danger);
-  --font-sans: var(--font-inter);
-  --font-mono: var(--font-jetbrains-mono);
+  --font-sans: var(--font-geist);
+  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-geist);
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.625rem;
+  --radius-2xl: 0.875rem;
 }
 
 html {
-  color-scheme: dark;
+  color-scheme: light;
+  scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
+}
+
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+  border-radius: 4px;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-feature-settings: "ss01", "cv11";
 }
 
-.bg-grid {
-  background-image:
-    linear-gradient(to right, rgba(45, 212, 239, 0.06) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(45, 212, 239, 0.06) 1px, transparent 1px);
-  background-size: 44px 44px;
+/* Headings: Geist set tight and heavy — the crisp product-company look.
+   Unlayered, so it wins over the font-bold / font-semibold utilities used
+   across every page template. */
+h1,
+h2 {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+h2 { letter-spacing: -0.035em; line-height: 1.08; }
+h3 { letter-spacing: -0.015em; }
+p { text-wrap: pretty; }
+
+/* Big numbers (stats, metrics). */
+.font-display {
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
 }
 
-.gradient-text {
-  background: linear-gradient(90deg, var(--primary), var(--primary-2));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
+/* Legacy decorative classes, kept so existing templates render cleanly. */
+.bg-grid { background-image: none; }
 
+.gradient-text,
 .gradient-text-gold {
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  background: none;
+  color: var(--primary);
+}
+.gradient-text-gold { color: var(--accent); }
+/* Accent line inside headings fades from the signal colour into a warm
+   off-white — subtle, not neon. */
+h1 .gradient-text, h2 .gradient-text {
+  background: linear-gradient(90deg, var(--primary) 0%, var(--primary-2) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
 .card-glow {
-  box-shadow: 0 0 0 1px var(--border), 0 20px 60px -30px rgba(45, 212, 239, 0.35);
+  box-shadow: 0 0 0 1px var(--border), var(--shadow-card);
 }
+
+/* Small uppercase label set in mono — used for eyebrows and meta. */
+.eyebrow {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.hairline { background: var(--border); height: 1px; }
 
 ::selection {
   background: var(--primary);
-  color: #05070d;
+  color: #ffffff;
+}
+
+/* Resting elevation for white cards on the paper background (none in dark). */
+main a.rounded-xl.bg-surface,
+main div.rounded-xl.bg-surface,
+main .rounded-2xl.bg-surface {
+  box-shadow: var(--shadow-card);
 }
 
 a {
@@ -163,6 +241,7 @@ a {
   main a.rounded-xl:hover,
   main .card-glow:hover {
     transform: translateY(-3px);
+    box-shadow: var(--shadow-card-hover);
   }
 }
 

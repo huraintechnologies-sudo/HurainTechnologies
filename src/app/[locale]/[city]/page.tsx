@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { SolutionsDirectory } from "@/components/SolutionsDirectory";
 import { Container } from "@/components/Container";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SectionHeading } from "@/components/SectionHeading";
@@ -246,6 +247,8 @@ export default async function CityPage({ params }: Props) {
           </div>
         </Container>
       </section>
+
+      <SolutionsDirectory countrySlug={city.countrySlug} citySlug={city.slug} placeName={city.cityName} />
 
       <LocalMarketSection ctx={ctx} placeName={city.cityName} countryName={countryName} topic="Software Development" isCity />
 
