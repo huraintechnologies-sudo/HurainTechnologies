@@ -12,6 +12,8 @@ import { blogPosts } from "@/data/blog-posts";
 import { ultraStrongOrganizationJsonLd } from "@/lib/jsonld-ultra-strong";
 import { collectionPageJsonLd, webPageJsonLd } from "@/lib/jsonld-seo-complete";
 import { TrustSections } from "@/components/TrustSections";
+import { PageFaq } from "@/components/PageFaq";
+import { pageFaqs } from "@/data/page-faqs";
 
 export const metadata: Metadata = buildMetadata({
   title: "Blog | Blockchain, Payments & Security Insights",
@@ -107,6 +109,7 @@ export default function BlogIndexPage() {
       </section>
 
       <TrustSections topic={"Custom Software"} />
+      <PageFaq title="Engineering blog — frequently asked questions" faqs={pageFaqs.blog} />
 
       <section className="pb-20">
         <Container>

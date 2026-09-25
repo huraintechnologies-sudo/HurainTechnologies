@@ -14,6 +14,8 @@ import { caseStudies } from "@/data/case-studies";
 import { ultraStrongOrganizationJsonLd } from "@/lib/jsonld-ultra-strong";
 import { collectionPageJsonLd, webPageJsonLd } from "@/lib/jsonld-seo-complete";
 import { TrustSections } from "@/components/TrustSections";
+import { PageFaq } from "@/components/PageFaq";
+import { pageFaqs } from "@/data/page-faqs";
 
 export const metadata: Metadata = buildMetadata({
   title: "Case Studies | Blockchain, Payments & API Engineering Results",
@@ -117,6 +119,7 @@ export default function CaseStudiesPage() {
       </section>
 
       <TrustSections topic={"Custom Software"} />
+      <PageFaq title="Case studies — frequently asked questions" faqs={pageFaqs.caseStudies} />
 
       <section className="pb-20">
         <Container>

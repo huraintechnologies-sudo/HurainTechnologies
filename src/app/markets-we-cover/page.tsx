@@ -15,6 +15,9 @@ import { JsonLd } from "@/components/JsonLd";
 import { QuickAnswer } from "@/components/location/LocationBlocks";
 import { itemListJsonLd } from "@/lib/jsonld";
 import { siteConfig } from "@/lib/site-config";
+import { TrustSections } from "@/components/TrustSections";
+import { PageFaq } from "@/components/PageFaq";
+import { pageFaqs } from "@/data/page-faqs";
 
 // Kept consistent with CountryLinksGrid's business exclusions.
 const EXCLUDED = new Set(["pakistan", "israel", "china", "japan"]);
@@ -115,6 +118,9 @@ export default function MarketsPage() {
           </Container>
         </section>
       ))}
+
+      <TrustSections topic="Software Development" />
+      <PageFaq title="Markets we cover — frequently asked questions" faqs={pageFaqs.markets} />
 
       <section className="border-t border-border py-16">
         <Container>

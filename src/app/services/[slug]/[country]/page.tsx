@@ -172,7 +172,7 @@ export default async function ServiceCountryPage({
 
       <section className="py-16">
         <Container>
-          <SectionHeading eyebrow="Our Approach" title={`How we deliver ${service.navLabel.toLowerCase()} in ${country.countryName}`} />
+          <SectionHeading eyebrow="Our Approach" title={`What our ${service.navLabel.toLowerCase()} work covers in ${country.countryName}`} />
           <div className="mt-8">
             <SolutionGrid items={service.solutions} />
           </div>

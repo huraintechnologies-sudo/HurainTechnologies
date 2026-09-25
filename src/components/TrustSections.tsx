@@ -98,7 +98,7 @@ export function TrustSections({
         <Container>
           <SectionHeading
             eyebrow="Why we're different"
-            title={place ? `Hurain Technologies apart: what makes us different for ${market} businesses` : "Hurain Technologies apart: what makes us different"}
+            title={place ? `What sets Hurain Technologies apart for ${market} businesses` : "What sets Hurain Technologies apart"}
             description={`Plenty of agencies can build ${t}. Here is what sets us apart for clients${where}.`}
           />
           <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">

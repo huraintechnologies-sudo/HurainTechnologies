@@ -16,6 +16,8 @@ import { industries } from "@/data/industries";
 import { countries } from "@/data/countries";
 import { getIndustryImage } from "@/lib/unsplash-service";
 import { TrustSections } from "@/components/TrustSections";
+import { PageFaq } from "@/components/PageFaq";
+import { pageFaqs } from "@/data/page-faqs";
 
 // Exclude Pakistan, Israel, China, Japan
 const excludedCountries = ["pakistan", "israel", "china", "japan"];
@@ -214,6 +216,7 @@ export default async function IndustriesPage() {
       </section>
 
       <TrustSections topic={"Industry Software"} />
+      <PageFaq title="Industries — frequently asked questions" faqs={pageFaqs.industries} />
 
       <section className="pb-20">
         <Container>

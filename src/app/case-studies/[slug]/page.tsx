@@ -16,6 +16,8 @@ import { buildCaseStudyKeywords } from "@/lib/keywords-builder";
 import { caseStudies, getCaseStudyBySlug } from "@/data/case-studies";
 import { getCaseStudyImage } from "@/lib/unsplash-service";
 import { TrustSections } from "@/components/TrustSections";
+import { PageFaq } from "@/components/PageFaq";
+import { pageFaqs } from "@/data/page-faqs";
 
 export function generateStaticParams() {
   return caseStudies.map((cs) => ({ slug: cs.slug }));
@@ -178,6 +180,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
       </section>
 
       <TrustSections topic={"Custom Software"} />
+      <PageFaq title="About this case study — frequently asked questions" faqs={pageFaqs.caseStudies} />
 
       <section className="py-16 border-t border-border bg-surface">
         <Container className="max-w-3xl">

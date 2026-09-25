@@ -25,7 +25,7 @@ export const metadata: Metadata = buildMetadata({
 });
 
 const faqs = [
-  { question: "What kind of software does Hurain Technologies build?", answer: `We build ${serviceVerticals.length} kinds of solutions — from mobile apps, e-commerce and food delivery platforms to fintech, healthcare, AI, SaaS, IoT and blockchain products — plus dedicated developer teams. Each solution page lists features, timelines, cost drivers and tech stack.` },
+  { question: "What kind of software does Hurain Technologies build?", answer: `We build ${serviceVerticals.length} kinds of solutions — from mobile apps, e-commerce and food delivery platforms to fintech, healthcare, AI, SaaS, IoT and blockchain products — plus dedicated developer teams. Each solution page lists features, cost drivers, delivery process and tech stack.` },
   { question: "Do you work with clients outside India?", answer: "Yes. Most of our clients are overseas. We deliver remotely with a team that works 24/7 across every time zone, and every country page explains local payment, tax and data-protection requirements." },
   { question: "How quickly can a project start?", answer: "Discovery can usually begin within 5 business days of a signed proposal, and dedicated developers can start within 1–2 weeks." },
   { question: "Who owns the code?", answer: "You do. Code lives in your repository from the first commit and full IP transfers to you." },

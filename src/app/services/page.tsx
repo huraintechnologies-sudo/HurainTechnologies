@@ -14,6 +14,8 @@ import { localeForCountrySlug } from "@/lib/locale";
 import { services } from "@/data/services";
 import { countries } from "@/data/countries";
 import { TrustSections } from "@/components/TrustSections";
+import { PageFaq } from "@/components/PageFaq";
+import { pageFaqs } from "@/data/page-faqs";
 
 export const metadata: Metadata = buildMetadata({
   title: "Professional Software Development Services | Blockchain, Crypto, Payments, Cloud, AI & More",
@@ -125,6 +127,7 @@ export default function ServicesPage() {
       </section>
 
       <TrustSections topic={"Software Engineering"} />
+      <PageFaq title="Services — frequently asked questions" faqs={pageFaqs.services} />
 
       <section className="py-16">
         <Container>

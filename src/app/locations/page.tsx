@@ -12,6 +12,9 @@ import { siteConfig } from "@/lib/site-config";
 import { countries, getCountryBySlug } from "@/data/countries";
 import { cities } from "@/data/cities";
 import { localeForCountrySlug } from "@/lib/locale";
+import { TrustSections } from "@/components/TrustSections";
+import { PageFaq } from "@/components/PageFaq";
+import { pageFaqs } from "@/data/page-faqs";
 
 export const metadata: Metadata = buildMetadata({
   title: "Locations We Serve | Blockchain & Payments Software Development Worldwide",
@@ -106,6 +109,9 @@ export default function LocationsPage() {
           <LiveDemos />
         </Container>
       </section>
+
+      <TrustSections topic="Software Development" />
+      <PageFaq title="Locations — frequently asked questions" faqs={pageFaqs.locations} />
 
       <section className="py-16 border-t border-border bg-surface">
         <Container>

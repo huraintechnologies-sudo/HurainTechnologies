@@ -11,6 +11,7 @@ import { siteConfig } from "@/lib/site-config";
 import { SectionHeading } from "@/components/SectionHeading";
 import { FaqAccordion } from "@/components/FaqAccordion";
 import { faqJsonLd } from "@/lib/jsonld";
+import { EngagementPromises } from "@/components/EngagementPromises";
 
 const nextSteps = [
   { title: "1. You send the brief", body: "Share what you want to build, your target market and any deadline — a few lines is enough. NDAs signed on request before details." },
@@ -175,6 +176,8 @@ export default function ContactPage() {
         </div>
       </Container>
     </section>
+
+    <EngagementPromises />
 
     <section className="border-t border-border py-16">
       <Container className="max-w-3xl">

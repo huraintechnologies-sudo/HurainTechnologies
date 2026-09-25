@@ -14,6 +14,7 @@ import { getBlogPostSchemas } from "@/lib/jsonld-universal";
 import { buildBlogPostKeywords } from "@/lib/keywords-builder";
 import { blogPosts, getBlogPostBySlug } from "@/data/blog-posts";
 import { getBlogPostImage } from "@/lib/unsplash-service";
+import { EngagementPromises } from "@/components/EngagementPromises";
 
 export function generateStaticParams() {
   return blogPosts.map((post) => ({ slug: post.slug }));
@@ -106,6 +107,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <LiveDemos />
         </Container>
       </section>
+
+      <EngagementPromises />
 
       <section className="py-16 border-t border-border bg-surface">
         <Container className="max-w-3xl">

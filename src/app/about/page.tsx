@@ -15,6 +15,8 @@ import { JsonLd } from "@/components/JsonLd";
 import { founderJsonLd } from "@/lib/jsonld";
 import { TrustSections } from "@/components/TrustSections";
 import { TeamSection } from "@/components/TeamSection";
+import { PageFaq } from "@/components/PageFaq";
+import { pageFaqs } from "@/data/page-faqs";
 
 const hasFounderPhoto = fs.existsSync(path.join(process.cwd(), "public", siteConfig.founder.photo));
 
@@ -262,6 +264,7 @@ export default function AboutPage() {
       </section>
 
       <TrustSections topic="Custom Software" />
+      <PageFaq title="About Hurain Technologies — frequently asked questions" faqs={pageFaqs.about} />
 
       <section className="py-16 border-t border-border bg-surface">
         <Container>

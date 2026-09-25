@@ -218,7 +218,7 @@ export default async function ServiceCityPage({
 
       <section className="py-16">
         <Container>
-          <SectionHeading eyebrow="Our Approach" title={`How we deliver ${service.navLabel.toLowerCase()} in ${cityName}`} />
+          <SectionHeading eyebrow="Our Approach" title={`What our ${service.navLabel.toLowerCase()} work covers in ${cityName}`} />
           <div className="mt-8">
             <SolutionGrid items={service.solutions} />
           </div>
