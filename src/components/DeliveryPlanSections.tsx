@@ -153,6 +153,136 @@ export function DeliveryPlanSections({ topic: rawTopic, place }: { topic: string
           </div>
         </Container>
       </section>
+
+      <section id="support-maintenance" className="border-t border-border py-20">
+        <Container>
+          <SectionHeading
+            eyebrow="Warranty & annual support"
+            title={`Warranty and annual support for your ${topic} project${where}`}
+            description="After the final milestone, the team that built your product keeps it secure, updated and running — on a fixed annual fee agreed up front, never open-ended hourly billing."
+          />
+
+          <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-12">
+            <div className="flex flex-col gap-4 lg:col-span-4">
+              <div className="rounded-2xl border border-border bg-surface p-6">
+                <p className="font-mono text-[11px] uppercase tracking-wide text-muted">Included free</p>
+                <p className="mt-2 text-3xl font-semibold tracking-tight text-foreground">90-day warranty</p>
+                <p className="mt-2 text-sm leading-relaxed text-muted">
+                  Any defect found in the first 90 days after go-live is fixed free of charge.
+                </p>
+              </div>
+              <div className="rounded-2xl border border-primary/30 bg-primary/[0.06] p-6">
+                <p className="font-mono text-[11px] uppercase tracking-wide text-primary">Fixed-cost annual package</p>
+                <p className="mt-2 text-3xl font-semibold tracking-tight text-foreground">30% of project cost</p>
+                <p className="mt-2 text-sm leading-relaxed text-muted">
+                  per year for Annual Support &amp; Maintenance, with a dedicated developer assigned to your {topic.toLowerCase()} platform.
+                  A fixed price, known in advance.
+                </p>
+              </div>
+            </div>
+
+            <div className="overflow-hidden rounded-2xl border border-border bg-surface lg:col-span-8">
+              <table className="w-full text-left text-sm">
+                <thead style={{ background: "var(--foreground)", color: "var(--background)" }}>
+                  <tr>
+                    <th scope="col" className="px-4 py-3 font-semibold">Service</th>
+                    <th scope="col" className="px-4 py-3 font-semibold">Included in the annual package</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {plan.support.map((s) => (
+                    <tr key={s.service} className="align-top">
+                      <td className="px-4 py-3.5 font-semibold text-foreground sm:whitespace-nowrap">{s.service}</td>
+                      <td className="px-4 py-3.5 text-[13px] leading-relaxed text-muted">{s.detail}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      <section id="source-code-ownership" className="border-t border-border py-20">
+        <Container>
+          <SectionHeading
+            eyebrow="Source code & IP ownership"
+            title="100% of the source code and IP is owned by you"
+            description={`For every custom ${topic.toLowerCase()} project${where}, upon full and final payment the complete source code and intellectual property are transferred to you — so you can host, maintain and enhance the system with any developer.`}
+          />
+
+          <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-12">
+            <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:col-span-8">
+              {plan.ownership.map((item) => (
+                <li key={item} className="flex items-start gap-3 rounded-xl border border-border bg-surface p-4 text-sm text-foreground/85">
+                  <Icon name="check" className="mt-0.5 w-4 h-4 shrink-0 text-primary" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <div className="flex flex-col justify-center gap-3 rounded-2xl p-6 lg:col-span-4" style={{ background: "var(--foreground)", color: "var(--background)" }}>
+              {["No lock-in", "No forced upgrades", "No subscription trap"].map((t) => (
+                <p key={t} className="flex items-center gap-2.5 text-lg font-semibold">
+                  <Icon name="check" className="w-5 h-5 shrink-0 text-primary" />
+                  {t}
+                </p>
+              ))}
+              <p className="mt-2 text-sm opacity-75">Your code lives in your own repository from the first commit.</p>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      <section id="dedicated-developer" className="border-t border-border py-20">
+        <Container>
+          <SectionHeading
+            eyebrow="Continuous enhancement"
+            title="Keep improving with a dedicated full-stack developer"
+            description={`If you want to keep expanding your ${topic.toLowerCase()} platform after launch, we assign a dedicated full-stack developer who works across your apps, dashboards and backend on your priorities.`}
+          />
+
+          <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-12">
+            <div className="rounded-2xl border border-primary/30 bg-primary/[0.06] p-6 lg:col-span-4">
+              <p className="font-mono text-[11px] uppercase tracking-wide text-primary">Dedicated full-stack developer</p>
+              <p className="mt-2 text-4xl font-semibold tracking-tight text-foreground">
+                USD 1,500<span className="text-base font-medium text-muted"> / month</span>
+              </p>
+              <ul className="mt-5 space-y-2.5 text-sm text-foreground/85">
+                {["Start any time after launch", "Billed monthly in advance", "Flexible — scale up or pause"].map((t) => (
+                  <li key={t} className="flex items-start gap-2">
+                    <Icon name="check" className="mt-0.5 w-4 h-4 shrink-0 text-primary" />
+                    {t}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="rounded-2xl border border-border bg-surface p-6 lg:col-span-8">
+              <h3 className="text-base font-semibold text-foreground">What your developer can take on</h3>
+              <ul className="mt-4 space-y-2.5 text-sm text-foreground/85">
+                {plan.enhancements.map((t) => (
+                  <li key={t} className="flex items-start gap-2">
+                    <Icon name="check" className="mt-0.5 w-4 h-4 shrink-0 text-primary" />
+                    {t}
+                  </li>
+                ))}
+              </ul>
+
+              <h3 className="mt-7 border-t border-border pt-6 text-base font-semibold text-foreground">
+                Need more hands? Add team members as your requirements grow
+              </h3>
+              <ul className="mt-3 flex flex-wrap gap-2">
+                {plan.extraRoles.map((r) => (
+                  <li key={r} className="rounded-md border border-border bg-background px-2.5 py-1 text-[13px] text-foreground/80">
+                    {r}
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-3 text-[13px] text-muted">Each additional specialist is quoted to your requirements.</p>
+            </div>
+          </div>
+        </Container>
+      </section>
     </>
   );
 }

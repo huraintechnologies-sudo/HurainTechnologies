@@ -17,10 +17,23 @@ export interface Milestone {
   percent: number;
 }
 
+export interface SupportItem {
+  service: string;
+  detail: string;
+}
+
 export interface DeliveryPlan {
   track: Track;
   stages: Stage[];
   milestones: Milestone[];
+  // Annual support & maintenance: what the fixed yearly fee covers.
+  support: SupportItem[];
+  // Everything handed over with full source-code & IP ownership.
+  ownership: string[];
+  // Examples of what a dedicated developer can take on after launch.
+  enhancements: string[];
+  // Extra specialists that can be added as requirements grow.
+  extraRoles: string[];
 }
 
 export function trackFor(topic: string): Track {
@@ -186,6 +199,91 @@ const MILESTONES: Record<Track, [string, string][]> = {
   ],
 };
 
+// Annual support rows shared by every track; per-track rows extend them.
+const SUPPORT_BASE: SupportItem[] = [
+  { service: "Dedicated developer", detail: "One named developer assigned to your product for fixes, enhancements and optimisation." },
+  { service: "Bug fixes & security patches", detail: "Critical issues resolved within 24 hours; standard issues within 5 business days." },
+  { service: "Upgrades & new releases", detail: "Framework, library and platform updates plus new versions of what we built, at no additional cost." },
+  { service: "Helpdesk", detail: "Email and phone support for your team and administrators; 4-hour response for critical issues." },
+  { service: "Backup monitoring", detail: "Daily backup checks and a quarterly restore test." },
+  { service: "Security review", detail: "Periodic audit-trail review and security configuration check." },
+];
+
+const SUPPORT_EXTRA: Record<Track, SupportItem[]> = {
+  app: [
+    { service: "App store compliance", detail: "New iOS / Android versions, store-policy changes and SDK updates handled before they break the app." },
+    { service: "Performance & crash monitoring", detail: "Crash reports and slow screens reviewed every month and fixed." },
+  ],
+  blockchain: [
+    { service: "On-chain monitoring", detail: "Contract events, admin actions and unusual transactions watched with alerts." },
+    { service: "Network & node upgrades", detail: "Hard forks, RPC and library changes tracked; contract upgrades run through the multisig." },
+  ],
+  payments: [
+    { service: "PSP & scheme changes", detail: "Provider API versions, card-scheme and 3-D Secure changes applied before their deadlines." },
+    { service: "Reconciliation checks", detail: "Settlement and reconciliation exceptions reviewed and resolved every day." },
+  ],
+  api: [
+    { service: "Partner API changes", detail: "Third-party API deprecations tracked and integrations updated before cut-off dates." },
+    { service: "Uptime & error monitoring", detail: "Error rates, latency and rate limits watched with alerts." },
+  ],
+  cloud: [
+    { service: "Cost optimisation", detail: "Monthly cloud-bill review with rightsizing and reserved-capacity advice." },
+    { service: "Uptime monitoring", detail: "Infrastructure health, scaling and certificate expiry watched with alerts." },
+  ],
+  database: [
+    { service: "24/7 monitoring", detail: "Replication, storage, locks and slow queries watched around the clock." },
+    { service: "Patching & upgrades", detail: "Database patches and version upgrades planned, tested and applied." },
+  ],
+  ai: [
+    { service: "Model monitoring", detail: "Accuracy and drift tracked; models retrained when performance drops." },
+    { service: "Data pipeline checks", detail: "Feature pipelines and data quality checked so predictions stay reliable." },
+  ],
+  security: [
+    { service: "Control monitoring", detail: "Alerts, case queues and control evidence reviewed so you stay audit-ready." },
+    { service: "Regulatory updates", detail: "Rules and thresholds updated as regulations and guidance change." },
+  ],
+};
+
+const OWNERSHIP_BASE = [
+  "Complete Git repository with full commit history",
+  "Database schemas, migrations and seed data",
+  "Configuration, CI/CD and deployment scripts",
+  "API documentation and a deployment guide",
+];
+
+const OWNERSHIP_EXTRA: Record<Track, string[]> = {
+  app: ["Frontend, backend and admin-panel source code", "iOS / Android projects and store accounts in your name", "Design files and UI kit"],
+  blockchain: ["Smart-contract source, tests and deployment scripts", "Contract ownership and multisig admin keys transferred to you", "Audit reports and dApp / admin source code"],
+  payments: ["Payment orchestration, ledger and admin source code", "PSP merchant accounts and credentials in your name", "Reconciliation rules and ops runbooks"],
+  api: ["API, gateway and SDK source code", "OpenAPI specifications and developer-portal content", "Partner credentials and keys in your name"],
+  cloud: ["Infrastructure-as-code for every environment", "Cloud accounts and billing in your name", "Runbooks and disaster-recovery plan"],
+  database: ["All scripts, automation and tuning changes", "Runbooks, HA / DR design and health-check reports", "Database access and credentials in your name"],
+  ai: ["Model code, training pipelines and notebooks", "Trained model files and evaluation reports", "Feature definitions and data-pipeline code"],
+  security: ["Control configurations, rules and integration code", "Policies, risk register and audit evidence pack", "Vendor accounts and keys in your name"],
+};
+
+const ENHANCEMENTS: Record<Track, string[]> = {
+  app: ["New features and modules as your users ask for them", "UI and user-experience improvements based on feedback", "New integrations, reports and workflow automation"],
+  blockchain: ["New contracts, tokens or chains", "dApp and admin-panel improvements", "New wallet, bridge and exchange integrations"],
+  payments: ["New PSPs, payment methods and currencies", "Smarter routing and fraud rules", "New reports, payouts and reconciliation automation"],
+  api: ["New endpoints, SDKs and partner integrations", "Developer-portal and documentation improvements", "Webhooks, reporting and workflow automation"],
+  cloud: ["New environments, regions and services", "Deployment-pipeline and cost improvements", "Observability, scaling and resilience work"],
+  database: ["Query and schema optimisation as data grows", "New replicas, reporting databases and automation", "Upgrades and migrations to newer versions"],
+  ai: ["New models and use cases", "Better accuracy through new data and features", "Dashboards, review tools and automation"],
+  security: ["New controls as you enter new markets", "Automated evidence collection and case handling", "New KYC / AML and security-tool integrations"],
+};
+
+const EXTRA_ROLES: Record<Track, string[]> = {
+  app: ["Frontend developer", "Mobile developer", "Backend developer", "UI/UX designer", "QA engineer", "DevOps engineer"],
+  blockchain: ["Smart-contract developer", "dApp developer", "Backend developer", "QA engineer", "DevOps engineer"],
+  payments: ["Payments backend developer", "Integration engineer", "Frontend developer", "QA engineer", "DevOps engineer"],
+  api: ["Backend / API developer", "Integration engineer", "SDK developer", "QA engineer", "DevOps engineer"],
+  cloud: ["DevOps engineer", "Cloud architect", "Site-reliability engineer", "Backend developer"],
+  database: ["Database administrator", "Data engineer", "Backend developer", "DevOps engineer"],
+  ai: ["ML engineer", "Data engineer", "Backend developer", "Frontend developer", "QA engineer"],
+  security: ["Security engineer", "Compliance integration developer", "Backend developer", "QA engineer"],
+};
+
 export function deliveryPlanFor(topic: string): DeliveryPlan {
   const track = trackFor(topic);
   const stages = STAGE_TITLES.map((title, i) => ({ title, tasks: OVERRIDES[track][i] ?? BASE[i] }));
@@ -195,5 +293,13 @@ export function deliveryPlanFor(topic: string): DeliveryPlan {
     deliverables,
     percent: i === 0 ? 10 : 15,
   }));
-  return { track, stages, milestones };
+  return {
+    track,
+    stages,
+    milestones,
+    support: [...SUPPORT_BASE, ...SUPPORT_EXTRA[track]],
+    ownership: [...OWNERSHIP_EXTRA[track], ...OWNERSHIP_BASE],
+    enhancements: ENHANCEMENTS[track],
+    extraRoles: EXTRA_ROLES[track],
+  };
 }
