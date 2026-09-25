@@ -3,6 +3,8 @@
 // name), so every service / solution / industry / country / city page gets a
 // plan that matches what is actually being built there.
 
+import { teamContentFor, type Role } from "@/lib/team-content";
+
 export type Track = "app" | "blockchain" | "payments" | "api" | "cloud" | "database" | "ai" | "security";
 
 export interface Stage {
@@ -32,10 +34,9 @@ export interface DeliveryPlan {
   ownership: string[];
   // Examples of what a dedicated developer can take on after launch.
   enhancements: string[];
-  // Extra specialists that can be added as requirements grow.
-  extraRoles: string[];
-  // Support staff that can be added alongside the developers.
-  supportRoles: string[];
+  // Developers and support members that can be added as requirements grow.
+  devRoles: Role[];
+  supportRoles: Role[];
 }
 
 export function trackFor(topic: string): Track {
@@ -264,41 +265,6 @@ const OWNERSHIP_EXTRA: Record<Track, string[]> = {
   security: ["Control configurations, rules and integration code", "Policies, risk register and audit evidence pack", "Vendor accounts and keys in your name"],
 };
 
-const ENHANCEMENTS: Record<Track, string[]> = {
-  app: ["New features and modules as your users ask for them", "UI and user-experience improvements based on feedback", "New integrations, reports and workflow automation"],
-  blockchain: ["New contracts, tokens or chains", "dApp and admin-panel improvements", "New wallet, bridge and exchange integrations"],
-  payments: ["New PSPs, payment methods and currencies", "Smarter routing and fraud rules", "New reports, payouts and reconciliation automation"],
-  api: ["New endpoints, SDKs and partner integrations", "Developer-portal and documentation improvements", "Webhooks, reporting and workflow automation"],
-  cloud: ["New environments, regions and services", "Deployment-pipeline and cost improvements", "Observability, scaling and resilience work"],
-  database: ["Query and schema optimisation as data grows", "New replicas, reporting databases and automation", "Upgrades and migrations to newer versions"],
-  ai: ["New models and use cases", "Better accuracy through new data and features", "Dashboards, review tools and automation"],
-  security: ["New controls as you enter new markets", "Automated evidence collection and case handling", "New KYC / AML and security-tool integrations"],
-};
-
-const EXTRA_ROLES: Record<Track, string[]> = {
-  app: ["Frontend developer", "Mobile developer", "Backend developer", "UI/UX designer", "QA engineer", "DevOps engineer"],
-  blockchain: ["Smart-contract developer", "dApp developer", "Backend developer", "QA engineer", "DevOps engineer"],
-  payments: ["Payments backend developer", "Integration engineer", "Frontend developer", "QA engineer", "DevOps engineer"],
-  api: ["Backend / API developer", "Integration engineer", "SDK developer", "QA engineer", "DevOps engineer"],
-  cloud: ["DevOps engineer", "Cloud architect", "Site-reliability engineer", "Backend developer"],
-  database: ["Database administrator", "Data engineer", "Backend developer", "DevOps engineer"],
-  ai: ["ML engineer", "Data engineer", "Backend developer", "Frontend developer", "QA engineer"],
-  security: ["Security engineer", "Compliance integration developer", "Backend developer", "QA engineer"],
-};
-
-const SUPPORT_ROLES_BASE = ["L1 helpdesk support executive", "L2 technical support engineer"];
-
-const SUPPORT_ROLES: Record<Track, string[]> = {
-  app: ["App user-support executive", "Release & app store support"],
-  blockchain: ["On-chain operations support", "Wallet & transaction support"],
-  payments: ["Payment operations support", "Reconciliation & disputes support"],
-  api: ["Integration & partner support engineer", "API monitoring support"],
-  cloud: ["24/7 NOC support engineer", "Site-reliability support"],
-  database: ["24/7 DBA support engineer", "Backup & recovery support"],
-  ai: ["Model operations support", "Data-quality support analyst"],
-  security: ["SOC analyst", "Compliance operations support"],
-};
-
 export function deliveryPlanFor(topic: string): DeliveryPlan {
   const track = trackFor(topic);
   const stages = STAGE_TITLES.map((title, i) => ({ title, tasks: OVERRIDES[track][i] ?? BASE[i] }));
@@ -308,14 +274,15 @@ export function deliveryPlanFor(topic: string): DeliveryPlan {
     deliverables,
     percent: i === 0 ? 10 : 15,
   }));
+  const team = teamContentFor(topic, track);
   return {
     track,
     stages,
     milestones,
-    support: [...SUPPORT_BASE, ...SUPPORT_EXTRA[track]],
+    support: [...SUPPORT_BASE, ...SUPPORT_EXTRA[track], ...team.supportExtra],
     ownership: [...OWNERSHIP_EXTRA[track], ...OWNERSHIP_BASE],
-    enhancements: ENHANCEMENTS[track],
-    extraRoles: EXTRA_ROLES[track],
-    supportRoles: [...SUPPORT_ROLES_BASE, ...SUPPORT_ROLES[track]],
+    enhancements: team.enhancements,
+    devRoles: team.devRoles,
+    supportRoles: team.supportRoles,
   };
 }

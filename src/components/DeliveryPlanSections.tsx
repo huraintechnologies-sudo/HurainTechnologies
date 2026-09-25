@@ -259,8 +259,8 @@ export function DeliveryPlanSections({ topic: rawTopic, place }: { topic: string
             </div>
 
             <div className="rounded-2xl border border-border bg-surface p-6 lg:col-span-8">
-              <h3 className="text-base font-semibold text-foreground">What your developer can take on</h3>
-              <ul className="mt-4 space-y-2.5 text-sm text-foreground/85">
+              <h3 className="text-base font-semibold text-foreground">What your team can take on after launch</h3>
+              <ul className="mt-4 grid grid-cols-1 gap-x-6 gap-y-2.5 text-sm text-foreground/85 sm:grid-cols-2">
                 {plan.enhancements.map((t) => (
                   <li key={t} className="flex items-start gap-2">
                     <Icon name="check" className="mt-0.5 w-4 h-4 shrink-0 text-primary" />
@@ -268,28 +268,33 @@ export function DeliveryPlanSections({ topic: rawTopic, place }: { topic: string
                   </li>
                 ))}
               </ul>
+            </div>
+          </div>
 
-              <h3 className="mt-7 border-t border-border pt-6 text-base font-semibold text-foreground">
-                Need more hands? Add developers and support members as your requirements grow
-              </h3>
+          <div className="mt-6 rounded-2xl border border-border bg-surface p-6">
+            <h3 className="text-base font-semibold text-foreground">
+              Need more hands? Add developers and support members as your requirements grow
+            </h3>
+            <p className="mt-1 text-sm text-muted">
+              Start with one person and add only the roles your {topic.toLowerCase()} roadmap needs — each is quoted to your requirements.
+            </p>
+            <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
               {[
-                { label: "Development team", roles: plan.extraRoles },
+                { label: "Development team", roles: plan.devRoles },
                 { label: "Support team", roles: plan.supportRoles },
               ].map((group) => (
-                <div key={group.label} className="mt-4">
-                  <p className="font-mono text-[11px] uppercase tracking-wide text-muted">{group.label}</p>
-                  <ul className="mt-2 flex flex-wrap gap-2">
-                    {group.roles.map((r) => (
-                      <li key={r} className="rounded-md border border-border bg-background px-2.5 py-1 text-[13px] text-foreground/80">
-                        {r}
+                <div key={group.label}>
+                  <p className="font-mono text-[11px] uppercase tracking-wide text-primary">{group.label}</p>
+                  <ul className="mt-3 divide-y divide-border rounded-xl border border-border bg-background">
+                    {group.roles.map((role) => (
+                      <li key={role.role} className="px-4 py-3">
+                        <p className="text-sm font-semibold text-foreground">{role.role}</p>
+                        <p className="mt-0.5 text-[13px] leading-relaxed text-muted">{role.does}</p>
                       </li>
                     ))}
                   </ul>
                 </div>
               ))}
-              <p className="mt-4 text-[13px] text-muted">
-                Each additional developer or support member is quoted to your requirements.
-              </p>
             </div>
           </div>
         </Container>
