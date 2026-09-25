@@ -10,7 +10,14 @@ import { isWorldSolution, worldCountries, worldCities } from "@/data/world-geo";
 // Matches the real routes at /solutions/[solution], /solutions/[solution]/[country],
 // /solutions/[solution]/[country]/[city]. World-coverage solutions (Remote
 // DBA) list every country and the 500 high-demand world cities instead.
-export const dynamic = "force-dynamic";
+// Built once per deploy and cached for a day: crawlers hit these often, and
+// rebuilding thousands of URLs on every request wastes function time.
+export const revalidate = 86400;
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return serviceVerticals.map((x) => ({ solution: x.slug }));
+}
 
 export async function GET(
   _: Request,
@@ -64,8 +71,4 @@ export async function GET(
     status: 200,
     headers: { "Content-Type": "application/xml" },
   });
-}
-
-export function generateStaticParams() {
-  return serviceVerticals.map((solution) => ({ solution: solution.slug }));
 }

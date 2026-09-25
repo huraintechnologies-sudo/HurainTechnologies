@@ -8,7 +8,14 @@ import { cities } from "@/data/cities";
 // page. Industries do not have city-level pages (no such route exists), so
 // this stops at the country level — matches /industries/[slug] and
 // /industries/[slug]/[country].
-export const dynamic = "force-dynamic";
+// Built once per deploy and cached for a day: crawlers hit these often, and
+// rebuilding thousands of URLs on every request wastes function time.
+export const revalidate = 86400;
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return industries.map((x) => ({ industry: x.slug }));
+}
 
 export async function GET(
   _: Request,
@@ -59,8 +66,4 @@ export async function GET(
     status: 200,
     headers: { "Content-Type": "application/xml" },
   });
-}
-
-export function generateStaticParams() {
-  return industries.map((industry) => ({ industry: industry.slug }));
 }

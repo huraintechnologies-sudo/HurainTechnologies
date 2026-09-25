@@ -7,7 +7,14 @@ import { cities } from "@/data/cities";
 // One sitemap per service: the service hub page + every service x country
 // page + every service x country x city page. Matches the real routes at
 // /services/[slug], /services/[slug]/[country], /services/[slug]/[country]/[city].
-export const dynamic = "force-dynamic";
+// Built once per deploy and cached for a day: crawlers hit these often, and
+// rebuilding thousands of URLs on every request wastes function time.
+export const revalidate = 86400;
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return services.map((x) => ({ service: x.slug }));
+}
 
 export async function GET(
   _: Request,
@@ -58,8 +65,4 @@ export async function GET(
     status: 200,
     headers: { "Content-Type": "application/xml" },
   });
-}
-
-export function generateStaticParams() {
-  return services.map((service) => ({ service: service.slug }));
 }
