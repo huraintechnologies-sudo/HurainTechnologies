@@ -34,6 +34,8 @@ export interface DeliveryPlan {
   enhancements: string[];
   // Extra specialists that can be added as requirements grow.
   extraRoles: string[];
+  // Support staff that can be added alongside the developers.
+  supportRoles: string[];
 }
 
 export function trackFor(topic: string): Track {
@@ -284,6 +286,19 @@ const EXTRA_ROLES: Record<Track, string[]> = {
   security: ["Security engineer", "Compliance integration developer", "Backend developer", "QA engineer"],
 };
 
+const SUPPORT_ROLES_BASE = ["L1 helpdesk support executive", "L2 technical support engineer"];
+
+const SUPPORT_ROLES: Record<Track, string[]> = {
+  app: ["App user-support executive", "Release & app store support"],
+  blockchain: ["On-chain operations support", "Wallet & transaction support"],
+  payments: ["Payment operations support", "Reconciliation & disputes support"],
+  api: ["Integration & partner support engineer", "API monitoring support"],
+  cloud: ["24/7 NOC support engineer", "Site-reliability support"],
+  database: ["24/7 DBA support engineer", "Backup & recovery support"],
+  ai: ["Model operations support", "Data-quality support analyst"],
+  security: ["SOC analyst", "Compliance operations support"],
+};
+
 export function deliveryPlanFor(topic: string): DeliveryPlan {
   const track = trackFor(topic);
   const stages = STAGE_TITLES.map((title, i) => ({ title, tasks: OVERRIDES[track][i] ?? BASE[i] }));
@@ -301,5 +316,6 @@ export function deliveryPlanFor(topic: string): DeliveryPlan {
     ownership: [...OWNERSHIP_EXTRA[track], ...OWNERSHIP_BASE],
     enhancements: ENHANCEMENTS[track],
     extraRoles: EXTRA_ROLES[track],
+    supportRoles: [...SUPPORT_ROLES_BASE, ...SUPPORT_ROLES[track]],
   };
 }

@@ -269,16 +269,26 @@ export function DeliveryPlanSections({ topic: rawTopic, place }: { topic: string
               </ul>
 
               <h3 className="mt-7 border-t border-border pt-6 text-base font-semibold text-foreground">
-                Need more hands? Add team members as your requirements grow
+                Need more hands? Add developers and support members as your requirements grow
               </h3>
-              <ul className="mt-3 flex flex-wrap gap-2">
-                {plan.extraRoles.map((r) => (
-                  <li key={r} className="rounded-md border border-border bg-background px-2.5 py-1 text-[13px] text-foreground/80">
-                    {r}
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-3 text-[13px] text-muted">Each additional specialist is quoted to your requirements.</p>
+              {[
+                { label: "Development team", roles: plan.extraRoles },
+                { label: "Support team", roles: plan.supportRoles },
+              ].map((group) => (
+                <div key={group.label} className="mt-4">
+                  <p className="font-mono text-[11px] uppercase tracking-wide text-muted">{group.label}</p>
+                  <ul className="mt-2 flex flex-wrap gap-2">
+                    {group.roles.map((r) => (
+                      <li key={r} className="rounded-md border border-border bg-background px-2.5 py-1 text-[13px] text-foreground/80">
+                        {r}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+              <p className="mt-4 text-[13px] text-muted">
+                Each additional developer or support member is quoted to your requirements.
+              </p>
             </div>
           </div>
         </Container>
