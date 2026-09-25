@@ -196,7 +196,7 @@ export const solutionPlaybooks: Record<string, SolutionPlaybook> = {
     heroImage: IMG("case-study-fintech.jpg", "Food delivery ordering and dispatch platform"),
     headline: "Food Delivery App Development — Customer, Restaurant & Rider Apps",
     answer:
-      "Hurain Technologies builds complete food delivery platforms: a customer ordering app, a restaurant/merchant app, a rider app with live GPS tracking, and an admin panel for dispatch, commissions and payouts. A launch-ready version for one city typically takes 10–14 weeks.",
+      "Hurain Technologies builds complete food delivery platforms: a customer ordering app, a restaurant/merchant app, a rider app with live GPS tracking, and an admin panel for dispatch, commissions and payouts.",
     overview: [
       "A delivery platform is four products that have to agree with each other in real time: the customer who orders, the kitchen that accepts, the rider who collects and the operations team that watches it all. We build them on one event-driven back end so an order's status is never out of sync.",
       "The hard parts are operational — dispatch logic that assigns the right rider, accurate delivery-time estimates, peak-hour surge handling, and settlement that pays restaurants and riders correctly. That is where we spend most of the engineering effort.",
@@ -496,7 +496,7 @@ export const solutionPlaybooks: Record<string, SolutionPlaybook> = {
     faqs: [
       { question: "Will my data be used to train public AI models?", answer: "No. We use enterprise API terms that exclude training on your data, and can run open-weight models inside your own cloud if data must not leave it." },
       { question: "How do you stop the AI from making things up?", answer: "We ground answers in your documents with retrieval, require citations, test against an evaluation set, and make the system say 'I don't know' or hand off to a human when confidence is low." },
-      { question: "How long before we see results?", answer: "A measurable proof of value typically takes 4–6 weeks, before committing to a full production build." },
+      { question: "How long before we see results?", answer: "We start with a measurable proof of value on your own data before you commit to a full production build; its timeline is agreed around your scope." },
     ],
     relatedServices: ["ai-fraud-detection-automation", "cloud-application-modernization", "api-integration-services"],
     relatedSolutions: ["saas-development", "fintech-app", "healthcare-software"],

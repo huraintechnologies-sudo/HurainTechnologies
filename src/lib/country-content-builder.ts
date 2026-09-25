@@ -181,7 +181,7 @@ export function buildCountryExtendedFaqs(country: CountryPage): FaqItem[] {
     },
     {
       question: `How long does a typical ${firstService.toLowerCase()} engagement take for a ${country.countryName}-based business?`,
-      answer: `Timelines depend on scope more than geography — a focused build typically runs 8-16 weeks, while a full platform build-out runs 3-6 months. We scope and quote after an initial discovery call specific to your requirements.`,
+      answer: `Timelines depend on scope more than geography. Milestones and delivery time are agreed after an initial discovery call specific to your requirements, and every milestone ends with your sign-off.`,
     },
     {
       question: `Can you work with our existing team based in ${country.countryName}?`,

@@ -1,3 +1,4 @@
+import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import Image from "next/image";
@@ -10,10 +11,17 @@ import { siteConfig } from "@/lib/site-config";
 
 const PHOTO_EXTS = ["jpg", "jpeg", "png", "webp"];
 
+// Photos are cached for a year, so the URL carries a short content hash:
+// replacing a photo under the same file name changes the URL and every
+// browser and CDN fetches the new one.
 function photoFor(slug: string): string | null {
   for (const ext of PHOTO_EXTS) {
     const rel = `/images/team/${slug}.${ext}`;
-    if (fs.existsSync(path.join(process.cwd(), "public", rel))) return rel;
+    const file = path.join(process.cwd(), "public", rel);
+    if (fs.existsSync(file)) {
+      const v = crypto.createHash("md5").update(fs.readFileSync(file)).digest("hex").slice(0, 8);
+      return `${rel}?v=${v}`;
+    }
   }
   return null;
 }

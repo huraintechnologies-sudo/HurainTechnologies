@@ -397,7 +397,7 @@ export const countriesEuropeAmericas: CountryPage[] = [
     focusServiceSlugs: ["payment-gateway-integration", "blockchain-cryptocurrency-development", "cybersecurity-compliance", "api-integration-services"],
     faqs: [
       { question: "Is Panama a licensed jurisdiction for crypto businesses?", answer: "Panama does not currently have dedicated crypto-asset legislation; we build platforms operating under general commercial and AML law, and recommend confirming current requirements with Panama-based legal counsel." },
-      { question: "Can you launch a payment platform quickly for a Panama-based business?", answer: "Yes, our payment orchestration core can typically be customized and launched within 8-12 weeks, taking advantage of Panama's dollarized payment environment." },
+      { question: "Can you launch a payment platform quickly for a Panama-based business?", answer: "Yes, our payment orchestration core can be customized and launched on a milestone plan agreed around your scope, taking advantage of Panama's dollarized payment environment." },
     ],
   },
   {

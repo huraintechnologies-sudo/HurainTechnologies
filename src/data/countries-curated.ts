@@ -399,7 +399,7 @@ const baseCountries: CountryPage[] = [
     ],
     focusServiceSlugs: ["payment-gateway-integration", "api-integration-services", "blockchain-cryptocurrency-development"],
     faqs: [
-      { question: "Can you launch a payment platform quickly for a Curaçao-based business?", answer: "Yes, our payment orchestration core can typically be customized and launched within 8-12 weeks." },
+      { question: "Can you launch a payment platform quickly for a Curaçao-based business?", answer: "Yes, our payment orchestration core can be customized and launched quickly on a milestone plan agreed around your scope." },
       { question: "Do you help with PSP integration for offshore merchant categories?", answer: "Yes, we integrate PSPs experienced with offshore and high-risk merchant categories alongside crypto payment rails as an alternative." },
     ],
   },

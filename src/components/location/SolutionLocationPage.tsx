@@ -80,7 +80,7 @@ export function SolutionLocationPage({
             </span>
             <h1 className="mt-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">{content.h1}</h1>
             <p className="mt-4 text-base leading-relaxed text-muted sm:text-lg">{content.intro[0]}</p>
-            <QuickAnswer question={`Who provides ${solutionName} services in ${place}?`} answer={content.answer} />
+            <QuickAnswer question={`Who provides ${/services$/i.test(solutionName) ? solutionName : `${solutionName} services`} in ${place}?`} answer={content.answer} />
             <div className="mt-7 flex flex-wrap gap-3">
               <Link href="/contact" className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3.5 text-sm font-semibold text-background transition-colors hover:bg-primary/90">
                 Get a {place} estimate
@@ -185,7 +185,7 @@ export function SolutionLocationPage({
         <Container>
           <SectionHeading
             eyebrow="Localised for your market"
-            title={`What a ${lc(solutionName)} project in ${place} must get right`}
+            title={`What ${/^[aeiou]/i.test(solutionName) ? "an" : "a"} ${lc(solutionName)} project in ${place} must get right`}
             description="Currency, tax, payments, data protection and language — built into the product from the first sprint."
           />
           <div className="mt-10">

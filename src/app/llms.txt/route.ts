@@ -204,7 +204,7 @@ URL: ${siteConfig.url}/solutions/${v.slug}
 
 ${pb ? pb.answer : v.description}${pb ? `
 
-Typical first release: ${pb.mvpWeeks}. Full platform: ${pb.fullWeeks}. Main cost drivers: ${pb.costDrivers.slice(0, 4).join("; ")}.` : ""}
+Delivery: milestone-based, timeline agreed per project. Main cost drivers: ${pb.costDrivers.slice(0, 4).join("; ")}.` : ""}
 `;
     })
     .join("\n")

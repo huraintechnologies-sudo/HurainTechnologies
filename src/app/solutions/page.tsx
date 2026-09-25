@@ -74,7 +74,7 @@ export default function SolutionsPage() {
                       <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">{v.description}</p>
                       {pb && (
                         <p className="mt-4 text-xs text-foreground/70">
-                          First release: <span className="font-semibold text-primary">{pb.mvpWeeks}</span>
+                          <span className="font-semibold text-primary">Milestone-based delivery</span> · pay after sign-off
                         </p>
                       )}
                       <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary">

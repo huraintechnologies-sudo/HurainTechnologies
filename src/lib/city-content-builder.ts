@@ -161,7 +161,7 @@ export function buildCityExtendedFaqs(city: CityContent, country?: CountryPage):
     },
     {
       question: `How long does a typical ${firstService.toLowerCase()} engagement take for a ${city.cityName} business?`,
-      answer: `A focused build typically runs 8-16 weeks; a full platform build-out runs 3-6 months. We scope and quote after an initial discovery call specific to your requirements.`,
+      answer: `Milestones and delivery time are agreed after an initial discovery call specific to your requirements, and every milestone ends with your sign-off.`,
     },
     {
       question: `Do you need to be based in ${city.cityName} to work with us?`,

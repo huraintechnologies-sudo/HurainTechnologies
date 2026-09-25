@@ -2,6 +2,7 @@ import { Container } from "@/components/Container";
 import { SectionHeading } from "@/components/SectionHeading";
 import { Icon } from "@/components/Icon";
 import { deliveryPlanFor, Milestone } from "@/lib/delivery-plan";
+import { placeDeliveryFor } from "@/lib/delivery-place";
 
 // "How we deliver" (7 quality-gated stages) and a milestone payment plan,
 // tailored to the page's service / solution / industry and place. No
@@ -11,6 +12,37 @@ export function DeliveryPlanSections({ topic: rawTopic, place }: { topic: string
   const topic = rawTopic === rawTopic.toLowerCase() ? rawTopic.replace(/\b\w/g, (c) => c.toUpperCase()) : rawTopic;
   const plan = deliveryPlanFor(topic);
   const where = place ? ` in ${place}` : "";
+  const local = placeDeliveryFor(place, plan.track);
+  const t = topic.toLowerCase();
+  const localSupport = local
+    ? [
+        {
+          service: `${local.short} business-hours coverage`,
+          detail: `Helpdesk, calls and planned maintenance scheduled around ${local.short} business hours${local.offsetLabel ? ` (${local.offsetLabel})` : ""}; critical issues escalated immediately.`,
+        },
+        ...(local.privacyLaw
+          ? [{ service: "Local compliance updates", detail: `Changes to ${local.privacyLaw}${local.regulator && plan.track !== "app" ? ` and ${local.regulator} guidance` : ""} tracked and reflected in the product.` }]
+          : []),
+      ]
+    : [];
+
+  const updates = [
+    {
+      title: "Daily update",
+      when: local?.dailyUpdateAt ? `Every working day, around ${local.dailyUpdateAt} ${local.short} time` : "Every working day",
+      points: ["What was completed today", "What is planned for tomorrow", "Blockers and decisions needed from you", "Links to builds you can try"],
+    },
+    {
+      title: "Weekly work overview",
+      when: "Every Friday, with a live call in your business hours",
+      points: ["Features completed and demo recordings", "Progress against the current milestone", "Risks, open questions and change requests", "Plan and priorities for next week"],
+    },
+    {
+      title: "Sprint demo & milestone review",
+      when: "End of every sprint and milestone",
+      points: ["Working software demonstrated live", "Your feedback captured in the backlog", "Quality-gate checklist shared", "Written sign-off before any payment"],
+    },
+  ];
 
   return (
     <>
@@ -19,7 +51,7 @@ export function DeliveryPlanSections({ topic: rawTopic, place }: { topic: string
           <SectionHeading
             eyebrow="How we work"
             title={`How we deliver ${topic}${where}`}
-            description="Every engagement follows the same staged process. Each stage ends in a quality gate, and every milestone ends with your written sign-off before any payment is due."
+            description={`Every ${t} engagement${where} follows the same staged, quality-gated process — shaped around your requirements${local ? ` and ${local.short}'s market` : ""}. You see progress every day, review it every week, and give written sign-off at every milestone before any payment is due.`}
           />
 
           {/* Large screens: seven connected columns. */}
@@ -80,6 +112,61 @@ export function DeliveryPlanSections({ topic: rawTopic, place }: { topic: string
             <Icon name="check" className="w-4 h-4 shrink-0 text-primary" />
             Client sign-off at every milestone — you approve the working result before you pay.
           </p>
+
+          {/* Communication cadence */}
+          <div className="mt-14">
+            <h3 className="text-xl font-semibold tracking-tight text-foreground">
+              You always know what was done today — and what happens next
+            </h3>
+            <p className="mt-2 max-w-3xl text-sm leading-relaxed text-muted">
+              {local?.overlapHours
+                ? `With about ${local.overlapHours} shared working hours a day between ${local.short} and our team in India, questions are answered the same day and your update is waiting for you${local.dailyUpdateAt ? ` at around ${local.dailyUpdateAt}` : ""}.`
+                : local
+                  ? `Our day in India ends as ${local.short}'s begins or winds down, so each morning you find a written update waiting — and calls are booked in your business hours.`
+                  : "A written daily update, a weekly work overview and a live demo every sprint — so there are no surprises at milestone time."}
+            </p>
+            <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
+              {updates.map((u, i) => (
+                <div key={u.title} className="flex flex-col rounded-xl border border-border bg-surface">
+                  <div className="flex items-center gap-2 rounded-t-xl px-5 py-3" style={stageColors(i === 0 ? 3 : 0)}>
+                    <span className="font-mono text-xs opacity-70">{String(i + 1).padStart(2, "0")}</span>
+                    <span className="text-sm font-semibold">{u.title}</span>
+                  </div>
+                  <div className="flex-1 p-5">
+                    <p className="font-mono text-[11px] uppercase tracking-wide text-primary">{u.when}</p>
+                    <ul className="mt-3 space-y-2 text-sm text-foreground/85">
+                      {u.points.map((pt) => (
+                        <li key={pt} className="flex items-start gap-2">
+                          <Icon name="check" className="mt-0.5 w-4 h-4 shrink-0 text-primary" />
+                          {pt}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* What changes for this country / city */}
+          {local && local.notes.length > 0 && (
+            <div className="mt-14">
+              <h3 className="text-xl font-semibold tracking-tight text-foreground">
+                What we build in for {local.short}
+              </h3>
+              <p className="mt-2 max-w-3xl text-sm leading-relaxed text-muted">
+                Local requirements are part of the scope from the Discover stage — not retrofitted before launch.
+              </p>
+              <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {local.notes.map((n) => (
+                  <div key={n.title} className="rounded-xl border border-border bg-surface p-5">
+                    <p className="font-mono text-[11px] uppercase tracking-wide text-primary">{n.title}</p>
+                    <p className="mt-2 text-sm leading-relaxed text-foreground/85">{n.body}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </Container>
       </section>
 
@@ -158,8 +245,8 @@ export function DeliveryPlanSections({ topic: rawTopic, place }: { topic: string
         <Container>
           <SectionHeading
             eyebrow="Warranty & annual support"
-            title={`Warranty and annual support for your ${topic} project${where}`}
-            description="After the final milestone, the team that built your product keeps it secure, updated and running — on a fixed annual fee agreed up front, never open-ended hourly billing."
+            title={`Protected after launch — warranty and annual support for your ${topic} project${where}`}
+            description={`Go-live is where your ${t} product starts earning — so we stay accountable for it. Every project includes a free 90-day defect warranty. After that, the same team that built it keeps it secure, updated and running${local ? ` in ${local.short} business hours` : ""} on a fixed annual fee agreed up front — no open-ended hourly billing, no surprise invoices.`}
           />
 
           <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-12">
@@ -170,6 +257,14 @@ export function DeliveryPlanSections({ topic: rawTopic, place }: { topic: string
                 <p className="mt-2 text-sm leading-relaxed text-muted">
                   Any defect found in the first 90 days after go-live is fixed free of charge.
                 </p>
+                <ul className="mt-4 space-y-2 border-t border-border pt-4 text-[13px] text-foreground/85">
+                  {["Every delivered feature covered", "Fixes tested and deployed to production", "Same engineers who built it"].map((w) => (
+                    <li key={w} className="flex items-start gap-2">
+                      <Icon name="check" className="mt-0.5 w-3.5 h-3.5 shrink-0 text-primary" />
+                      {w}
+                    </li>
+                  ))}
+                </ul>
               </div>
               <div className="rounded-2xl border border-primary/30 bg-primary/[0.06] p-6">
                 <p className="font-mono text-[11px] uppercase tracking-wide text-primary">Fixed-cost annual package</p>
@@ -190,7 +285,7 @@ export function DeliveryPlanSections({ topic: rawTopic, place }: { topic: string
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
-                  {plan.support.map((s) => (
+                  {[...plan.support, ...localSupport].map((s) => (
                     <tr key={s.service} className="align-top">
                       <td className="px-4 py-3.5 font-semibold text-foreground sm:whitespace-nowrap">{s.service}</td>
                       <td className="px-4 py-3.5 text-[13px] leading-relaxed text-muted">{s.detail}</td>
@@ -208,7 +303,7 @@ export function DeliveryPlanSections({ topic: rawTopic, place }: { topic: string
           <SectionHeading
             eyebrow="Source code & IP ownership"
             title="100% of the source code and IP is owned by you"
-            description={`For every custom ${topic.toLowerCase()} project${where}, upon full and final payment the complete source code and intellectual property are transferred to you — so you can host, maintain and enhance the system with any developer.`}
+            description={`For every ${t.startsWith("custom") ? t : `custom ${t}`} project${where}, upon full and final payment the complete source code and intellectual property are transferred to you — so you can host, maintain and enhance the system with any developer.`}
           />
 
           <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-12">

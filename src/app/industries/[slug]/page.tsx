@@ -54,7 +54,7 @@ export default async function IndustryPage({ params }: { params: Promise<{ slug:
 
   const faqs = [
     { question: `What does Hurain Technologies build for ${lc(name)}?`, answer: pb.answer },
-    { question: `How long does ${lc(name)} software development take?`, answer: `A first production release typically takes ${pb.mvpWeeks}; a full platform ${pb.fullWeeks}, depending on scope, integrations and compliance requirements.` },
+    { question: `How long does ${lc(name)} software development take?`, answer: `Delivery time is agreed around your scope — after discovery you get a milestone plan tailored to your requirements, integrations and how quickly decisions are made on your side.` },
     { question: `How much does ${lc(name)} software development cost?`, answer: `Cost depends mainly on ${pb.costDrivers.slice(0, 3).map((d) => d.charAt(0).toLowerCase() + d.slice(1)).join(", ")}. Share your requirements and we return a fixed-scope estimate within 5 business days.` },
     ...pb.faqs,
   ];
@@ -145,7 +145,7 @@ export default async function IndustryPage({ params }: { params: Promise<{ slug:
           <div>
             <SectionHeading eyebrow="Cost & timeline" title={`How much does ${lc(name)} software cost and how long does it take?`} />
             <p className="mt-5 text-base leading-relaxed text-foreground/85">
-              A first production release typically takes <strong className="text-foreground">{pb.mvpWeeks}</strong>, and a full platform <strong className="text-foreground">{pb.fullWeeks}</strong>. These are the factors that move the price most:
+              Delivery time is agreed around your scope and split into milestones you sign off before paying. These are the factors that move the price most:
             </p>
             <ul className="mt-5 grid grid-cols-1 gap-2 sm:grid-cols-2">
               {pb.costDrivers.map((d) => (

@@ -143,7 +143,7 @@ export const services: ServiceContent[] = [
       { title: "Post-launch support", description: "Ongoing maintenance, upgrades, and feature releases under an SLA-backed retainer." },
     ],
     faqs: [
-      { question: "How long does a blockchain or crypto build typically take?", answer: "A token launch can ship in 4-8 weeks. A full exchange, wallet platform, or DeFi protocol typically takes 12-24 weeks depending on chain complexity and audit cycles." },
+      { question: "How long does a blockchain or crypto build typically take?", answer: "It depends on scope — a token launch is far smaller than a full exchange, wallet platform or DeFi protocol, and audit cycles add time. Milestones and delivery time are agreed after discovery, with your sign-off at every milestone." },
       { question: "Do you provide smart contract audits?", answer: "We perform internal security review, static analysis, and gas optimization on every contract, and we coordinate third-party independent audits with leading audit firms before mainnet launch." },
       { question: "Which blockchains do you build on?", answer: "Ethereum, Polygon, BNB Chain, Solana, Tron, Avalanche, and permissioned frameworks like Hyperledger Fabric, selected based on your throughput, cost, and compliance requirements." },
       { question: "Can you integrate blockchain with our existing platform?", answer: "Yes. We regularly connect on-chain logic to existing KYC/AML, payment, CRM, and reporting systems via APIs and event-driven pipelines." },
@@ -360,7 +360,7 @@ export const services: ServiceContent[] = [
       { title: "Launch & 24/7 monitoring", description: "Go-live support with real-time monitoring, alerting, and incident response." },
     ],
     faqs: [
-      { question: "Can you build a white-label exchange for faster launch?", answer: "Yes, we offer a white-label exchange core that can be customized and launched in 8-12 weeks, then extended with custom features as you scale." },
+      { question: "Can you build a white-label exchange for faster launch?", answer: "Yes, we offer a white-label exchange core that can be customized and launched on a milestone plan agreed around your scope, then extended with custom features as you scale." },
       { question: "How do you secure custody funds?", answer: "Multi-layer hot/warm/cold wallet architecture, multi-sig approvals, HSM-backed key management, and automated anomaly detection on withdrawal patterns." },
       { question: "Can you integrate liquidity providers and market makers?", answer: "Yes, we integrate FIX and REST/WebSocket liquidity feeds from external providers to tighten spreads from launch." },
       { question: "Do you support derivatives and margin trading?", answer: "Yes, our matching engine supports spot, margin, and perpetual/futures order types with configurable risk engines." },
@@ -672,7 +672,7 @@ export const services: ServiceContent[] = [
       { question: "Do we need to rewrite our entire application to modernize it?", answer: "No. We use incremental strangler-fig migration patterns that modernize piece by piece without a risky full rewrite." },
       { question: "Which cloud platforms do you work with?", answer: "AWS, Microsoft Azure, and Google Cloud Platform, selected based on your existing footprint and workload requirements." },
       { question: "Can you reduce our cloud costs?", answer: "Yes, through right-sizing, reserved capacity planning, and architecture optimization — typically 20-35% savings without sacrificing performance." },
-      { question: "How long does a modernization project take?", answer: "A modernization assessment takes 2-4 weeks; full migration timelines range from 3-9 months depending on system complexity." },
+      { question: "How long does a modernization project take?", answer: "It depends on system complexity. We start with a modernization assessment, then agree milestones and delivery time for the migration around your scope." },
       { question: "How do you decide where to draw service boundaries?", answer: "Around business capabilities and data ownership, not technical layers — a service should own its data end-to-end so it can deploy independently, which is the actual point of decomposing a monolith." },
       { question: "Will our team be able to maintain the new architecture after handover?", answer: "Yes, documentation, architecture decisions, and operational runbooks are part of every engagement, and we can run a formal knowledge-transfer phase before an engagement ends." },
       { question: "Can you help with disaster recovery and multi-region architecture?", answer: "Yes, we design for regional failover and business continuity for systems that have outgrown a single-region deployment, as part of a modernization project or as a standalone engagement." },
@@ -977,7 +977,7 @@ export const services: ServiceContent[] = [
     ],
     faqs: [
       { question: "Which cryptocurrencies can the gateway accept?", answer: "Bitcoin, Ethereum and major stablecoins by default; additional chains can be added based on your markets." },
-      { question: "How long does integration take?", answer: "A standard stablecoin payment gateway typically takes 6–10 weeks depending on the number of chains and compliance checks." },
+      { question: "How long does integration take?", answer: "It depends on the number of chains and compliance checks. Milestones and delivery time are agreed after discovery, with your sign-off at every milestone." },
       { question: "Can this integrate with our existing checkout?", answer: "Yes, via REST APIs and webhooks designed to slot into existing checkout, ERP and accounting systems." },
       { question: "Is the gateway PCI-DSS aligned?", answer: "Where fiat rails are involved, we follow PCI-DSS-aligned handling practices and recommend a certified payment partner." },
       { question: "Do you handle the fiat conversion, or do we need a separate provider?", answer: "We integrate automatic conversion into the settlement flow, configurable to convert immediately on receipt or on a schedule that matches your treasury preferences." },
@@ -1050,7 +1050,7 @@ export const services: ServiceContent[] = [
       { title: "Custodian-as-a-service platforms", description: "White-label custody infrastructure for businesses that want to offer custody as a product to their own customers." },
     ],
     engagementModels: [
-      { title: "Full custody platform build", description: "A dedicated pod engagement designing and implementing complete MPC custody infrastructure, typically 12-20 weeks depending on chain and policy complexity." },
+      { title: "Full custody platform build", description: "A dedicated pod engagement designing and implementing complete MPC custody infrastructure, with milestones and delivery time agreed around chain and policy complexity." },
       { title: "SOC 2 / ISO 27001 readiness sprint", description: "A focused engagement to bring an existing custody setup up to the audit-readiness standard institutional partners and insurers expect." },
       { title: "Policy engine and workflow configuration", description: "A scoped engagement to design transaction limits, approval flows, and role-based access for an existing MPC deployment." },
       { title: "Ongoing custody operations retainer", description: "24/7 monitoring, incident response, and operational support once the custody platform is live and holding real assets." },
@@ -1152,7 +1152,7 @@ export const services: ServiceContent[] = [
       { title: "Institutional multi-user wallet", description: "A wallet product with role-based access for teams that need shared, permissioned control rather than a single individual key holder." },
     ],
     engagementModels: [
-      { title: "MVP wallet build", description: "A focused, single-chain or small-multi-chain wallet launched in 8-12 weeks, typically the starting point for a new product." },
+      { title: "MVP wallet build", description: "A focused, single-chain or small-multi-chain wallet launched on a short milestone plan, typically the starting point for a new product." },
       { title: "Full-featured multi-chain wallet", description: "A dedicated pod engagement covering swap, staking, dApp browser, and full white-label branding across iOS, Android, and web." },
       { title: "Security audit of an existing wallet", description: "Independent review of a wallet you've already built or inherited, before a major user-growth push or funding round." },
       { title: "Ongoing SDK and feature retainer", description: "Continued feature development and dependency/SDK maintenance once the wallet is live in app stores." },
@@ -1284,7 +1284,7 @@ export const services: ServiceContent[] = [
     faqs: [
       { question: "What is a DeFi platform?", answer: "A DeFi (decentralized finance) platform offers financial services — trading, lending, staking, yield — through smart contracts instead of a centralized intermediary." },
       { question: "How are DeFi protocols secured against exploits?", answer: "Through audited smart contracts, reentrancy and flash-loan protections, rate limiting, multi-sig admin controls and an ongoing bug bounty program." },
-      { question: "What is a typical build timeline?", answer: "A single-product DeFi platform typically takes 3–5 months including audit time." },
+      { question: "What is a typical build timeline?", answer: "It depends on protocol scope and audit cycles. Milestones and delivery time are agreed after discovery, with your sign-off at every milestone." },
       { question: "Do you build cross-chain bridges?", answer: "Yes, though bridges carry higher exploit risk industry-wide, so we apply additional security review." },
       { question: "How do you protect against flash-loan price manipulation specifically?", answer: "We use time-weighted average pricing and multi-source oracle aggregation rather than trusting a single-block spot price, which is what a flash-loan attack needs to distort to succeed." },
       { question: "Can you help design tokenomics for liquidity incentives?", answer: "Yes, and we specifically model 'mercenary capital' risk — liquidity that leaves the moment incentives taper — rather than designing purely around initial TVL growth." },

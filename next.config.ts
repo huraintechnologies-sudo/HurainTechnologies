@@ -13,6 +13,12 @@ const nextConfig: NextConfig = {
 
   // Image optimization for <3s load
   images: {
+    // Team photos carry a ?v=<content hash> cache-buster (see TeamSection);
+    // every other local image must be requested without a query string.
+    localPatterns: [
+      { pathname: "/images/team/**" },
+      { pathname: "/**", search: "" },
+    ],
     remotePatterns: [
       {
         protocol: "https",

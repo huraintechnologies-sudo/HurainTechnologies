@@ -184,7 +184,7 @@ export default async function IndustriesPage() {
         <Container>
           <SectionHeading
             eyebrow="Global Reach"
-            title="Industries in {filteredCountries.length}+ Markets"
+            title={`Industries in ${filteredCountries.length}+ Markets`}
           />
           <p className="mt-4 max-w-2xl text-base text-muted mb-8">
             Industry-specific engineering solutions available across our served markets. Select a country to explore local compliance context and city-specific expertise.

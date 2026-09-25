@@ -113,7 +113,6 @@ export function PhaseTimeline({ phases }: { phases: { title: string; weeks: stri
           </span>
           <div className="flex flex-wrap items-baseline gap-x-3">
             <h3 className="text-base font-semibold text-foreground">{p.title}</h3>
-            <span className="text-xs font-medium text-primary">{p.weeks}</span>
           </div>
           <p className="mt-1 text-sm leading-relaxed text-muted">{p.description}</p>
         </li>

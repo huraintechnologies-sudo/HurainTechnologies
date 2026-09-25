@@ -85,7 +85,7 @@ export const industries: IndustryContent[] = [
       {
         question: "What does an open banking API project timeline look like?",
         answer:
-          "A typical account information and payment initiation API program, including a developer portal and sandbox, ships in 8-14 weeks depending on the number of endpoints and your existing infrastructure.",
+          "A typical account information and payment initiation API program, including a developer portal and sandbox, is delivered on a milestone plan that depends on the number of endpoints and your existing infrastructure.",
       },
       {
         question: "Do you help us prepare for a banking regulator or partner security audit?",

@@ -3,7 +3,7 @@
 // name), so every service / solution / industry / country / city page gets a
 // plan that matches what is actually being built there.
 
-import { teamContentFor, type Role } from "@/lib/team-content";
+import { teamContentFor, focusStagesFor, type Role } from "@/lib/team-content";
 
 export type Track = "app" | "blockchain" | "payments" | "api" | "cloud" | "database" | "ai" | "security";
 
@@ -267,7 +267,8 @@ const OWNERSHIP_EXTRA: Record<Track, string[]> = {
 
 export function deliveryPlanFor(topic: string): DeliveryPlan {
   const track = trackFor(topic);
-  const stages = STAGE_TITLES.map((title, i) => ({ title, tasks: OVERRIDES[track][i] ?? BASE[i] }));
+  const focus = focusStagesFor(topic);
+  const stages = STAGE_TITLES.map((title, i) => ({ title, tasks: focus[i] ?? OVERRIDES[track][i] ?? BASE[i] }));
   const milestones = MILESTONES[track].map(([name, deliverables], i) => ({
     label: i === 0 ? "Advance" : `Milestone ${i}`,
     name,

@@ -345,3 +345,63 @@ export function teamContentFor(topic: string, track: Track): TeamContent {
     supportExtra: [...engineSupport, ...(focus?.supportExtra ?? [])],
   };
 }
+
+// Topic-specific replacements for delivery stages (index → tasks), layered
+// on top of the track's stages so e.g. food delivery and e-commerce pages
+// describe different builds.
+const FOCUS_STAGES: [RegExp, Partial<Record<number, string[]>>][] = [
+  [/food|restaurant|delivery app/, {
+    1: ["Customer, rider & restaurant flows", "Menu & order data model", "Dispatch & delivery-zone design", "Roles & permissions"],
+    2: ["Ordering & checkout sprints", "Rider app & live tracking", "Restaurant dashboard", "Demo every sprint"],
+    3: ["Peak-order load tests", "GPS & map accuracy tests", "Payment & refund tests", "UAT with real restaurants"],
+  }],
+  [/e-?commerce|retail|shop/, {
+    1: ["Storefront UX prototypes", "Catalogue & inventory model", "Checkout & promotions design", "Roles & permissions"],
+    2: ["Catalogue & search sprints", "Cart, checkout & payments", "Orders, returns & shipping", "Demo every sprint"],
+    3: ["Sale-day load tests", "Checkout & payment tests", "SEO & page-speed checks", "UAT with your team"],
+  }],
+  [/health|medical|clinic|insur/, {
+    0: ["Clinical workflow workshops", "Patient & staff interviews", "Privacy & consent scoping", "Signed scope"],
+    1: ["Patient & clinician prototypes", "FHIR / HL7 data model", "Consent & access design", "Audit-trail design"],
+    3: ["Patient-data security tests", "EHR & lab integration tests", "Accessibility checks", "UAT with clinicians"],
+  }],
+  [/e-?learning|edtech|learning platform|lms/, {
+    1: ["Learner & instructor prototypes", "Course & assessment model", "Video delivery design", "Roles & permissions"],
+    2: ["Course & content sprints", "Quizzes, grading & certificates", "Live class & video features", "Demo every sprint"],
+    3: ["Exam-day load tests", "Video playback tests", "Accessibility checks", "UAT with learners"],
+  }],
+  [/real estate|proptech|property/, {
+    1: ["Search & listing prototypes", "Property & lease data model", "Maps & virtual-tour design", "Roles for agents & owners"],
+    2: ["Listings & search sprints", "Enquiry & CRM flows", "Payments & rent collection", "Demo every sprint"],
+  }],
+  [/saas|enterprise/, {
+    1: ["Product UX prototypes", "Multi-tenant architecture", "Billing & plan design", "Roles, SSO & permissions"],
+    3: ["Tenant-isolation tests", "Load tests per plan", "Security & penetration checks", "UAT with pilot customers"],
+  }],
+  [/iot|embedded/, {
+    1: ["Device & sensor selection", "Connectivity & protocol design", "Cloud ingestion architecture", "OTA update design"],
+    2: ["Firmware sprints", "Device-to-cloud pipeline", "Dashboards & alerts", "Demo on real hardware"],
+    3: ["Field & range tests", "Battery & power tests", "Device security tests", "Pilot with real devices"],
+  }],
+  [/exchange/, {
+    1: ["Trading UX prototypes", "Matching-engine architecture", "Wallet & custody design", "Threat model"],
+    2: ["Order book & matching sprints", "Deposits & withdrawals", "KYC & admin panel", "Demo every sprint"],
+    3: ["Matching-engine load tests", "Wallet & withdrawal security tests", "Independent audit coordination", "UAT with test traders"],
+  }],
+  [/remittance|cross-border|money transfer/, {
+    0: ["Corridor & partner workshops", "Licensing & compliance scoping", "FX & payout review", "Signed scope"],
+    2: ["Transfer & FX sprints", "Payout-partner connectors", "Screening & KYC flows", "Demo every sprint"],
+  }],
+  [/gaming|nft/, {
+    1: ["Game-economy & asset design", "NFT contract architecture", "Wallet & marketplace UX", "Threat model"],
+  }],
+  [/neobank|digital banking/, {
+    0: ["Product & licensing workshops", "Core-banking & card-issuer selection", "KYC / AML scoping", "Signed scope"],
+    2: ["Account & card sprints", "Core-banking integration", "Onboarding & KYC flows", "Demo every sprint"],
+  }],
+];
+
+export function focusStagesFor(topic: string): Partial<Record<number, string[]>> {
+  const t = topic.toLowerCase();
+  return FOCUS_STAGES.find(([re]) => re.test(t))?.[1] ?? {};
+}

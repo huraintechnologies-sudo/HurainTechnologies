@@ -123,7 +123,7 @@ function deliveryBlocks(ctx: LocationContext, place: string, pb: SolutionPlayboo
   const hours = `Our team works 24/7, so stand-ups, demos and urgent fixes happen during your ${place} business day${o ? ` (${o.offsetLabel})` : ""}, and work keeps progressing while you are offline.`;
   return [
     { title: "24/7 availability & communication", body: `${hours} Everyday collaboration runs on Slack or Microsoft Teams, Jira and GitHub, with a demo of working software every two weeks.` },
-    { title: "Kick-off & delivery timeline", body: `Discovery can start within 5 business days of a signed proposal. A first release of ${pb.slug === "hire-developers" ? "your dedicated team is productive" : "the product ships"} in ${pb.mvpWeeks}; a fuller build typically takes ${pb.fullWeeks}.` },
+    { title: "Kick-off & delivery timeline", body: `Discovery can start within 5 business days of a signed proposal. Milestones and delivery time are then agreed around your requirements, and every milestone ends with your written sign-off.` },
     { title: "Response times after launch", body: `Response times are written into a support SLA before launch: our team is available 24/7, critical production issues get immediate attention from an on-call engineer, and routine tickets are handled around the clock.` },
     { title: "Meetings & site visits", body: `Most engagements run fully remote over video. Workshops and go-live visits to ${place} can be arranged for larger programmes.` },
   ];
@@ -135,7 +135,7 @@ export function buildCountryContent(vertical: ServiceVertical, pb: SolutionPlayb
   const pop = formatPopulation(c?.population);
   const pay = ctx.market.payments ? list(ctx.market.payments, 3) : null;
 
-  const answer = `Hurain Technologies delivers ${lc(name)} for businesses in ${countryName}, delivered remotely by a senior team in India that works 24/7, so every ${countryName} business hour is covered. Typical first release: ${pb.mvpWeeks}. Builds include ${pay ? `local payment rails (${pay}), ` : ""}${ctx.market.tax ? `${ctx.market.tax} handling, ` : ""}and data protection aligned with ${ctx.market.privacyLaw || "local law"}.`;
+  const answer = `Hurain Technologies delivers ${lc(name)} for businesses in ${countryName}, delivered remotely by a senior team in India that works 24/7, so every ${countryName} business hour is covered. Milestones and delivery time are agreed around your scope. Builds include ${pay ? `local payment rails (${pay}), ` : ""}${ctx.market.tax ? `${ctx.market.tax} handling, ` : ""}and data protection aligned with ${ctx.market.privacyLaw || "local law"}.`;
 
   const intro = [
     `${countryName}${c?.description ? `, ${lcFirst(c.description)}` : ""}${pop ? ` with about ${pop} people` : ""}, is one of the markets in ${ctx.regionLabel} where we deliver ${lc(name)}. ${pb.answer}`,
@@ -166,7 +166,7 @@ export function buildCountryContent(vertical: ServiceVertical, pb: SolutionPlayb
   ];
 
   const costAnswer = `The cost of ${lc(name)} in ${countryName} depends mainly on ${list(pb.costDrivers.map(lcFirst), 3)}. Because our team is based in India, clients in ${countryName} typically pay significantly less than local agency rates for senior engineers. We give a fixed-scope estimate${c?.currency ? ` (in USD or ${c.currency.code})` : ""} within 5 business days of a discovery call.`;
-  const timelineAnswer = `A first production release typically takes ${pb.mvpWeeks}, and a full-featured platform ${pb.fullWeeks}. Timelines depend on scope, integrations and how quickly decisions are made on your side.`;
+  const timelineAnswer = `Delivery time is agreed around your scope — after discovery you get a milestone plan tailored to your requirements, integrations and how quickly decisions are made on your side.`;
 
   const faqs: FaqItem[] = [
     { question: `How much does ${lc(name)} cost in ${countryName}?`, answer: costAnswer },
@@ -180,7 +180,7 @@ export function buildCountryContent(vertical: ServiceVertical, pb: SolutionPlayb
 
   return {
     title: `${name} Company in ${countryName}${c?.currency ? ` | ${c.currency.code} Pricing` : ""}`,
-    metaDescription: `${name} for businesses in ${countryName}: ${pb.mvpWeeks} to first release, ${ctx.market.payments ? `${ctx.market.payments.slice(0, 2).join(" & ")} integration, ` : ""}${ctx.market.tax ? `${ctx.market.tax.split("(")[0].trim()}-ready invoicing, ` : ""}24/7 support. Get a fixed quote in 5 days.`.slice(0, 300),
+    metaDescription: `${name} for businesses in ${countryName}: milestone-based delivery, ${ctx.market.payments ? `${ctx.market.payments.slice(0, 2).join(" & ")} integration, ` : ""}${ctx.market.tax ? `${ctx.market.tax.split("(")[0].trim()}-ready invoicing, ` : ""}24/7 support. Get a fixed quote in 5 days.`.slice(0, 300),
     h1: `${name} in ${countryName}`,
     answer,
     intro,
@@ -201,7 +201,7 @@ export function buildCityContent(vertical: ServiceVertical, pb: SolutionPlaybook
   const pop = formatPopulation(city?.population);
   const place = `${cityName}`;
 
-  const answer = `Hurain Technologies provides ${lc(name)} for companies in ${cityName}, ${countryName}: 24/7 support in ${cityName} time, a first release in ${pb.mvpWeeks}, and builds that support ${ctx.market.payments ? list(ctx.market.payments, 2) : "local payment methods"}${ctx.market.tax ? `, ${ctx.market.tax.split("(")[0].trim()}` : ""} and ${ctx.market.privacyLaw ? ctx.market.privacyLaw.replace(/^the /, "the ") : "local data-protection rules"}.`;
+  const answer = `Hurain Technologies provides ${lc(name)} for companies in ${cityName}, ${countryName}: 24/7 support in ${cityName} time, milestone-based delivery with sign-off at every stage, and builds that support ${ctx.market.payments ? list(ctx.market.payments, 2) : "local payment methods"}${ctx.market.tax ? `, ${ctx.market.tax.split("(")[0].trim()}` : ""} and ${ctx.market.privacyLaw ? ctx.market.privacyLaw.replace(/^the /, "the ") : "local data-protection rules"}.`;
 
   const intro = [
     `${cityName}${city?.description ? ` is ${/^(a|an|the)\b/i.test(city.description) ? lcFirst(city.description) : `the ${lcFirst(city.description)}`}` : ` is a commercial centre in ${countryName}`}${pop ? `, home to around ${pop} people` : ""}. For ${cityName} businesses investing in ${lc(name)}, the details matter: ${lcFirst(pb.overview[0])}`,
@@ -223,7 +223,7 @@ export function buildCityContent(vertical: ServiceVertical, pb: SolutionPlaybook
   ];
 
   const costAnswer = `Cost depends on ${list(pb.costDrivers.map(lcFirst), 3)}. ${cityName} companies working with our India-based team typically pay considerably less than local agency rates for the same seniority. Share your requirements and we return a fixed-scope estimate within 5 business days.`;
-  const timelineAnswer = `Typically ${pb.mvpWeeks} for a first production release and ${pb.fullWeeks} for a full platform. Discovery can begin within 5 business days of a signed proposal.`;
+  const timelineAnswer = `Delivery time is agreed around your scope — after discovery you get a milestone plan tailored to your requirements, integrations and how quickly decisions are made on your side. Discovery can begin within 5 business days of a signed proposal.`;
 
   const faqs: FaqItem[] = [
     { question: `Do you have developers available for ${cityName} projects?`, answer: `Yes. Our team works remotely with ${cityName} clients and is available 24/7. You get a dedicated project manager, direct access to engineers and fortnightly demos.` },
@@ -237,7 +237,7 @@ export function buildCityContent(vertical: ServiceVertical, pb: SolutionPlaybook
 
   return {
     title: `${name} in ${cityName}, ${countryName}`,
-    metaDescription: `${name} for ${cityName} businesses: 24/7 support, first release in ${pb.mvpWeeks}, ${ctx.market.payments ? `${ctx.market.payments[0]} integration, ` : ""}fixed quote in 5 days.`.slice(0, 300),
+    metaDescription: `${name} for ${cityName} businesses: 24/7 support, milestone-based delivery, ${ctx.market.payments ? `${ctx.market.payments[0]} integration, ` : ""}fixed quote in 5 days.`.slice(0, 300),
     h1: `${name} in ${cityName}`,
     answer,
     intro,

@@ -64,7 +64,7 @@ export const databasePlaybooks: Record<string, SolutionPlaybook> = {
     faqs: [
       { question: "What does a database consultant do?", answer: "A database consultant reviews how your data is stored, served and protected, then designs the architecture, platform, high-availability and scaling approach that fits your workload, budget and growth plans — usually delivered as a written assessment and roadmap." },
       { question: "Should we use PostgreSQL, MySQL, SQL Server or Oracle?", answer: "It depends on your workload, existing skills, licensing budget and ecosystem. PostgreSQL is the default for most new systems; SQL Server and Oracle suit organisations invested in those ecosystems. We compare options on performance, cost and risk for your case." },
-      { question: "How long does a database consulting engagement take?", answer: "An assessment and roadmap typically takes 2–3 weeks. Implementation depends on the roadmap and can be done by our team." },
+      { question: "How long does a database consulting engagement take?", answer: "The assessment and roadmap timeline is agreed around the size of your estate. Implementation follows the roadmap and can be done by our team." },
       ongoingFaq,
     ],
     relatedServices: ["cloud-application-modernization", "cybersecurity-compliance", "api-integration-services"],
@@ -170,7 +170,7 @@ export const databasePlaybooks: Record<string, SolutionPlaybook> = {
     faqs: [
       { question: "What is a database audit?", answer: "An independent review of a database's health, configuration, users and privileges, backups, performance and security, ending with a prioritised list of risks and fixes." },
       { question: "Will the audit affect our production database?", answer: "No. Data collection is read-only and lightweight, scheduled at quiet times, and we never copy production data off your systems." },
-      { question: "How long does a database audit take?", answer: "Usually 1–2 weeks for a typical estate, including the report and a walkthrough with your team." },
+      { question: "How long does a database audit take?", answer: "It depends on the size of your estate; the timeline is agreed up front and includes the report and a walkthrough with your team." },
       ongoingFaq,
     ],
     relatedServices: ["cybersecurity-compliance", "cloud-application-modernization", "api-integration-services"],
