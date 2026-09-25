@@ -237,18 +237,19 @@ export function DeliveryPlanSections({ topic: rawTopic, place }: { topic: string
         <Container>
           <SectionHeading
             eyebrow="Continuous enhancement"
-            title="Keep improving with a dedicated full-stack developer"
-            description={`If you want to keep expanding your ${topic.toLowerCase()} platform after launch, we assign a dedicated full-stack developer who works across your apps, dashboards and backend on your priorities.`}
+            title="Launch is just the beginning — keep shipping with your own dedicated team"
+            description={`Your ${topic.toLowerCase()} platform should get better every month, not stand still after go-live. Start with one dedicated developer working on your priorities across apps, dashboards and backend — and grow to a full team of developers and support members whenever your roadmap demands it.`}
           />
 
           <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-12">
             <div className="rounded-2xl border border-primary/30 bg-primary/[0.06] p-6 lg:col-span-4">
-              <p className="font-mono text-[11px] uppercase tracking-wide text-primary">Dedicated full-stack developer</p>
-              <p className="mt-2 text-4xl font-semibold tracking-tight text-foreground">
-                USD 1,500<span className="text-base font-medium text-muted"> / month</span>
+              <p className="font-mono text-[11px] uppercase tracking-wide text-primary">Dedicated team, your way</p>
+              <p className="mt-2 text-3xl font-semibold tracking-tight text-foreground">From one developer to a full team</p>
+              <p className="mt-2 text-sm leading-relaxed text-muted">
+                Pricing is based on the team members you need — tell us your requirements and we will quote your team.
               </p>
               <ul className="mt-5 space-y-2.5 text-sm text-foreground/85">
-                {["Start any time after launch", "Billed monthly in advance", "Flexible — scale up or pause"].map((t) => (
+                {["Start any time after launch", "Hire developers as you need them", "Scale up, scale down or pause"].map((t) => (
                   <li key={t} className="flex items-start gap-2">
                     <Icon name="check" className="mt-0.5 w-4 h-4 shrink-0 text-primary" />
                     {t}
