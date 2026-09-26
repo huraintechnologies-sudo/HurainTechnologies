@@ -47,7 +47,7 @@ export function TeamSection() {
     ...(m.focus ? { knowsAbout: m.focus } : {}),
     ...(m.photo ? { image: `${siteConfig.url}${m.photo}` } : {}),
     url: `${siteConfig.url}/about#${m.slug}`,
-    sameAs: [m.linkedin],
+    ...(m.linkedin ? { sameAs: [m.linkedin] } : {}),
     worksFor: { "@id": `${siteConfig.url}/#organization` },
   }));
 
@@ -96,15 +96,17 @@ export function TeamSection() {
                     ))}
                   </ul>
                 )}
-                <a
-                  href={m.linkedin}
-                  target="_blank"
-                  rel="noopener"
-                  className="mt-auto inline-flex w-fit items-center gap-2 pt-5 text-sm font-medium text-foreground/80 transition-colors hover:text-primary"
-                >
-                  <Icon name="linkedin" className="h-4 w-4" />
-                  LinkedIn profile
-                </a>
+                {m.linkedin && (
+                  <a
+                    href={m.linkedin}
+                    target="_blank"
+                    rel="noopener"
+                    className="mt-auto inline-flex w-fit items-center gap-2 pt-5 text-sm font-medium text-foreground/80 transition-colors hover:text-primary"
+                  >
+                    <Icon name="linkedin" className="h-4 w-4" />
+                    LinkedIn profile
+                  </a>
+                )}
               </div>
             </li>
           ))}

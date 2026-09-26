@@ -8,7 +8,7 @@ export interface TeamMember {
   role?: string;
   intro?: string;
   focus?: string[];
-  linkedin: string;
+  linkedin?: string;
 }
 
 export const team: TeamMember[] = [
@@ -74,5 +74,57 @@ export const team: TeamMember[] = [
       "Pravin looks after the infrastructure our clients' platforms run on — cloud environments, CI/CD pipelines, monitoring, backups and databases — so releases are frequent, reversible and safe.",
     focus: ["Cloud infrastructure", "CI/CD & monitoring", "Database operations"],
     linkedin: "https://www.linkedin.com/in/pravin-patel-771609262/",
+  },
+  {
+    slug: "syed-zainab",
+    name: "Syed Zainab",
+    role: "Business Development Manager",
+    intro:
+      "Zainab works with new clients from the first conversation onward — understanding their business goals, shaping requirements into a clear scope, and keeping communication open so every engagement starts with shared expectations.",
+    focus: ["Client relationships", "Requirement discovery", "Proposals & onboarding"],
+    linkedin: "https://www.linkedin.com/in/syed-zainab-bab374305/",
+  },
+  {
+    slug: "divyesh-bhambhana",
+    name: "Divyesh Bhambhana",
+    role: "Full Stack Product Engineer – MERN, DevOps & Product Operations",
+    intro:
+      "Divyesh builds products end to end on the MERN stack — MongoDB, Express, React and Node.js — and looks after the DevOps and day-to-day product operations that keep them running smoothly after launch.",
+    focus: ["MERN stack development", "DevOps & deployments", "Product operations"],
+    linkedin: "https://www.linkedin.com/in/divyeshbhambhana/",
+  },
+  {
+    slug: "afroz-mansuri",
+    name: "Afroz Mansuri",
+    role: "Java Developer",
+    intro:
+      "Afroz builds the Java backends behind client platforms — services, APIs and integrations designed to be reliable, secure and ready to scale with the business.",
+    focus: ["Java backend development", "APIs & integrations", "Scalable services"],
+    linkedin: "https://www.linkedin.com/in/afrozmann/",
+  },
+  {
+    slug: "lucky-maddhesiya",
+    name: "Lucky Maddhesiya",
+    role: "Front-End Developer",
+    intro:
+      "Lucky turns designs into fast, responsive interfaces — building the screens clients and their users interact with every day, and making sure they work smoothly across browsers and devices.",
+    focus: ["Responsive UI development", "Design-to-code", "Cross-browser quality"],
+    linkedin: "https://www.linkedin.com/in/lucky-maddhesiya-33b701235/",
+  },
+  {
+    slug: "adnan-saiyed",
+    name: "Adnan Saiyed",
+    role: "Support & Sales Head",
+    intro:
+      "Adnan makes sure clients get the right solutions. He leads sales conversations and client support — matching each business with the right services, then staying on hand after launch so questions and issues are resolved quickly.",
+    focus: ["Sales & solution matching", "Client support", "Account management"],
+  },
+  {
+    slug: "sadiya-syed",
+    name: "Sadiya Syed",
+    role: "Junior Software Developer",
+    intro:
+      "Sadiya is continuously learning, building and growing through every project — working alongside our senior engineers on features, fixes and testing across client builds.",
+    focus: ["Feature development", "Bug fixes & testing", "Code reviews"],
   },
 ];

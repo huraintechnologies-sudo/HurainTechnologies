@@ -103,6 +103,9 @@ export default function AboutPage() {
                 and API integration, cloud modernization, AI fraud detection, and cybersecurity
                 and compliance — serving clients across 60+ markets from our Gujarat, India headquarters.
               </p>
+              <p className="mt-4 text-sm leading-relaxed text-muted sm:text-base">
+                {siteConfig.name} is part of <span className="font-medium text-foreground">N&amp;T Software Pvt Ltd</span>.
+              </p>
             </div>
             <div>
               {/* Team photo */}
