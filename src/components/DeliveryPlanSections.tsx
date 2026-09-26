@@ -66,7 +66,7 @@ export function DeliveryPlanSections({ topic: rawTopic, place }: { topic: string
                     </li>
                   ))}
                 </ul>
-                <QualityGate />
+                <QualityGate label={stage.gate} />
                 {i < plan.stages.length - 1 && (
                   <span
                     aria-hidden="true"
@@ -93,7 +93,7 @@ export function DeliveryPlanSections({ topic: rawTopic, place }: { topic: string
                     <h3 className="text-[15px] font-semibold text-foreground">{stage.title}</h3>
                     <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-primary">
                       <Icon name="check" className="w-3.5 h-3.5" />
-                      Quality gate
+                      {stage.gate}
                     </span>
                   </div>
                   <ul className="mt-3 flex flex-wrap gap-1.5">
@@ -415,11 +415,11 @@ function StageHeader({ index, title }: { index: number; title: string }) {
   );
 }
 
-function QualityGate() {
+function QualityGate({ label }: { label: string }) {
   return (
-    <div className="m-3 mt-1 flex items-center justify-center gap-1.5 rounded-md border border-primary/30 bg-primary/[0.07] px-2 py-1.5 text-[12px] font-semibold text-primary">
-      <Icon name="check" className="w-3.5 h-3.5" />
-      Quality gate
+    <div className="m-3 mt-1 flex items-center justify-center gap-1.5 rounded-md border border-primary/30 bg-primary/[0.07] px-2 py-1.5 text-center text-[12px] font-semibold leading-tight text-primary">
+      <Icon name="check" className="w-3.5 h-3.5 shrink-0" />
+      {label}
     </div>
   );
 }

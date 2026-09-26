@@ -10,6 +10,8 @@ export type Track = "app" | "blockchain" | "payments" | "api" | "cloud" | "datab
 export interface Stage {
   title: string;
   tasks: string[];
+  // The sign-off that closes the stage, matched to what that stage delivers.
+  gate: string;
 }
 
 export interface Milestone {
@@ -121,6 +123,36 @@ const OVERRIDES: Record<Track, Partial<Record<number, string[]>>> = {
     4: ["Controls live", "Audit evidence pack", "Alerting & case queues", "Go-live checklist"],
   },
 };
+
+// Sign-off that closes each stage, per track (STAGE_TITLES order). Kept to
+// ~16 characters so the label fits the narrow column on one line.
+const GATES: Record<Track, string[]> = {
+  app: ["Scope signed off", "UX approved", "Sprint accepted", "UAT signed off", "Go-live approved", "Handover signed", "SLA active"],
+  blockchain: ["Scope signed off", "Threat model OK", "Testnet accepted", "Audit cleared", "Mainnet live", "Keys transferred", "Monitoring live"],
+  payments: ["PCI scope set", "Flows approved", "Sandbox passed", "Reconciled & UAT", "Live traffic OK", "Ops handed over", "SLA active"],
+  api: ["Scope signed off", "Contracts frozen", "Sandbox passed", "Partner UAT done", "Gateway live", "Docs delivered", "SLA active"],
+  cloud: ["Plan signed off", "Design approved", "IaC accepted", "DR drill passed", "Cutover done", "IaC handed over", "Uptime SLA live"],
+  database: ["Baseline agreed", "Design approved", "Tuning accepted", "Restore verified", "Cutover done", "Runbooks agreed", "24/7 SLA active"],
+  ai: ["Metrics agreed", "Model design OK", "Model accepted", "Accuracy verified", "Shadow run OK", "Handover signed", "Drift monitored"],
+  security: ["Gaps signed off", "Controls agreed", "Controls built", "Pen test passed", "Controls live", "Evidence handed", "SLA active"],
+};
+
+// Topic-level gates for the stages FOCUS_STAGES (team-content) rewrites, so
+// the sign-off matches those topic-specific tasks. First match wins.
+const FOCUS_GATES: [RegExp, Partial<Record<number, string>>][] = [
+  [/food|restaurant|delivery app/, { 1: "Flows approved", 2: "Orders accepted", 3: "Peak test passed" }],
+  [/e-?commerce|retail|shop/, { 1: "Store UX signed", 3: "Sale-day ready" }],
+  [/health|medical|clinic|insur/, { 0: "Privacy scoped", 1: "Design approved", 3: "Clinician UAT OK" }],
+  [/e-?learning|edtech|learning platform|lms/, { 3: "Learner UAT OK" }],
+  [/real estate|proptech|property/, { 2: "Search accepted" }],
+  [/saas|enterprise/, { 1: "Tenancy agreed", 3: "Isolation tested" }],
+  [/iot|embedded/, { 1: "Design approved", 2: "Device demo OK", 3: "Field-tested" }],
+  [/exchange/, { 2: "Engine accepted", 3: "Audit cleared" }],
+  [/remittance|cross-border|money transfer/, { 0: "Corridors agreed" }],
+  [/gaming|nft/, { 1: "Economy agreed" }],
+  [/neobank|digital banking/, { 0: "Licensing scoped" }],
+  [/mobile/, { 4: "Store approved" }],
+];
 
 // Example plan: 10% at signing, then six milestones of 15%, each released
 // only after written sign-off. Real plans are shaped around the client's
@@ -268,7 +300,12 @@ const OWNERSHIP_EXTRA: Record<Track, string[]> = {
 export function deliveryPlanFor(topic: string): DeliveryPlan {
   const track = trackFor(topic);
   const focus = focusStagesFor(topic);
-  const stages = STAGE_TITLES.map((title, i) => ({ title, tasks: focus[i] ?? OVERRIDES[track][i] ?? BASE[i] }));
+  const focusGates = FOCUS_GATES.find(([re]) => re.test(topic.toLowerCase()))?.[1] ?? {};
+  const stages = STAGE_TITLES.map((title, i) => ({
+    title,
+    tasks: focus[i] ?? OVERRIDES[track][i] ?? BASE[i],
+    gate: focusGates[i] ?? GATES[track][i],
+  }));
   const milestones = MILESTONES[track].map(([name, deliverables], i) => ({
     label: i === 0 ? "Advance" : `Milestone ${i}`,
     name,
