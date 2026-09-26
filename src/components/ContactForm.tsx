@@ -120,6 +120,7 @@ export function ContactForm() {
             name="name"
             required
             minLength={2}
+            maxLength={100}
             className="mt-1.5 w-full rounded-lg border border-border bg-surface px-3.5 py-2.5 text-sm text-foreground outline-none focus:border-primary/60"
             placeholder="Jane Doe"
           />
@@ -132,6 +133,7 @@ export function ContactForm() {
             name="email"
             type="email"
             required
+            maxLength={254}
             className="mt-1.5 w-full rounded-lg border border-border bg-surface px-3.5 py-2.5 text-sm text-foreground outline-none focus:border-primary/60"
             placeholder="jane@company.com"
           />
@@ -145,6 +147,7 @@ export function ContactForm() {
           <input
             id="company"
             name="company"
+            maxLength={150}
             className="mt-1.5 w-full rounded-lg border border-border bg-surface px-3.5 py-2.5 text-sm text-foreground outline-none focus:border-primary/60"
             placeholder="Company name"
           />
@@ -191,6 +194,7 @@ export function ContactForm() {
           name="message"
           required
           minLength={10}
+          maxLength={5000}
           rows={5}
           className="mt-1.5 w-full rounded-lg border border-border bg-surface px-3.5 py-2.5 text-sm text-foreground outline-none focus:border-primary/60"
           placeholder="Tell us about your platform, timeline, and what you're trying to build..."
@@ -223,7 +227,7 @@ export function ContactForm() {
         </button>
       </div>
       <p className="text-xs text-muted">
-        "Send Message" emails our team directly · WhatsApp gets a faster, informal reply.
+        “Send Message” emails our team directly · WhatsApp gets a faster, informal reply.
       </p>
     </form>
   );

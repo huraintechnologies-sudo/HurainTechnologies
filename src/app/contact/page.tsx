@@ -63,10 +63,10 @@ export default function ContactPage() {
         <Breadcrumbs items={[{ name: "Contact", href: "/contact" }]} />
         <div className="mt-4 grid grid-cols-1 gap-12 lg:grid-cols-5">
           <div className="lg:col-span-2">
-            <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">Let's Talk</h1>
+            <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">Let’s Talk</h1>
             <p className="mt-5 text-base leading-relaxed text-muted sm:text-lg">
-              Tell us about your platform and we'll set up a technical discovery call within 2 business days. No
-              sales script — you'll talk to an engineer who understands your domain.
+              Tell us about your platform and we’ll set up a technical discovery call within 2 business days. No
+              sales script — you’ll talk to an engineer who understands your domain.
             </p>
             <p className="mt-3 text-sm text-muted">
               Founder &amp; point of contact: <span className="text-foreground/85">{siteConfig.founderName}</span>

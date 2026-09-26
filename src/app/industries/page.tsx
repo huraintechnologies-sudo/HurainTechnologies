@@ -56,7 +56,7 @@ export const metadata: Metadata = buildMetadata({
 
 export default async function IndustriesPage() {
   // Fetch unique images for each industry with error handling
-  let industryImagesMap: any[] = [];
+  let industryImagesMap: { slug: string; image: { src: string; alt: string } }[] = [];
 
   try {
     industryImagesMap = await Promise.all(
@@ -168,8 +168,8 @@ export default async function IndustriesPage() {
             <p>
               Each industry page below breaks down the operational pain points that vertical actually faces, the
               specific engineering approach we take to solve them, the services most commonly paired with that
-              industry, and country-specific regulatory context for the markets you're building in — not a
-              generic "we build software for any industry" pitch.
+              industry, and country-specific regulatory context for the markets you’re building in — not a
+              generic “we build software for any industry” pitch.
             </p>
           </div>
         </Container>

@@ -104,13 +104,15 @@ export default async function LocaleCountryPage({ params }: { params: Promise<{ 
           </h1>
           <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">{country.intro}</p>
           <div className="mt-8 flex flex-wrap items-center gap-5">
-            <a
+            <Link
               href="/contact"
               className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3.5 text-sm font-semibold text-background hover:bg-primary/90 transition-colors"
             >
               Talk to Our Team
               <Icon name="arrow" className="w-4 h-4" />
-            </a>
+            </Link>
+            {/* Plain <a>, not <Link>: a prefetch of this URL would set the opt-out cookie. */}
+            {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
             <a href="/?nogeo=1" className="text-xs text-muted hover:text-primary transition-colors">
               Not in {country.countryName}? View our global site
             </a>

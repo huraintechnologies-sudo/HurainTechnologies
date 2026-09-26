@@ -60,7 +60,7 @@ export default function CareersPage() {
           </h1>
           <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
             {siteConfig.name} is growing our blockchain, payments, cloud, and AI engineering practices.
-            We're looking for senior engineers who want deep, high-stakes problems — not another dashboard.
+            We’re looking for senior engineers who want deep, high-stakes problems — not another dashboard.
           </p>
         </Container>
       </section>
@@ -101,7 +101,7 @@ export default function CareersPage() {
             ))}
           </div>
           <p className="mt-6 text-sm text-muted">
-            Don't see a fit? Send your CV to{" "}
+            Don’t see a fit? Send your CV to{" "}
             <a href={`mailto:${siteConfig.email}`} className="text-primary hover:underline">{siteConfig.email}</a> —
             we review every application.
           </p>

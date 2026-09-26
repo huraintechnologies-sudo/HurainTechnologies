@@ -39,6 +39,14 @@ export function cityDisplayName(city: Pick<CityContent, "cityName">, facts?: Cit
   return facts?.name || city.cityName.replace(/\s*\(([^)]+)\)\s*$/, "");
 }
 
+// The city with its display name substituted into every generated field
+// (h1, meta, intro, FAQs), for pages that render the stored copy directly.
+export function withDisplayName<T extends CityContent>(city: T, facts?: CityFacts): T {
+  const name = cityDisplayName(city, facts);
+  if (name === city.cityName) return city;
+  return JSON.parse(JSON.stringify(city).split(JSON.stringify(city.cityName).slice(1, -1)).join(JSON.stringify(name).slice(1, -1)));
+}
+
 // Same-region countries for world-coverage solutions: no exclusions, and
 // includes countries that exist only in the world geography.
 export function sameRegionWorldCountries(slug: string, all: { slug: string; countryName: string }[], limit = 12) {

@@ -1,0 +1,512 @@
+{
+  "countries": [
+    {
+      "from": "land-islands",
+      "to": "aland-islands"
+    },
+    {
+      "from": "c-te-d-ivoire",
+      "to": "cote-d-ivoire"
+    },
+    {
+      "from": "r-union",
+      "to": "reunion"
+    },
+    {
+      "from": "tfyr-of-macedonia",
+      "to": "north-macedonia"
+    }
+  ],
+  "cities": [
+    {
+      "country": "albania",
+      "from": "durr-s",
+      "to": "durres"
+    },
+    {
+      "country": "algeria",
+      "from": "el-boula-da-blida",
+      "to": "el-boulaida-blida"
+    },
+    {
+      "country": "algeria",
+      "from": "stif-s-tif",
+      "to": "stif-setif"
+    },
+    {
+      "country": "algeria",
+      "from": "sidi-bel-abb-s",
+      "to": "sidi-bel-abbes"
+    },
+    {
+      "country": "argentina",
+      "from": "c-rdoba",
+      "to": "cordoba"
+    },
+    {
+      "country": "argentina",
+      "from": "tucum-n-taf-viejo",
+      "to": "tucuman-tafi-viejo"
+    },
+    {
+      "country": "argentina",
+      "from": "mor-n",
+      "to": "moron"
+    },
+    {
+      "country": "argentina",
+      "from": "mar-del-plata-bat-n",
+      "to": "mar-del-plata-batan"
+    },
+    {
+      "country": "argentina",
+      "from": "santa-f",
+      "to": "santa-fe"
+    },
+    {
+      "country": "argentina",
+      "from": "san-miguel-de-tucum-n",
+      "to": "san-miguel-de-tucuman"
+    },
+    {
+      "country": "austria",
+      "from": "sankt-p-lten",
+      "to": "sankt-polten"
+    },
+    {
+      "country": "belgium",
+      "from": "li-ge-luik",
+      "to": "liege-luik"
+    },
+    {
+      "country": "bolivia-plurinational-state-of",
+      "from": "potos",
+      "to": "potosi"
+    },
+    {
+      "country": "brazil",
+      "from": "goi-nia",
+      "to": "goiania"
+    },
+    {
+      "country": "brazil",
+      "from": "sao-lu-s",
+      "to": "sao-luis"
+    },
+    {
+      "country": "brazil",
+      "from": "macei",
+      "to": "maceio"
+    },
+    {
+      "country": "brazil",
+      "from": "nova-igua-u",
+      "to": "nova-iguacu"
+    },
+    {
+      "country": "burkina-faso",
+      "from": "d-dougou",
+      "to": "dedougou"
+    },
+    {
+      "country": "cameroon",
+      "from": "ngaound-r",
+      "to": "ngaoundere"
+    },
+    {
+      "country": "cameroon",
+      "from": "kouss-ri",
+      "to": "kousseri"
+    },
+    {
+      "country": "cameroon",
+      "from": "ed-a",
+      "to": "edea"
+    },
+    {
+      "country": "canada",
+      "from": "montr-al",
+      "to": "montreal"
+    },
+    {
+      "country": "canada",
+      "from": "qu-bec",
+      "to": "quebec"
+    },
+    {
+      "country": "chile",
+      "from": "vi-a-del-mar",
+      "to": "vina-del-mar"
+    },
+    {
+      "country": "chile",
+      "from": "valpara-so",
+      "to": "valparaiso"
+    },
+    {
+      "country": "chile",
+      "from": "concepci-n",
+      "to": "concepcion"
+    },
+    {
+      "country": "chile",
+      "from": "copiap",
+      "to": "copiapo"
+    },
+    {
+      "country": "chile",
+      "from": "quilpu",
+      "to": "quilpue"
+    },
+    {
+      "country": "colombia",
+      "from": "medell-n",
+      "to": "medellin"
+    },
+    {
+      "country": "colombia",
+      "from": "c-cuta",
+      "to": "cucuta"
+    },
+    {
+      "country": "colombia",
+      "from": "ibagu",
+      "to": "ibague"
+    },
+    {
+      "country": "costa-rica",
+      "from": "la-uni-n",
+      "to": "la-union"
+    },
+    {
+      "country": "costa-rica",
+      "from": "lim-n",
+      "to": "limon"
+    },
+    {
+      "country": "cuba",
+      "from": "camag-ey",
+      "to": "camaguey"
+    },
+    {
+      "country": "cuba",
+      "from": "holgu-n",
+      "to": "holguin"
+    },
+    {
+      "country": "cuba",
+      "from": "guant-namo",
+      "to": "guantanamo"
+    },
+    {
+      "country": "cuba",
+      "from": "pinar-del-r-o",
+      "to": "pinar-del-rio"
+    },
+    {
+      "country": "cuba",
+      "from": "sancti-sp-ritus",
+      "to": "sancti-spiritus"
+    },
+    {
+      "country": "czech-republic",
+      "from": "st-nad-labem",
+      "to": "usti-nad-labem"
+    },
+    {
+      "country": "czech-republic",
+      "from": "hradec-kr-lov",
+      "to": "hradec-kralove"
+    },
+    {
+      "country": "denmark",
+      "from": "rhus",
+      "to": "arhus"
+    },
+    {
+      "country": "denmark",
+      "from": "lborg",
+      "to": "alborg"
+    },
+    {
+      "country": "dominican-republic",
+      "from": "hig-ey",
+      "to": "higuey"
+    },
+    {
+      "country": "dominican-republic",
+      "from": "san-crist-bal",
+      "to": "san-cristobal"
+    },
+    {
+      "country": "dominican-republic",
+      "from": "ban",
+      "to": "bani"
+    },
+    {
+      "country": "ecuador",
+      "from": "dur-n",
+      "to": "duran"
+    },
+    {
+      "country": "egypt",
+      "from": "mans-ra",
+      "to": "mansura"
+    },
+    {
+      "country": "egypt",
+      "from": "assy-t",
+      "to": "assyut"
+    },
+    {
+      "country": "egypt",
+      "from": "faiy-m",
+      "to": "faiyum"
+    },
+    {
+      "country": "france",
+      "from": "saint-tienne",
+      "to": "saint-etienne"
+    },
+    {
+      "country": "germany",
+      "from": "m-nchen",
+      "to": "munchen"
+    },
+    {
+      "country": "germany",
+      "from": "k-ln",
+      "to": "koln"
+    },
+    {
+      "country": "germany",
+      "from": "d-sseldorf",
+      "to": "dusseldorf"
+    },
+    {
+      "country": "germany",
+      "from": "n-rnberg",
+      "to": "nurnberg"
+    },
+    {
+      "country": "greece",
+      "from": "p-sterion",
+      "to": "pesterion"
+    },
+    {
+      "country": "greece",
+      "from": "calith-a",
+      "to": "calithea"
+    },
+    {
+      "country": "guadeloupe",
+      "from": "pointe-pitre",
+      "to": "pointe-a-pitre"
+    },
+    {
+      "country": "guinea",
+      "from": "nz-r-kor",
+      "to": "nzerekore"
+    },
+    {
+      "country": "guinea",
+      "from": "lab",
+      "to": "labe"
+    },
+    {
+      "country": "hungary",
+      "from": "p-cs",
+      "to": "pecs"
+    },
+    {
+      "country": "hungary",
+      "from": "gy-r",
+      "to": "gyor"
+    },
+    {
+      "country": "hungary",
+      "from": "kecskem-t",
+      "to": "kecskemet"
+    },
+    {
+      "country": "hungary",
+      "from": "sz-kesfeh-rvar",
+      "to": "szekesfehervar"
+    },
+    {
+      "country": "maldives",
+      "from": "mal",
+      "to": "male"
+    },
+    {
+      "country": "mexico",
+      "from": "ju-rez",
+      "to": "juarez"
+    },
+    {
+      "country": "mexico",
+      "from": "le-n-de-los-aldama",
+      "to": "leon-de-los-aldama"
+    },
+    {
+      "country": "mexico",
+      "from": "netzahualc-yotl",
+      "to": "netzahualcoyotl"
+    },
+    {
+      "country": "mexico",
+      "from": "naucalpan-de-ju-rez",
+      "to": "naucalpan-de-juarez"
+    },
+    {
+      "country": "mexico",
+      "from": "m-rida",
+      "to": "merida"
+    },
+    {
+      "country": "mexico",
+      "from": "san-luis-potos",
+      "to": "san-luis-potosi"
+    },
+    {
+      "country": "nicaragua",
+      "from": "le-n",
+      "to": "leon"
+    },
+    {
+      "country": "paraguay",
+      "from": "capiat",
+      "to": "capiata"
+    },
+    {
+      "country": "paraguay",
+      "from": "lambar",
+      "to": "lambare"
+    },
+    {
+      "country": "philippines",
+      "from": "dasmari-as",
+      "to": "dasmarinas"
+    },
+    {
+      "country": "philippines",
+      "from": "las-pi-as",
+      "to": "las-pinas"
+    },
+    {
+      "country": "poland",
+      "from": "krak-w",
+      "to": "krakow"
+    },
+    {
+      "country": "poland",
+      "from": "l-dz",
+      "to": "lodz"
+    },
+    {
+      "country": "puerto-rico",
+      "from": "bayam-n",
+      "to": "bayamon"
+    },
+    {
+      "country": "senegal",
+      "from": "thi-s",
+      "to": "thies"
+    },
+    {
+      "country": "serbia",
+      "from": "ni",
+      "to": "nis"
+    },
+    {
+      "country": "serbia",
+      "from": "kru-evac",
+      "to": "krusevac"
+    },
+    {
+      "country": "serbia",
+      "from": "abac",
+      "to": "sabac"
+    },
+    {
+      "country": "spain",
+      "from": "m-laga",
+      "to": "malaga"
+    },
+    {
+      "country": "spain",
+      "from": "gij-n",
+      "to": "gijon"
+    },
+    {
+      "country": "sweden",
+      "from": "g-teborg",
+      "to": "goteborg"
+    },
+    {
+      "country": "sweden",
+      "from": "malm",
+      "to": "malmo"
+    },
+    {
+      "country": "sweden",
+      "from": "link-ping",
+      "to": "linkoping"
+    },
+    {
+      "country": "sweden",
+      "from": "v-ster-s",
+      "to": "vasteras"
+    },
+    {
+      "country": "sweden",
+      "from": "norrk-ping",
+      "to": "norrkoping"
+    },
+    {
+      "country": "sweden",
+      "from": "j-nk-ping",
+      "to": "jonkoping"
+    },
+    {
+      "country": "sweden",
+      "from": "ume",
+      "to": "umea"
+    },
+    {
+      "country": "switzerland",
+      "from": "z-rich",
+      "to": "zurich"
+    },
+    {
+      "country": "switzerland",
+      "from": "gen-ve",
+      "to": "geneve"
+    },
+    {
+      "country": "switzerland",
+      "from": "b-le",
+      "to": "bale"
+    },
+    {
+      "country": "turkmenistan",
+      "from": "t-rkmenabat-chardzhou",
+      "to": "turkmenabat-chardzhou"
+    },
+    {
+      "country": "venezuela-bolivarian-republic-of",
+      "from": "matur-n",
+      "to": "maturin"
+    },
+    {
+      "country": "venezuela-bolivarian-republic-of",
+      "from": "ciudad-bol-var",
+      "to": "ciudad-bolivar"
+    },
+    {
+      "country": "venezuela-bolivarian-republic-of",
+      "from": "cuman",
+      "to": "cumana"
+    }
+  ]
+}

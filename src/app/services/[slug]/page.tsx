@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import { Container } from "@/components/Container";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SectionHeading } from "@/components/SectionHeading";
@@ -21,7 +22,6 @@ import { LiveDemos } from "@/components/LiveDemos";
 import { buildMetadata } from "@/lib/seo";
 import { faqJsonLd, serviceJsonLd } from "@/lib/jsonld";
 import { getServicePageSchemas } from "@/lib/jsonld-universal";
-import { buildServicePageKeywords } from "@/lib/keywords-builder";
 import { services, getServiceBySlug } from "@/data/services";
 import { getServiceImage } from "@/lib/unsplash-service";
 import { TrustSections } from "@/components/TrustSections";
@@ -126,13 +126,13 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
           </h1>
           <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">{service.intro}</p>
           <div className="mt-8">
-            <a
+            <Link
               href="/contact"
               className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3.5 text-sm font-semibold text-background hover:bg-primary/90 transition-colors"
             >
               Get a Technical Estimate
               <Icon name="arrow" className="w-4 h-4" />
-            </a>
+            </Link>
           </div>
         </Container>
       </section>

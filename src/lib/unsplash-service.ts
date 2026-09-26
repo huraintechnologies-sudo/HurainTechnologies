@@ -5,7 +5,6 @@
 const UNSPLASH_API_KEY = "wNKgK2yW_5PgIGWm96pxkv1vIEGX5FfHxNqKj5QSqJY";
 const UNSPLASH_API_URL = "https://api.unsplash.com";
 const API_TIMEOUT = 2000; // 2 second timeout - fail fast if slow
-const MAX_RETRIES = 1; // Quick fail for performance
 
 interface UnsplashImage {
   id: string;
@@ -30,6 +29,10 @@ interface ImageOptions {
 // Simple cache - use query as key
 const imageCache = new Map<string, { url: string; alt: string } | null>();
 
+// Set once Unsplash rejects the key (401/403) so later renders skip the
+// network round-trip instead of timing out on every page.
+let apiDisabled = false;
+
 export async function getUnsplashImage(options: ImageOptions): Promise<UnsplashImage | null> {
   try {
     const cacheKey = `${options.query}`;
@@ -42,6 +45,8 @@ export async function getUnsplashImage(options: ImageOptions): Promise<UnsplashI
       }
       return null;
     }
+
+    if (apiDisabled) return null;
 
     const params = new URLSearchParams({
       query: options.query,
@@ -60,6 +65,7 @@ export async function getUnsplashImage(options: ImageOptions): Promise<UnsplashI
     clearTimeout(timeoutId);
 
     if (!response.ok) {
+      if (response.status === 401 || response.status === 403) apiDisabled = true;
       imageCache.set(cacheKey, null);
       return null;
     }
@@ -74,7 +80,7 @@ export async function getUnsplashImage(options: ImageOptions): Promise<UnsplashI
 
     imageCache.set(cacheKey, null);
     return null;
-  } catch (error) {
+  } catch {
     // Silently fail and return null for timeout or network errors
     return null;
   }
@@ -167,7 +173,7 @@ export async function getBlogPostImage(title: string, index?: number): Promise<{
     width: 1200,
     height: 630,
     orientation: "landscape",
-  }).then(img => img ? { url: img.urls.regular, alt: img.alt_description || title } : null);
+  }).then(img => img ? { url: img.urls.regular, alt: img.alt_description || title } : { url: "/images/blog-cover.jpg", alt: title });
 }
 
 export async function getCaseStudyImage(industry: string, index?: number): Promise<{ url: string; alt: string } | null> {
@@ -186,7 +192,7 @@ export async function getCaseStudyImage(industry: string, index?: number): Promi
     width: 1200,
     height: 800,
     orientation: "landscape",
-  }).then(img => img ? { url: img.urls.regular, alt: img.alt_description || industry } : null);
+  }).then(img => img ? { url: img.urls.regular, alt: img.alt_description || industry } : { url: "/images/case-study-fintech.jpg", alt: `${industry} case study` });
 }
 
 export async function getIndustryImage(industry: string): Promise<{ url: string; alt: string } | null> {

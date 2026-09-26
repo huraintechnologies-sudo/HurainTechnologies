@@ -13,7 +13,7 @@ import { LiveDemos } from "@/components/LiveDemos";
 import { buildMetadata } from "@/lib/seo";
 import { faqJsonLd, serviceJsonLd } from "@/lib/jsonld";
 import { services, getServiceBySlug } from "@/data/services";
-import { countries, getCountryBySlug } from "@/data/countries";
+import { getCountryBySlug } from "@/data/countries";
 import { cities, getCityBySlug } from "@/data/cities";
 import { cities as curatedCities } from "@/data/cities-curated";
 import { FaqItem } from "@/lib/types";

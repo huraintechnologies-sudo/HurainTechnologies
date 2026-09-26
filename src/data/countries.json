@@ -1,6 +1,6 @@
 [
   {
-    "slug": "land-islands",
+    "slug": "aland-islands",
     "countryName": "Åland Islands",
     "region": "Global",
     "metaTitle": "Blockchain, Payments & Fintech Software Development in Åland Islands | Hurain Technologies",
@@ -2420,7 +2420,7 @@
     ]
   },
   {
-    "slug": "c-te-d-ivoire",
+    "slug": "cote-d-ivoire",
     "countryName": "Côte d'Ivoire",
     "region": "Global",
     "metaTitle": "Blockchain, Payments & Fintech Software Development in Côte d'Ivoire | Hurain Technologies",
@@ -8250,7 +8250,7 @@
     ]
   },
   {
-    "slug": "r-union",
+    "slug": "reunion",
     "countryName": "Réunion",
     "region": "Global",
     "metaTitle": "Blockchain, Payments & Fintech Software Development in Réunion | Hurain Technologies",
@@ -9900,51 +9900,51 @@
     ]
   },
   {
-    "slug": "tfyr-of-macedonia",
-    "countryName": "TFYR of Macedonia",
+    "slug": "north-macedonia",
+    "countryName": "North Macedonia",
     "region": "Global",
-    "metaTitle": "Blockchain, Payments & Fintech Software Development in TFYR of Macedonia | Hurain Technologies",
-    "metaDescription": "Enterprise-grade blockchain, payments, and API software development for businesses operating in TFYR of Macedonia. Aligning technical infrastructure with compliance frameworks.",
-    "h1": "Blockchain, Payments & Fintech Software Development in TFYR of Macedonia",
-    "intro": "TFYR of Macedonia represents a rapidly evolving ecosystem for digital finance and technological infrastructure. Local and international enterprises operating in TFYR of Macedonia require sophisticated, compliant engineering. Hurain Technologies provides specialized development for payment gateways, blockchain networks, and AI-driven platforms, ensuring your infrastructure is built to scale within TFYR of Macedonia's market.",
+    "metaTitle": "Blockchain, Payments & Fintech Software Development in North Macedonia | Hurain Technologies",
+    "metaDescription": "Enterprise-grade blockchain, payments, and API software development for businesses operating in North Macedonia. Aligning technical infrastructure with compliance frameworks.",
+    "h1": "Blockchain, Payments & Fintech Software Development in North Macedonia",
+    "intro": "North Macedonia represents a rapidly evolving ecosystem for digital finance and technological infrastructure. Local and international enterprises operating in North Macedonia require sophisticated, compliant engineering. Hurain Technologies provides specialized development for payment gateways, blockchain networks, and AI-driven platforms, ensuring your infrastructure is built to scale within North Macedonia's market.",
     "regulatoryNotes": [
-      "Firms operating in TFYR of Macedonia must align their digital infrastructure with national data protection and financial security standards.",
+      "Firms operating in North Macedonia must align their digital infrastructure with national data protection and financial security standards.",
       "Payment processors and fintech applications require robust Anti-Money Laundering (AML) and Know Your Customer (KYC) technical integrations tailored for the market.",
-      "Blockchain and crypto-asset platforms should be engineered with flexibility to adapt to evolving digital asset regulations in TFYR of Macedonia."
+      "Blockchain and crypto-asset platforms should be engineered with flexibility to adapt to evolving digital asset regulations in North Macedonia."
     ],
     "marketDrivers": [
-      "Accelerated consumer adoption of digital and mobile-first payment methods across TFYR of Macedonia.",
+      "Accelerated consumer adoption of digital and mobile-first payment methods across North Macedonia.",
       "Increasing institutional demand for tokenization and enterprise blockchain solutions.",
       "Stricter compliance and cybersecurity mandates driving the modernization of legacy financial systems."
     ],
     "detailedAnalysis": [
       {
-        "heading": "The Digital Evolution of TFYR of Macedonia",
+        "heading": "The Digital Evolution of North Macedonia",
         "paragraphs": [
-          "The digital economy in TFYR of Macedonia is undergoing a massive transformation, driven by both private sector innovation and public sector initiatives. As businesses move away from legacy infrastructure, the demand for high-throughput, secure, and scalable software architecture has never been higher.",
-          "Hurain Technologies partners with enterprises in TFYR of Macedonia to architect these next-generation systems. Whether it's building a unified API gateway that aggregates fragmented local payment methods or deploying a proprietary blockchain consortium, our engineering teams bring deep technical expertise to the local market."
+          "The digital economy in North Macedonia is undergoing a massive transformation, driven by both private sector innovation and public sector initiatives. As businesses move away from legacy infrastructure, the demand for high-throughput, secure, and scalable software architecture has never been higher.",
+          "Hurain Technologies partners with enterprises in North Macedonia to architect these next-generation systems. Whether it's building a unified API gateway that aggregates fragmented local payment methods or deploying a proprietary blockchain consortium, our engineering teams bring deep technical expertise to the local market."
         ]
       },
       {
         "heading": "Technical Infrastructure for the Market",
         "paragraphs": [
-          "Building for TFYR of Macedonia requires more than just writing code; it requires a deep understanding of the structural challenges. This includes handling localized latency, ensuring redundancy across regional cloud providers, and implementing data localization techniques to satisfy national regulators.",
-          "Our approach focuses on cloud-native modernization, utilizing microservices architecture to ensure that your financial applications remain highly available and fault-tolerant, even under extreme load conditions typical of high-growth markets like TFYR of Macedonia."
+          "Building for North Macedonia requires more than just writing code; it requires a deep understanding of the structural challenges. This includes handling localized latency, ensuring redundancy across regional cloud providers, and implementing data localization techniques to satisfy national regulators.",
+          "Our approach focuses on cloud-native modernization, utilizing microservices architecture to ensure that your financial applications remain highly available and fault-tolerant, even under extreme load conditions typical of high-growth markets like North Macedonia."
         ]
       }
     ],
     "faqs": [
       {
-        "question": "Do you build custom payment gateways for TFYR of Macedonia?",
-        "answer": "Yes, we engineer custom payment orchestration layers and gateways designed to integrate seamlessly with the banking infrastructure and alternative payment methods prevalent in TFYR of Macedonia."
+        "question": "Do you build custom payment gateways for North Macedonia?",
+        "answer": "Yes, we engineer custom payment orchestration layers and gateways designed to integrate seamlessly with the banking infrastructure and alternative payment methods prevalent in North Macedonia."
       },
       {
-        "question": "Can you assist with blockchain architecture in TFYR of Macedonia?",
-        "answer": "Absolutely. We specialize in both public and permissioned blockchain networks, smart contract auditing, and institutional custody solutions tailored for enterprises in TFYR of Macedonia."
+        "question": "Can you assist with blockchain architecture in North Macedonia?",
+        "answer": "Absolutely. We specialize in both public and permissioned blockchain networks, smart contract auditing, and institutional custody solutions tailored for enterprises in North Macedonia."
       },
       {
-        "question": "How do you handle data compliance for TFYR of Macedonia?",
-        "answer": "We implement strict data localization, end-to-end encryption, and role-based access controls to ensure your application meets the specific cybersecurity and data privacy regulations of TFYR of Macedonia."
+        "question": "How do you handle data compliance for North Macedonia?",
+        "answer": "We implement strict data localization, end-to-end encryption, and role-based access controls to ensure your application meets the specific cybersecurity and data privacy regulations of North Macedonia."
       }
     ],
     "focusServiceSlugs": [

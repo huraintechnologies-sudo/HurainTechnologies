@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { Container } from "@/components/Container";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SectionHeading } from "@/components/SectionHeading";
@@ -244,9 +245,9 @@ export default function AboutPage() {
               <SectionHeading eyebrow="Global Presence" title="Headquartered in Gujarat, India, delivering across 60+ markets" />
               <p className="mt-5 max-w-2xl text-sm leading-relaxed text-muted sm:text-base">
                 Our engineering teams deliver for clients across the UK, EU, Americas, Middle East, Africa, and
-                Asia-Pacific, with architecture and compliance practices tailored to each region's regulatory
+                Asia-Pacific, with architecture and compliance practices tailored to each region’s regulatory
                 environment. See our{" "}
-                <a href="/locations" className="text-primary hover:underline">location-specific pages</a> for market
+                <Link href="/locations" className="text-primary hover:underline">location-specific pages</Link> for market
                 detail.
               </p>
             </div>

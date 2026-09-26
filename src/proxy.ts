@@ -49,6 +49,9 @@ export function proxy(request: NextRequest) {
   url.pathname = `/en-${countryCode.toLowerCase()}`;
   url.search = "";
   const response = NextResponse.redirect(url);
+  // The redirect depends on the visitor's country, so no shared cache may store it.
+  response.headers.set("Cache-Control", "private, no-store");
+  response.headers.set("Vary", "x-vercel-ip-country, cookie");
   response.cookies.set(GEO_PREF_COOKIE, slug, { maxAge: 60 * 60 * 24 * 30, path: "/" });
   return response;
 }

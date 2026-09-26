@@ -1,10 +1,15 @@
 import type { NextConfig } from "next";
+import { COUNTRY_CODE_TO_SLUG } from "./src/lib/geo";
+import slugRedirects from "./src/data/slug-redirects.json";
+
+// Mirrors localeForCountrySlug in src/lib/locale.ts ("germany" -> "en-de");
+// next.config can't resolve the "@/" path alias that module imports with.
+function localeForCountrySlug(slug: string): string | undefined {
+  const code = Object.keys(COUNTRY_CODE_TO_SLUG).find((c) => COUNTRY_CODE_TO_SLUG[c] === slug);
+  return code ? `en-${code.toLowerCase()}` : undefined;
+}
 
 const nextConfig: NextConfig = {
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-
   // Performance: Compression and minification
   compress: true,
   productionBrowserSourceMaps: false,
@@ -64,11 +69,11 @@ const nextConfig: NextConfig = {
           { key: "X-DNS-Prefetch-Control", value: "on" },
         ],
       },
-      // API routes - minimal caching
+      // API routes - never cache (the contact endpoint is per-request)
       {
         source: "/api/:path*",
         headers: [
-          { key: "Cache-Control", value: "public, max-age=60, s-maxage=600" },
+          { key: "Cache-Control", value: "no-store" },
         ],
       },
       // llms.txt
@@ -83,15 +88,34 @@ const nextConfig: NextConfig = {
   },
 
   // Duplicate country slugs (see COUNTRY_SLUG_ALIASES in src/data/countries.ts)
-  // permanently redirect to their canonical slug so link equity consolidates.
-  redirects: async () =>
-    [
-      ["tanzania", "united-republic-of-tanzania"],
-      ["hong-kong", "china-hong-kong-sar"],
-    ].flatMap(([from, to]) => [
-      { source: `/:section(services|solutions|industries)/:item/${from}`, destination: `/:section/:item/${to}`, permanent: true },
-      { source: `/:section(services|solutions|industries)/:item/${from}/:city`, destination: `/:section/:item/${to}/:city`, permanent: true },
-    ]),
+  // and slugs that were generated with accented letters stripped (e.g.
+  // "m-nchen" -> "munchen", see src/data/slug-redirects.json) 301 to their
+  // canonical slug so link equity consolidates.
+  redirects: async () => {
+    const countryRedirects = [
+      { from: "tanzania", to: "united-republic-of-tanzania" },
+      { from: "hong-kong", to: "china-hong-kong-sar" },
+      ...slugRedirects.countries,
+    ].flatMap(({ from, to }) => [
+      { source: `/:section(services|solutions|industries)/:item/${from}`, destination: `/:section/:item/${to}`, statusCode: 301 as const },
+      { source: `/:section(services|solutions|industries)/:item/${from}/:city`, destination: `/:section/:item/${to}/:city`, statusCode: 301 as const },
+    ]);
+
+    const cityRedirects = slugRedirects.cities.flatMap(({ country, from, to }) => {
+      const rules = [
+        { source: `/:section(services|solutions|industries)/:item/${country}/${from}`, destination: `/:section/:item/${country}/${to}`, statusCode: 301 as const },
+      ];
+      const locale = localeForCountrySlug(country);
+      if (locale) rules.push({ source: `/${locale}/${from}`, destination: `/${locale}/${to}`, statusCode: 301 as const });
+      return rules;
+    });
+
+    return [...countryRedirects, ...cityRedirects];
+  },
+
+  // Browsers and crawlers request /favicon.ico regardless of <link rel="icon">;
+  // serve the generated app icon there instead of a 404.
+  rewrites: async () => [{ source: "/favicon.ico", destination: "/icon" }],
 
   // No experimental features needed for this version
 };

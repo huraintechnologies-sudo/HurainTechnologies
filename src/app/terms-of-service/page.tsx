@@ -34,7 +34,7 @@ export default function TermsOfServicePage() {
             <h2 className="text-lg font-semibold text-foreground">1. Use of the Site</h2>
             <p className="mt-3">
               You may use this Site for lawful purposes only. You may not use the Site in any way that could
-              damage, disable, or impair it, or interfere with any other party's use of the Site.
+              damage, disable, or impair it, or interfere with any other party’s use of the Site.
             </p>
           </div>
 

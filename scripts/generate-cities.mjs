@@ -3,6 +3,10 @@ import path from "path";
 import https from "https";
 
 // We'll map ISO2 country codes to our existing country slugs
+// Transliterate accents ("München" -> "munchen") instead of dropping them ("m-nchen").
+const slugify = (s) =>
+  s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+
 const countrySlugMap = {
   GB: "united-kingdom",
   MT: "malta",
@@ -96,7 +100,7 @@ async function run() {
 
   const generatedCities = selectedCities.map(city => {
     const countrySlug = countrySlugMap[city.country];
-    const slug = city.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+    const slug = slugify(city.name);
     
     // Some basic SEO template generation
     const seo = generateSeoText(city.name, city.country);

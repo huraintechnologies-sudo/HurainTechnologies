@@ -75,7 +75,7 @@ export default function CaseStudiesPage() {
             Case Studies
           </h1>
           <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
-            Anonymized results from platforms we've built and modernized across blockchain, banking, and payments.
+            Anonymized results from platforms we’ve built and modernized across blockchain, banking, and payments.
           </p>
         </Container>
       </section>

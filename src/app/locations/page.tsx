@@ -49,7 +49,7 @@ export default function LocationsPage() {
           <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
             We deliver blockchain, payments, and fintech software development across {countries.length}+
             regulated markets and {cities.length}+ demand hub cities, with architecture and compliance-aware
-            engineering tailored to each jurisdiction's regulatory environment.
+            engineering tailored to each jurisdiction’s regulatory environment.
           </p>
         </Container>
       </section>

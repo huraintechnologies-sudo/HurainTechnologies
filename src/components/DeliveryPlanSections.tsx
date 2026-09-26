@@ -442,8 +442,12 @@ function PaymentChart({ milestones }: { milestones: Milestone[] }) {
   });
 
   // Accepted work reaches the paid share at each sign-off.
+  const delivered = [{ i: 0, pct: 0 }];
   let acc = milestones[0].percent;
-  const delivered = [{ i: 0, pct: 0 }, ...milestones.slice(1).map((m, i) => ({ i: i + 1, pct: (acc += m.percent) }))];
+  milestones.slice(1).forEach((m, i) => {
+    acc += m.percent;
+    delivered.push({ i: i + 1, pct: acc });
+  });
   const deliveredPath = delivered.map((p, k) => `${k ? "L" : "M"} ${x(p.i)} ${y(p.pct)}`).join(" ");
 
   return (

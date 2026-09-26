@@ -24,6 +24,7 @@ import { cities as curatedCities } from "@/data/cities-curated";
 import { getCountryBySlug } from "@/data/countries";
 import { getServiceBySlug } from "@/data/services";
 import { countrySlugForLocale, localeForCountrySlug } from "@/lib/locale";
+import { withDisplayName } from "@/lib/location-links";
 import {
   buildCityOverview,
   buildCityProblems,
@@ -52,15 +53,16 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, city: citySlug } = await params;
   const countrySlug = countrySlugForLocale(locale);
-  const city = countrySlug ? getCityBySlug(citySlug) : undefined;
-  if (!city || city.countrySlug !== countrySlug) return {};
+  const storedCity = countrySlug ? getCityBySlug(citySlug) : undefined;
+  if (!storedCity || storedCity.countrySlug !== countrySlug) return {};
 
+  const ctx = locationContext(storedCity.countrySlug, storedCity.slug);
+  const city = withDisplayName(storedCity, ctx.city);
   const meta = buildMetadata({
     title: city.metaTitle,
     description: city.metaDescription,
     path: `/${locale}/${city.slug}`,
   });
-  const ctx = locationContext(city.countrySlug, city.slug);
   const img = ctx.city?.image || ctx.country?.image;
   return img ? { ...meta, openGraph: { ...meta.openGraph, images: [{ url: img, alt: city.cityName }] } } : meta;
 }
@@ -70,9 +72,11 @@ export default async function CityPage({ params }: Props) {
   const countrySlug = countrySlugForLocale(locale);
   if (!countrySlug) notFound();
 
-  const city = getCityBySlug(citySlug);
-  if (!city || city.countrySlug !== countrySlug) notFound();
+  const storedCity = getCityBySlug(citySlug);
+  if (!storedCity || storedCity.countrySlug !== countrySlug) notFound();
 
+  const ctx = locationContext(countrySlug, storedCity.slug);
+  const city = withDisplayName(storedCity, ctx.city);
   const country = getCountryBySlug(countrySlug);
 
   const overviewParagraphs = buildCityOverview(city, country);
@@ -81,7 +85,6 @@ export default async function CityPage({ params }: Props) {
   const industryHighlights = buildCityIndustries(city);
   const engineeringChecklist = buildCityEngineeringChecklist(city);
   const extendedFaqs = buildCityExtendedFaqs(city, country);
-  const ctx = locationContext(countrySlug, city.slug);
   const countryName = country?.countryName ?? city.countrySlug;
   const allFaqs = [...city.faqs, ...extendedFaqs, ...buildMarketBrief(ctx, city.cityName, countryName, "Software Development", true).faqs];
   // ServiceArea signal for the city: our Organization serving this City
@@ -116,13 +119,13 @@ export default async function CityPage({ params }: Props) {
             {city.h1}
           </h1>
           <div className="mt-8">
-            <a
+            <Link
               href="/contact"
               className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3.5 text-sm font-semibold text-background hover:bg-primary/90 transition-colors"
             >
               Talk to Our Team
               <Icon name="arrow" className="w-4 h-4" />
-            </a>
+            </Link>
           </div>
         </Container>
       </section>

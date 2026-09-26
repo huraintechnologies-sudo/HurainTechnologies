@@ -1,6 +1,10 @@
 import fs from "fs/promises";
 import path from "path";
 
+// Transliterate accents ("München" -> "munchen") instead of dropping them ("m-nchen").
+const slugify = (s) =>
+  s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+
 const EXCLUDED_COUNTRIES = ["Pakistan", "Israel", "China", "Japan"];
 
 async function fetchJson(url) {
@@ -127,7 +131,7 @@ async function run() {
   const generatedCities = [];
 
   for (const [countryName, cities] of Object.entries(groupedByCountry)) {
-    const countrySlug = countryName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+    const countrySlug = slugify(countryName);
     
     // 1. Generate Country Page
     generatedCountries.push({
@@ -144,8 +148,9 @@ async function run() {
     const topCities = cities.slice(0, 15);
     
     for (const city of topCities) {
-      const formattedCityName = city.name.charAt(0).toUpperCase() + city.name.slice(1).toLowerCase();
-      const citySlug = formattedCityName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+      // Capitalise every word ("san miguel de tucumán" -> "San Miguel De Tucumán"); only lowering the tail broke multi-word names.
+      const formattedCityName = city.name.toLowerCase().replace(/(^|[\s(-])(\p{L})/gu, (m, sep, ch) => sep + ch.toUpperCase());
+      const citySlug = slugify(formattedCityName);
       
       generatedCities.push({
         slug: citySlug,

@@ -517,7 +517,7 @@ export function breadcrumbJsonLd(items: Array<{ name: string; url: string }>) {
   };
 }
 
-export default {
+const jsonldEnhanced = {
   strongestOrganizationJsonLd,
   strongestWebsiteJsonLd,
   strongestSolutionCountryJsonLd,
@@ -526,3 +526,5 @@ export default {
   richFaqJsonLd,
   breadcrumbJsonLd,
 };
+
+export default jsonldEnhanced;

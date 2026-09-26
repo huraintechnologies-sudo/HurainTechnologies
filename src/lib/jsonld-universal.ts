@@ -1,14 +1,14 @@
 // Universal JSON-LD Schemas for ALL pages
 // Every page should use these + their specific schemas
 
-import { siteConfig } from "@/lib/site-config";
+type Schema = Record<string, unknown>;
 import { strongestOrganizationJsonLd, strongestWebsiteJsonLd } from "@/lib/jsonld-enhanced";
 
 /**
  * Base schemas that should appear on EVERY page
  * Returns: [Organization, WebSite]
  */
-export function getBaseSchemas() {
+export function getBaseSchemas(): Schema[] {
   return [
     strongestOrganizationJsonLd(),
     strongestWebsiteJsonLd(),
@@ -20,10 +20,10 @@ export function getBaseSchemas() {
  * Usage: <JsonLd data={getCompletePageSchemas(specificSchemas, breadcrumbs)} />
  */
 export function getCompletePageSchemas(
-  pageSpecificSchemas: any[] = [],
-  breadcrumbSchema: any = null
+  pageSpecificSchemas: Schema[] = [],
+  breadcrumbSchema: Schema | null = null
 ) {
-  const schemas: any[] = [
+  const schemas: Schema[] = [
     ...getBaseSchemas(),
     ...pageSpecificSchemas,
   ];
@@ -39,14 +39,14 @@ export function getCompletePageSchemas(
  * Quick schemas for simple pages (blog, case studies, etc)
  * Just add Organization + Website + specific schema
  */
-export function getPageSchemas(specificSchema: any) {
+export function getPageSchemas(specificSchema: Schema) {
   return getBaseSchemas().concat(specificSchema);
 }
 
 /**
  * Service Page Schemas
  */
-export function getServicePageSchemas(serviceSchema: any, faqSchema: any = null) {
+export function getServicePageSchemas(serviceSchema: Schema, faqSchema: Schema | null = null) {
   const schemas = getBaseSchemas().concat([serviceSchema]);
   if (faqSchema) schemas.push(faqSchema);
   return schemas;
@@ -56,9 +56,9 @@ export function getServicePageSchemas(serviceSchema: any, faqSchema: any = null)
  * Solution Page Schemas
  */
 export function getSolutionPageSchemas(
-  solutionSchema: any,
-  breadcrumbSchema: any,
-  faqSchema: any = null
+  solutionSchema: Schema,
+  breadcrumbSchema: Schema,
+  faqSchema: Schema | null = null
 ) {
   const schemas = getBaseSchemas().concat([
     solutionSchema,
@@ -72,9 +72,9 @@ export function getSolutionPageSchemas(
  * Industry Page Schemas
  */
 export function getIndustryPageSchemas(
-  industrySchema: any,
-  breadcrumbSchema: any,
-  faqSchema: any = null
+  industrySchema: Schema,
+  breadcrumbSchema: Schema,
+  faqSchema: Schema | null = null
 ) {
   const schemas = getBaseSchemas().concat([
     industrySchema,
@@ -88,8 +88,8 @@ export function getIndustryPageSchemas(
  * Blog Post Schemas
  */
 export function getBlogPostSchemas(
-  blogPostSchema: any,
-  breadcrumbSchema: any = null
+  blogPostSchema: Schema,
+  breadcrumbSchema: Schema | null = null
 ) {
   const schemas = getBaseSchemas().concat([blogPostSchema]);
   if (breadcrumbSchema) schemas.push(breadcrumbSchema);
@@ -100,8 +100,8 @@ export function getBlogPostSchemas(
  * Case Study Schemas
  */
 export function getCaseStudySchemas(
-  caseStudySchema: any,
-  breadcrumbSchema: any = null
+  caseStudySchema: Schema,
+  breadcrumbSchema: Schema | null = null
 ) {
   const schemas = getBaseSchemas().concat([caseStudySchema]);
   if (breadcrumbSchema) schemas.push(breadcrumbSchema);
@@ -112,8 +112,8 @@ export function getCaseStudySchemas(
  * Country/City Page Schemas
  */
 export function getCountryPageSchemas(
-  countryServiceSchema: any,
-  breadcrumbSchema: any
+  countryServiceSchema: Schema,
+  breadcrumbSchema: Schema
 ) {
   return getBaseSchemas().concat([
     countryServiceSchema,
@@ -122,8 +122,8 @@ export function getCountryPageSchemas(
 }
 
 export function getCityPageSchemas(
-  cityServiceSchema: any,
-  breadcrumbSchema: any
+  cityServiceSchema: Schema,
+  breadcrumbSchema: Schema
 ) {
   return getBaseSchemas().concat([
     cityServiceSchema,

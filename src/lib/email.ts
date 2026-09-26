@@ -10,6 +10,17 @@ interface ContactSubmission {
   message: string;
 }
 
+// Every submitted value is attacker-controlled: escape it before it goes into
+// email HTML so a submission can't inject links, images or markup.
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 export async function sendContactEmails(submission: ContactSubmission) {
   if (!process.env.RESEND_API_KEY) {
     throw new Error("Email is not configured. Set RESEND_API_KEY in .env.local.");
@@ -37,7 +48,7 @@ export async function sendContactEmails(submission: ContactSubmission) {
   const detailsHtml = detailRows
     .map(
       ([label, value]) =>
-        `<tr><td style="padding:4px 12px 4px 0;color:#8b93ab;font-size:13px;">${label}</td><td style="padding:4px 0;font-size:13px;">${value}</td></tr>`
+        `<tr><td style="padding:4px 12px 4px 0;color:#8b93ab;font-size:13px;">${label}</td><td style="padding:4px 0;font-size:13px;">${escapeHtml(value)}</td></tr>`
     )
     .join("");
 
@@ -54,7 +65,7 @@ export async function sendContactEmails(submission: ContactSubmission) {
           <h2 style="margin-bottom:4px;">New website inquiry</h2>
           <table>${detailsHtml}</table>
           <p style="margin-top:16px;"><strong>Message</strong></p>
-          <p style="white-space:pre-wrap;">${submission.message}</p>
+          <p style="white-space:pre-wrap;">${escapeHtml(submission.message)}</p>
         </div>
       `,
     });
@@ -74,10 +85,8 @@ export async function sendContactEmails(submission: ContactSubmission) {
       subject: `We've received your inquiry — ${siteConfig.name}`,
       html: `
         <div style="font-family:sans-serif;max-width:560px;">
-          <p>Hi ${submission.name},</p>
+          <p>Hi ${escapeHtml(submission.name)},</p>
           <p>Thanks for reaching out to ${siteConfig.name}. We've received your inquiry and our team will get back to you within 1-2 business days.</p>
-          <p style="margin-top:16px;"><strong>What you sent us</strong></p>
-          <p style="white-space:pre-wrap;color:#444;">${submission.message}</p>
           <p style="margin-top:16px;">If anything is urgent, you can reach us directly:</p>
           <ul>
             <li>Email: ${siteConfig.email}</li>

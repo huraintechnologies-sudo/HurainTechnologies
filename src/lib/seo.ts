@@ -25,7 +25,9 @@ const SHORTER: [RegExp, string][] = [
   [/ Development Services\b/, " Services"],
   [/United Arab Emirates/, "UAE"],
   [/United Kingdom/, "UK"],
-  [/United States/, "USA"],
+  // Whole name only: "United States of America" must not become "USA of America",
+  // and "United States Virgin Islands" is a different territory.
+  [/United States(?: of America)?(?! Virgin Islands)/, "USA"],
   [/ and /g, " & "],
   [/ Development in /, " in "],
 ];

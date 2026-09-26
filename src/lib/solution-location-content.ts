@@ -118,7 +118,7 @@ function keyFactsFor(ctx: LocationContext, cityName?: string): KeyFact[] {
   return facts;
 }
 
-function deliveryBlocks(ctx: LocationContext, place: string, pb: SolutionPlaybook) {
+function deliveryBlocks(ctx: LocationContext, place: string) {
   const o = ctx.overlap;
   const hours = `Our team works 24/7, so stand-ups, demos and urgent fixes happen during your ${place} business day${o ? ` (${o.offsetLabel})` : ""}, and work keeps progressing while you are offline.`;
   return [
@@ -187,7 +187,7 @@ export function buildCountryContent(vertical: ServiceVertical, pb: SolutionPlayb
     keyFacts: keyFactsFor(ctx),
     whyHere,
     considerations,
-    delivery: deliveryBlocks(ctx, countryName, pb),
+    delivery: deliveryBlocks(ctx, countryName),
     timelineAnswer,
     costAnswer,
     faqs,
@@ -244,7 +244,7 @@ export function buildCityContent(vertical: ServiceVertical, pb: SolutionPlaybook
     keyFacts: keyFactsFor(ctx, cityName),
     whyHere,
     considerations,
-    delivery: deliveryBlocks(ctx, place, pb),
+    delivery: deliveryBlocks(ctx, place),
     timelineAnswer,
     costAnswer,
     faqs,
